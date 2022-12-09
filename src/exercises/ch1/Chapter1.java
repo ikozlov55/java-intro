@@ -123,15 +123,82 @@ public class Chapter1 {
         return width * height;
     }
 
+    /*
+        (Average speed in miles) Assume that a runner runs 14 kilometers in 45 minutes
+        and 30 seconds. Write a program that displays the average speed in miles per
+        hour. (Note 1 mile is equal to 1.6 kilometers.)
+    */
     public static void e1_10() {
+        double kilometers = 14;
+        double minutes = 45.5;
+        double miles = kilometers / 1.6;
+        double hours = minutes / 60;
+
+        System.out.println(miles / hours);
     }
 
+    /*
+        (Population projection) The U.S. Census Bureau projects population based on
+        the following assumptions:
+            ■ One birth every 7 seconds
+            ■ One death every 13 seconds
+            ■ One new immigrant every 45 seconds
+        Write a program to display the population for each of the next five years. Assume
+        that the current population is 312,032,486, and one year has 365 days. Hint: In Java,
+        if two integers perform division, the result is an integer. The fractional part is trun-
+        cated. For example, 5 / 4 is 1 (not 1.25) and 10 / 4 is 2 (not 2.5). To get an accu-
+        rate result with the fractional part, one of the values involved in the division must be
+        a number with a decimal point. For example, 5.0 / 4 is 1.25 and 10 / 4.0 is 2.5
+    */
     public static void e1_11() {
+        int population = 312_032_486;
+        int secondsInYear = 365 * 24 * 60 * 60;
+        for (int i : IntStream.rangeClosed(1, 5).toArray()) {
+            population += secondsInYear / 7.0;
+            population -= secondsInYear / 13.0;
+            population += secondsInYear / 45.0;
+            System.out.println(population);
+        }
     }
 
+    /*
+        (Average speed in kilometers) Assume that a runner runs 24 miles in 1 hour, 40
+        minutes, and 35 seconds. Write a program that displays the average speed in
+        kilometers per hour. (Note 1 mile is equal to 1.6 kilometers.)
+    */
     public static void e1_12() {
+        double miles = 24;
+        double hours = (100 * 60 + 35) / 3600.0;
+        double kilometers = miles * 1.6;
+
+        System.out.println(kilometers / hours);
     }
 
+    /*
+        (Algebra: solve 2 * 2 linear equations) You can use Cramer’s rule to solve the
+        following 2 * 2 system of linear equation provided that ad – bc is not 0:
+            ax + by = e
+            cx + dy = f
+            x = ed - bf
+                ad - bc
+            y = af - ec
+                ad - bc
+        Write a program that solves the following equation and displays the value for x and
+        y: (Hint: replace the symbols in the formula with numbers to compute x and y. This
+        exercise can be done in Chapter 1 without using materials in later chapters.)
+            3.4x + 50.2y = 44.5
+            2.1x + .55y = 5.9
+    */
     public static void e1_13() {
+        double a = 3.4;
+        double b = 50.3;
+        double c = 2.1;
+        double d = 0.55;
+        double e = 44.5;
+        double f = 5.9;
+        double x = (e * d - b * f) / (a * d - b * c);
+        double y = (a * f - e * c) / (a * d - b * c);
+        System.out.println(x);
+        System.out.println(y);
     }
 }
