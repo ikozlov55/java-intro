@@ -514,6 +514,5 @@ public class Chapter2 {
         double pricePerGallon = scanner.nextDouble();
         double cost = (distance / milesPerGallon) * pricePerGallon;
         System.out.printf("The cost of driving is $%.2f\n", cost);
-
     }
 }
