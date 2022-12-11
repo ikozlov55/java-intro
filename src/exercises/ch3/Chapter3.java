@@ -98,7 +98,12 @@ public class Chapter3 {
      */
     public static void ch3_4() {
         int month = (int) (Math.random() * 12 + 1);
-        String monthName = switch (month) {
+        String monthName = getMonthName(month);
+        System.out.println(monthName);
+    }
+
+    private static String getMonthName(int month) {
+        return switch (month) {
             case 1 -> "January";
             case 2 -> "February";
             case 3 -> "March";
@@ -113,7 +118,6 @@ public class Chapter3 {
             case 12 -> "December";
             default -> "Unknown";
         };
-        System.out.println(monthName);
     }
 
     /*
@@ -319,33 +323,186 @@ public class Chapter3 {
     }
 
     /*
-
+        (Find the number of days in a month) Write a program that prompts the user
+        to enter the month and year and displays the number of days in the month. For
+        example, if the user entered month 2 and year 2012, the program should display
+        that February 2012 has 29 days. If the user entered month 3 and year 2015, the
+        program should display that March 2015 has 31 days.
      */
     public static void ch3_11() {
+        System.out.print("Enter month and year: ");
+        int month = scanner.nextInt();
+        int year = scanner.nextInt();
+        int days = switch (month) {
+            case 1, 3, 5, 7, 8, 10, 12 -> 31;
+            case 4, 6, 9, 11 -> 30;
+            case 2 -> isLeapYear(year) ? 29 : 28;
+            default -> 0;
+        };
+        System.out.printf("%s %d has %d days\n", getMonthName(month), year, days);
+    }
+
+    private static boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 
     /*
-
+        (Palindrome integer) Write a program that prompts the user to enter a three-digit
+        integer and determines whether it is a palindrome integer. An integer is palindrome
+        if it reads the same from right to left and from left to right. A negative integer is
+        treated the same as a positive integer. Here are sample runs of this program:
+            Enter a three-digit integer: 121
+            121 is a palindrome
+            Enter a three-digit integer: 123
+            123 is not a palindrome
      */
     public static void ch3_12() {
+        System.out.print("Enter a three-digit integer: ");
+        int number = scanner.nextInt();
+        if (number / 100 == number % 10) {
+            System.out.println(number + " is a palindrome");
+        } else {
+            System.out.println(number + " is not a palindrome");
+        }
     }
 
     /*
-
+        (Financial application: compute taxes) Listing 3.5, ComputeTax.java, gives the
+        source code to compute taxes for single filers. Complete this program to compute
+        taxes for all filing statuses.
      */
     public static void ch3_13() {
+        // Prompt the user to enter filing status
+        System.out.print("(0-single filer, 1-married jointly or " +
+                "qualifying widow(er), 2-married separately, 3-head of " +
+                "household) Enter the filing status: ");
+
+        int status = scanner.nextInt();
+
+        // Prompt the user to enter taxable income
+        System.out.print("Enter the taxable income: ");
+        double income = scanner.nextDouble();
+
+        // Compute tax
+        double tax = 0;
+        if (status == 0) { // Compute tax for single filers
+            tax = calculateTax(income, 8350, 33950, 82250, 171550, 372950);
+        } else if (status == 1) { // Left as an exercise
+            tax = calculateTax(income, 16700, 67900, 137050, 208850, 372950);
+        } else if (status == 2) { // Compute tax for married separately
+            tax = calculateTax(income, 8350, 33950, 68525, 104425, 186475);
+        } else if (status == 3) { // Compute tax for head of household
+            tax = calculateTax(income, 11950, 45500, 117450, 190200, 372950);
+        } else {
+            System.out.println("Error: invalid status");
+            System.exit(1);
+        }
+
+        // Display the result
+        System.out.println("Tax is " + (int) (tax * 100) / 100.0);
+    }
+
+    public static double calculateTax(double income, double m1, double m2, double m3, double m4, double m5) {
+        if (income <= m1)
+            return income * 0.10;
+        else if (income <= m2)
+            return m1 * 0.10 + (income - m1) * 0.15;
+        else if (income <= m3)
+            return m1 * 0.10 + (m2 - m1) * 0.15 +
+                    (income - m2) * 0.25;
+        else if (income <= m4)
+            return m1 * 0.10 + (m2 - m1) * 0.15 +
+                    (m3 - m2) * 0.25 + (income - m3) * 0.28;
+        else if (income <= m5)
+            return m1 * 0.10 + (m2 - m1) * 0.15 +
+                    (m3 - m2) * 0.25 + (m4 - m3) * 0.28 +
+                    (income - m4) * 0.33;
+        else
+            return m1 * 0.10 + (m2 - m1) * 0.15 +
+                    (m3 - m2) * 0.25 + (m4 - m3) * 0.28 +
+                    (m5 - m4) * 0.33 + (income - m5) * 0.35;
     }
 
     /*
-
+        (Game: heads or tails) Write a program that lets the user guess whether the flip
+        of a coin results in heads or tails. The program randomly generates an integer
+        0 or 1, which represents head or tail. The program prompts the user to enter a
+        guess, and reports whether the guess is correct or incorrect.
      */
     public static void ch3_14() {
+        System.out.println("Enter heads - 0 or tails - 1: ");
+        int guess = scanner.nextInt();
+        int answer = (int) (Math.random() * 2);
+        if (guess == answer) {
+            System.out.println("That's correct!");
+        } else {
+            System.out.println("That's incorrect!");
+        }
     }
 
     /*
-
+        (Game: lottery) Revise Listing 3.8, Lottery.java, to generate a lottery of a three-
+        digit integer. The program prompts the user to enter a three-digit integer and
+        determines whether the user wins according to the following rules:
+        1. If the user input matches the lottery number in the exact order, the award is
+        $10,000.
+        2. If all digits in the user input match all digits in the lottery number, the award
+        is $3,000.
+        3. If one digit in the user input matches a digit in the lottery number, the award
+        is $1,000.
      */
     public static void ch3_15() {
+        // Generate a lottery number
+        int lottery = (int) (Math.random() * 1000);
+        System.out.println(lottery);
+        // Prompt the user to enter a guess
+        System.out.print("Enter your lottery pick (three digits): ");
+        int guess = scanner.nextInt();
+
+        // Get digits from lottery
+        int lotteryDigit1 = lottery / 100;
+        int lotteryDigit2 = lottery / 10 % 10;
+        int lotteryDigit3 = lottery % 10;
+
+        // Get digits from guess
+        int guessDigit1 = guess / 100;
+        int guessDigit2 = guess / 10 % 10;
+        int guessDigit3 = guess % 10;
+        System.out.println("The lottery number is " + lottery);
+        System.out.printf("Guess digits: %d %d %d\n", guessDigit1, guessDigit2, guessDigit3);
+        System.out.printf("Lottery digits: %d %d %d\n", lotteryDigit1, lotteryDigit2, lotteryDigit3);
+        /*
+        123
+        132
+        213
+        312
+        231
+        321
+         */
+
+        // Check the guess
+        if (guess == lottery)
+            System.out.println("Exact match: you win $10,000");
+        else if (
+                (guessDigit1 == lotteryDigit1 && guessDigit2 == lotteryDigit3 && guessDigit3 == lotteryDigit2) ||
+                        (guessDigit1 == lotteryDigit2 && guessDigit2 == lotteryDigit1 && guessDigit3 == lotteryDigit3) ||
+                        (guessDigit1 == lotteryDigit2 && guessDigit2 == lotteryDigit3 && guessDigit3 == lotteryDigit1) ||
+                        (guessDigit1 == lotteryDigit3 && guessDigit2 == lotteryDigit1 && guessDigit3 == lotteryDigit2) ||
+                        (guessDigit1 == lotteryDigit3 && guessDigit2 == lotteryDigit2 && guessDigit3 == lotteryDigit1)
+        )
+            System.out.println("Match all digits: you win $3,000");
+        else if (guessDigit1 == lotteryDigit1
+                || guessDigit1 == lotteryDigit2
+                || guessDigit1 == lotteryDigit3
+                || guessDigit2 == lotteryDigit1
+                || guessDigit2 == lotteryDigit2
+                || guessDigit2 == lotteryDigit3
+                || guessDigit3 == lotteryDigit1
+                || guessDigit3 == lotteryDigit2
+                || guessDigit3 == lotteryDigit3)
+            System.out.println("Match one digit: you win $1,000");
+        else
+            System.out.println("Sorry, no match");
     }
 
     /*
