@@ -356,7 +356,7 @@ public class Chapter2 {
     public static void e2_17() {
         System.out.print("Enter the temperature in Fahrenheit between -58°F and 41°F: ");
         double ta = scanner.nextDouble();
-        System.out.print("Enter the wind speed (7 = 2) in miles per hour: ");
+        System.out.print("Enter the wind speed (>= 2) in miles per hour: ");
         double v = scanner.nextDouble();
         double twc = 35.74 + 0.6215 * ta - 35.75 * Math.pow(v, 0.16) + 0.4275 * ta * Math.pow(v, 0.16);
         System.out.printf("The wind chill index is %.5f\n", twc);

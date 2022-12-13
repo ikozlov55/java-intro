@@ -182,14 +182,10 @@ public class Chapter3 {
         double bmi = weightInKilograms / (heightInMeters * heightInMeters);
 
         System.out.println("BMI is " + bmi);
-        if (bmi < 18.5)
-            System.out.println("Underweight");
-        else if (bmi < 25)
-            System.out.println("Normal");
-        else if (bmi < 30)
-            System.out.println("Overweight");
-        else
-            System.out.println("Obese");
+        if (bmi < 18.5) System.out.println("Underweight");
+        else if (bmi < 25) System.out.println("Normal");
+        else if (bmi < 30) System.out.println("Overweight");
+        else System.out.println("Obese");
     }
 
     /*
@@ -284,11 +280,8 @@ public class Chapter3 {
     public static void ch3_9() {
         System.out.print("Enter the first 9 digits of an ISBN as integer: ");
         int digits = scanner.nextInt();
-        List<Integer> digitsList = Arrays.stream(String.format("%09d", digits).split(""))
-                .map(Integer::parseInt)
-                .toList();
-        int checksum = IntStream.range(0, digitsList.size())
-                .reduce(0, (acc, next) -> acc + digitsList.get(next) * (next + 1)) % 11;
+        List<Integer> digitsList = Arrays.stream(String.format("%09d", digits).split("")).map(Integer::parseInt).toList();
+        int checksum = IntStream.range(0, digitsList.size()).reduce(0, (acc, next) -> acc + digitsList.get(next) * (next + 1)) % 11;
         System.out.printf("The ISBN-10 number is %09d%s", digits, checksum == 10 ? "X" : checksum);
     }
 
@@ -314,8 +307,7 @@ public class Chapter3 {
         int answer = scanner.nextInt();
 
         // 4. Grade the answer and display the result
-        if (number1 + number2 == answer)
-            System.out.println("You are correct!");
+        if (number1 + number2 == answer) System.out.println("You are correct!");
         else {
             System.out.println("Your answer is wrong.");
             System.out.println(number1 + " + " + number2 + " should be " + (number1 + number2));
@@ -373,9 +365,7 @@ public class Chapter3 {
      */
     public static void ch3_13() {
         // Prompt the user to enter filing status
-        System.out.print("(0-single filer, 1-married jointly or " +
-                "qualifying widow(er), 2-married separately, 3-head of " +
-                "household) Enter the filing status: ");
+        System.out.print("(0-single filer, 1-married jointly or " + "qualifying widow(er), 2-married separately, 3-head of " + "household) Enter the filing status: ");
 
         int status = scanner.nextInt();
 
@@ -403,24 +393,14 @@ public class Chapter3 {
     }
 
     public static double calculateTax(double income, double m1, double m2, double m3, double m4, double m5) {
-        if (income <= m1)
-            return income * 0.10;
-        else if (income <= m2)
-            return m1 * 0.10 + (income - m1) * 0.15;
-        else if (income <= m3)
-            return m1 * 0.10 + (m2 - m1) * 0.15 +
-                    (income - m2) * 0.25;
-        else if (income <= m4)
-            return m1 * 0.10 + (m2 - m1) * 0.15 +
-                    (m3 - m2) * 0.25 + (income - m3) * 0.28;
+        if (income <= m1) return income * 0.10;
+        else if (income <= m2) return m1 * 0.10 + (income - m1) * 0.15;
+        else if (income <= m3) return m1 * 0.10 + (m2 - m1) * 0.15 + (income - m2) * 0.25;
+        else if (income <= m4) return m1 * 0.10 + (m2 - m1) * 0.15 + (m3 - m2) * 0.25 + (income - m3) * 0.28;
         else if (income <= m5)
-            return m1 * 0.10 + (m2 - m1) * 0.15 +
-                    (m3 - m2) * 0.25 + (m4 - m3) * 0.28 +
-                    (income - m4) * 0.33;
+            return m1 * 0.10 + (m2 - m1) * 0.15 + (m3 - m2) * 0.25 + (m4 - m3) * 0.28 + (income - m4) * 0.33;
         else
-            return m1 * 0.10 + (m2 - m1) * 0.15 +
-                    (m3 - m2) * 0.25 + (m4 - m3) * 0.28 +
-                    (m5 - m4) * 0.33 + (income - m5) * 0.35;
+            return m1 * 0.10 + (m2 - m1) * 0.15 + (m3 - m2) * 0.25 + (m4 - m3) * 0.28 + (m5 - m4) * 0.33 + (income - m5) * 0.35;
     }
 
     /*
@@ -471,68 +451,138 @@ public class Chapter3 {
         System.out.println("The lottery number is " + lottery);
         System.out.printf("Guess digits: %d %d %d\n", guessDigit1, guessDigit2, guessDigit3);
         System.out.printf("Lottery digits: %d %d %d\n", lotteryDigit1, lotteryDigit2, lotteryDigit3);
-        /*
-        123
-        132
-        213
-        312
-        231
-        321
-         */
 
         // Check the guess
-        if (guess == lottery)
-            System.out.println("Exact match: you win $10,000");
-        else if (
-                (guessDigit1 == lotteryDigit1 && guessDigit2 == lotteryDigit3 && guessDigit3 == lotteryDigit2) ||
-                        (guessDigit1 == lotteryDigit2 && guessDigit2 == lotteryDigit1 && guessDigit3 == lotteryDigit3) ||
-                        (guessDigit1 == lotteryDigit2 && guessDigit2 == lotteryDigit3 && guessDigit3 == lotteryDigit1) ||
-                        (guessDigit1 == lotteryDigit3 && guessDigit2 == lotteryDigit1 && guessDigit3 == lotteryDigit2) ||
-                        (guessDigit1 == lotteryDigit3 && guessDigit2 == lotteryDigit2 && guessDigit3 == lotteryDigit1)
-        )
+        if (guess == lottery) System.out.println("Exact match: you win $10,000");
+        else if ((guessDigit1 == lotteryDigit1 && guessDigit2 == lotteryDigit3 && guessDigit3 == lotteryDigit2) || (guessDigit1 == lotteryDigit2 && guessDigit2 == lotteryDigit1 && guessDigit3 == lotteryDigit3) || (guessDigit1 == lotteryDigit2 && guessDigit2 == lotteryDigit3 && guessDigit3 == lotteryDigit1) || (guessDigit1 == lotteryDigit3 && guessDigit2 == lotteryDigit1 && guessDigit3 == lotteryDigit2) || (guessDigit1 == lotteryDigit3 && guessDigit2 == lotteryDigit2 && guessDigit3 == lotteryDigit1))
             System.out.println("Match all digits: you win $3,000");
-        else if (guessDigit1 == lotteryDigit1
-                || guessDigit1 == lotteryDigit2
-                || guessDigit1 == lotteryDigit3
-                || guessDigit2 == lotteryDigit1
-                || guessDigit2 == lotteryDigit2
-                || guessDigit2 == lotteryDigit3
-                || guessDigit3 == lotteryDigit1
-                || guessDigit3 == lotteryDigit2
-                || guessDigit3 == lotteryDigit3)
+        else if (guessDigit1 == lotteryDigit1 || guessDigit1 == lotteryDigit2 || guessDigit1 == lotteryDigit3 || guessDigit2 == lotteryDigit1 || guessDigit2 == lotteryDigit2 || guessDigit2 == lotteryDigit3 || guessDigit3 == lotteryDigit1 || guessDigit3 == lotteryDigit2 || guessDigit3 == lotteryDigit3)
             System.out.println("Match one digit: you win $1,000");
-        else
-            System.out.println("Sorry, no match");
+        else System.out.println("Sorry, no match");
     }
 
     /*
-
+        (Random point) Write a program that displays a random coordinate in a rectan-
+        gle. The rectangle is centered at (0, 0) with width 100 and height 200.
      */
     public static void ch3_16() {
+        int x = (int) (Math.random() * 51);
+        if (Math.random() > 0.5) x *= -1;
+        int y = (int) (Math.random() * 101);
+        if (Math.random() > 0.5) y *= -1;
+        System.out.printf("(%d, %d)\n", x, y);
     }
 
     /*
-
+        (Game: scissor, rock, paper) Write a program that plays the popular scissor–
+        rock–paper game. (A scissor can cut a paper, a rock can knock a scissor, and
+        a paper can wrap a rock.) The program randomly generates a number 0, 1, or
+        2 representing scissor, rock, and paper. The program prompts the user to enter
+        a number 0, 1, or 2 and displays a message indicating whether the user or the
+        computer wins, loses, or draws. Here are sample runs:
+            scissor (0), rock (1), paper (2): 1
+            The computer is scissor. You are rock. You won
+            scissor (0), rock (1), paper (2): 2
+            The computer is paper. You are paper too. It is a draw
      */
     public static void ch3_17() {
+        int computer = (int) (Math.random() * 3);
+        System.out.print("scissor (0), rock (1), paper (2): ");
+        int player = scanner.nextInt();
+
+        System.out.printf("The computer is %s. You are %s. ", srpGameResolve(computer), srpGameResolve(player));
+        if (computer == player) {
+            System.out.print("It is a draw");
+        } else if (player == 0 && computer == 2 || player == 1 && computer == 0 || player == 2 && computer == 1) {
+            System.out.print("You won");
+        } else {
+            System.out.print("Computer won");
+        }
+    }
+
+    private static String srpGameResolve(int choice) {
+        return switch (choice) {
+            case 0 -> "scissor";
+            case 1 -> "rock";
+            case 2 -> "paper";
+            default -> "unknown";
+        };
     }
 
     /*
-
+        (Cost of shipping) A shipping company uses the following function to calculate
+        the cost (in dollars) of shipping based on the weight of the package (in pounds).
+            c(w) = d
+            3.5, if 0 < w <= 1
+            5.5, if 1 < w <= 3
+            8.5, if 3 < w <= 10
+            10.5, if 10 < w <= 20
+        Write a program that prompts the user to enter the weight of the package and
+        displays the shipping cost. If the weight is negative or zero, display a message
+        “Invalid input.” If the weight is greater than 20, display a message “The package
+        cannot be shipped.”
      */
     public static void ch3_18() {
+        System.out.print("Enter the weight of the package in pounds: ");
+        double weight = scanner.nextDouble();
+        if (weight <= 0) System.out.println("Invalid input.");
+        else if (weight > 20) {
+            System.out.println("The package cannot be shipped.");
+        } else {
+            double shippingCost = 0;
+            if (weight <= 1) shippingCost = 3.5;
+            else if (weight > 1 && weight <= 3) shippingCost = 5.5;
+            else if (weight > 3 && weight <= 10) shippingCost = 8.5;
+            else if (weight > 10) shippingCost = 10.5;
+
+            System.out.printf("Shipping cost is $%.2f.", shippingCost);
+        }
     }
 
     /*
-
+        (Compute the perimeter of a triangle) Write a program that reads three edges for
+        a triangle and computes the perimeter if the input is valid. Otherwise, display
+        that the input is invalid. The input is valid if the sum of every pair of two edges is
+        greater than the remaining edge.
      */
     public static void ch3_19() {
+        System.out.println("Enter three edges for a triangle: ");
+        double a = scanner.nextDouble();
+        double b = scanner.nextDouble();
+        double c = scanner.nextDouble();
+        if (a + b > c && a + c > b && b + c > a) {
+            System.out.printf("P: %.2f\n", a + b + c);
+        } else {
+            System.out.println("Invalid input");
+        }
     }
 
     /*
-
+        (Science: wind-chill temperature) Programming Exercise 2.17 gives a formula to
+        compute the wind-chill temperature. The formula is valid for temperatures in the
+        range between -58°F and 41°F and wind speed greater than or equal to 2. Write
+        a program that prompts the user to enter a temperature and a wind speed. The
+        program displays the wind-chill temperature if the input is valid; otherwise, it dis-
+        plays a message indicating whether the temperature and/or wind speed is invalid.
      */
     public static void ch3_20() {
+        System.out.print("Enter the temperature in Fahrenheit between -58°F and 41°F: ");
+        double ta = scanner.nextDouble();
+        System.out.print("Enter the wind speed (>= 2) in miles per hour: ");
+        double v = scanner.nextDouble();
+        boolean isCorrectInput = true;
+        if (ta < -58 || ta > 41) {
+            System.out.println("Invalid temperature!");
+            isCorrectInput = false;
+        }
+        if (v < 2) {
+            System.out.println("Invalid wind speed!");
+            isCorrectInput = false;
+        }
+        if (isCorrectInput) {
+            double twc = 35.74 + 0.6215 * ta - 35.75 * Math.pow(v, 0.16) + 0.4275 * ta * Math.pow(v, 0.16);
+            System.out.printf("The wind chill index is %.5f\n", twc);
+        }
     }
 
     /*
