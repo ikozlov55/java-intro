@@ -586,51 +586,275 @@ public class Chapter3 {
     }
 
     /*
-
+        (Science: day of the week) Zeller’s congruence is an algorithm developed by
+        Christian Zeller to calculate the day of the week. The formula is
+        h = (q + 26*(m + 1)/10 + k + k/4 + j/4 + 5*j) % 7
+        where
+        ■ h is the day of the week (0: Saturday, 1: Sunday, 2: Monday, 3: Tuesday, 4:
+        Wednesday, 5: Thursday, and 6: Friday).
+        ■ q is the day of the month.
+        ■ m is the month (3: March, 4: April, ..., 12: December). January and February
+        are counted as months 13 and 14 of the previous year.
+        ■ j is year/100 .
+        ■ k is the year of the century (i.e., year % 100).
+        Note all divisions in this exercise perform an integer division. Write a program
+        that prompts the user to enter a year, month, and day of the month, and displays
+        the name of the day of the week. Here are some sample runs:
+            Enter year: (e.g., 2012): 2015
+            Enter month: 1−12: 1
+            Enter the day of the month: 1−31: 25
+            Day of the week is Sunday
+            Enter year: (e.g., 2012): 2012
+            Enter month: 1−12: 5
+            Enter the day of the month: 1−31: 12
+            Day of the week is Saturday
+        (Hint: January and February are counted as 13 and 14 in the formula, so you need
+        to convert the user input 1 to 13 and 2 to 14 for the month and change the year to
+        the previous year. For example, if the user enters 1 for m and 2015 for year, m will
+        be 13 and year will be 2014 used in the formula.)
      */
     public static void ch3_21() {
+        System.out.print("Enter year: (e.g., 2012): ");
+        int year = scanner.nextInt();
+        System.out.print("Enter month: 1−12: ");
+        int m = scanner.nextInt();
+        System.out.print("Enter the day of the month: 1−31: ");
+        int q = scanner.nextInt();
+
+        if (m == 1 || m == 2) {
+            m += 12;
+            year--;
+        }
+        int k = year % 100;
+        int j = year / 100;
+        int h = (q + 26 * (m + 1) / 10 + k + k / 4 + j / 4 + 5 * j) % 7;
+        String weekday = switch (h) {
+            case 0 -> "Saturday";
+            case 1 -> "Sunday";
+            case 2 -> "Monday";
+            case 3 -> "Tuesday";
+            case 4 -> "Wednesday";
+            case 5 -> "Thursday";
+            case 6 -> "Friday";
+            default -> "Unknown";
+        };
+        System.out.println("Day of the week is " + weekday);
     }
 
     /*
-
+        (Geometry: point in a circle?) Write a program that prompts the user to enter a
+        point (x, y) and checks whether the point is within the circle centered at (0, 0)
+        with radius 10. For example, (4, 5) is inside the circle and (9, 9) is outside the
+        circle, as shown in Figure 3.7a.
+        (Hint: A point is in the circle if its distance to (0, 0) is less than or equal to 10.
+        The formula for computing the distance is sqrt((x2 - x1)^2 + (y2 - y1)^2). Test your
+        program to cover all cases.) Two sample runs are shown below:
+                Enter a point with two coordinates: 4 5
+                Point (4.0, 5.0) is in the circle
+                Enter a point with two coordinates: 9 9
+                Point (9.0, 9.0) is not in the circle
      */
     public static void ch3_22() {
+        final double radius = 10;
+        System.out.print("Enter a point with two coordinates: ");
+        double x = scanner.nextDouble();
+        double y = scanner.nextDouble();
+        double distanceToZero = Math.sqrt(x * x + y * y);
+        if (distanceToZero <= radius)
+            System.out.printf("Point (%.1f, %.1f) is in the circle\n", x, y);
+        else
+            System.out.printf("Point (%.1f, %.1f) is not the circle\n", x, y);
     }
 
     /*
-
+        (Geometry: point in a rectangle?) Write a program that prompts the user to enter
+        a point (x, y) and checks whether the point is within the rectangle centered at
+        (0, 0) with width 10 and height 5. For example, (2, 2) is inside the rectangle and
+        (6, 4) is outside the rectangle, as shown in Figure 3.7b. (Hint: A point is in the
+        rectangle if its horizontal distance to (0, 0) is less than or equal to 10 / 2 and its
+        vertical distance to (0, 0) is less than or equal to 5.0 / 2. Test your program to
+        cover all cases.) Here are two sample runs:
+            Enter a point with two coordinates: −4.9 2.49
+            Point (−4.9, 2.49) is in the rectangle
+            Enter a point with two coordinates: −5.1 −2.4
+            Point (−5.1, −2.4) is not in the rectangle
      */
     public static void ch3_23() {
+        final double width = 10;
+        final double height = 5;
+        System.out.print("Enter a point with two coordinates: ");
+        double x = scanner.nextDouble();
+        double y = scanner.nextDouble();
+        if (Math.abs(x) <= width / 2 && Math.abs(y) <= height / 2)
+            System.out.printf("Point (%.1f, %.1f) is in the rectangle\n", x, y);
+        else
+            System.out.printf("Point (%.1f, %.1f) is not the rectangle\n", x, y);
     }
 
     /*
-
+        Game: pick a card) Write a program that simulates picking a card from a deck
+        of 52 cards. Your program should display the rank (Ace, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+        Jack, Queen, King) and suit (Clubs, Diamonds, Hearts, Spades) of the card.
+        Here is a sample run of the program:
+        The card you picked is Jack of Hearts
      */
     public static void ch3_24() {
+        int rank = (int) (Math.random() * 13);
+        int suit = (int) (Math.random() * 4);
+
+        String rankString = switch (rank) {
+            case 0 -> "Ace";
+            case 1, 2, 3, 4, 5, 6, 7, 8, 9 -> Integer.toString(rank + 1);
+            case 10 -> "Jack";
+            case 11 -> "Queen";
+            case 12 -> "King";
+            default -> "Unknown";
+        };
+
+        String suitString = switch (suit) {
+            case 0 -> "Clubs";
+            case 1 -> "Diamonds";
+            case 2 -> "Hearts";
+            case 3 -> "Spades";
+            default -> "Unknown";
+        };
+
+        System.out.printf("The card you picked is %s of %s\n", rankString, suitString);
     }
 
     /*
-
+        (Geometry: intersecting point) Two points on line 1 are given as (x1, y1) and
+        (x2, y2) and on line 2 as (x3, y3) and (x4, y4), as shown in Figure 3.8a and b.
+        The intersecting point of the two lines can be found by solving the following
+        linear equations:
+        (y1 - y2)*x - (x1 - x2)*y = (y1 - y2)*x1 - (x1 - x2)*y1
+        (y3 - y4)*x - (x3 - x4)*y = (y3 - y4)*x3 - (x3 - x4)*y3
+        This linear equation can be solved using Cramer’s rule (see Programming
+        Exercise 3.3). If the equation has no solutions, the two lines are parallel (see
+        Figure 3.8c). Write a program that prompts the user to enter four points and dis-
+        plays the intersecting point. Here are sample runs:
+            Enter x1, y1, x2, y2, x3, y3, x4, y4: 2 2 5 −1.0 4.0 2.0 −1.0 −2.0
+            The intersecting point is at (2.88889, 1.1111)
+            Enter x1, y1, x2, y2, x3, y3, x4, y4: 2 2 7 6.0 4.0 2.0 −1.0 −2.0
+            The two lines are parallel
      */
     public static void ch3_25() {
+        System.out.print("Enter x1, y1, x2, y2, x3, y3, x4, y4: ");
+        double x1 = scanner.nextDouble();
+        double y1 = scanner.nextDouble();
+        double x2 = scanner.nextDouble();
+        double y2 = scanner.nextDouble();
+        double x3 = scanner.nextDouble();
+        double y3 = scanner.nextDouble();
+        double x4 = scanner.nextDouble();
+        double y4 = scanner.nextDouble();
+        double a = y1 - y2;
+        double b = x1 - x2;
+        double c = y3 - y4;
+        double d = x3 - x4;
+        double e = (y1 - y2) * x1 - (x1 - x2) * y1;
+        double f = (y3 - y4) * x3 - (x3 - x4) * y3;
+
+        if (a * d - b * c == 0) {
+            System.out.println("The two lines are parallel");
+        } else {
+            double x = (e * d - b * f) / (a * d - b * c);
+            double y = (a * f - e * c) / (a * d - b * c);
+            System.out.printf("The intersecting point is at (%.4f, %.4f)\n", x, y);
+        }
     }
 
     /*
-
+        (Use the &&, ||, and ^ operators) Write a program that prompts the user to
+        enter an integer and determines whether it is divisible by 5 and 6, whether it is
+        divisible by 5 or 6, and whether it is divisible by 5 or 6, but not both. Here is a
+        sample run of this program:
+            Enter an integer: 10
+            Is 10 divisible by 5 and 6? false
+            Is 10 divisible by 5 or 6? true
+            Is 10 divisible by 5 or 6, but not both? true
      */
     public static void ch3_26() {
+        System.out.print("Enter an integer: ");
+        int x = scanner.nextInt();
+        System.out.printf("Is %d divisible by 5 and 6? %b\n", x, x % 5 == 0 && x % 6 == 0);
+        System.out.printf("Is %d divisible by 5 or 6? %b \n", x, x % 5 == 0 || x % 6 == 0);
+        System.out.printf("Is %d divisible by 5 or 6, but not both? %b\n", x, x % 5 == 0 ^ x % 6 == 0);
     }
 
     /*
-
+        (Geometry: points in triangle?) Suppose a right triangle is placed in a plane as
+        shown below. The right-angle point is placed at (0, 0), and the other two points
+        are placed at (200, 0) and (0, 100). Write a program that prompts the user to enter
+        a point with x- and y-coordinates and determines whether the point is inside the
+        triangle. Here are the sample runs:
+            Enter a point’s x- and y-coordinates: 100.5 25.5
+            The point is in the triangle
+            Enter a point’s x- and y-coordinates: 100.5 50.5
+            The point is not in the triangle
      */
     public static void ch3_27() {
+        System.out.print("Enter a point’s x- and y-coordinates: ");
+        double x = scanner.nextDouble();
+        double y = scanner.nextDouble();
+        double A = area(0, 0, 0, 100, 200, 0);
+        double A1 = area(0, 0, 0, 100, x, y);
+        double A2 = area(0, 100, 200, 0, x, y);
+        double A3 = area(200, 0, 0, 0, x, y);
+        if (A1 + A2 + A3 == A) {
+            System.out.println("The point is in the triangle");
+        } else {
+            System.out.println("The point is not in the triangle");
+        }
+    }
+
+    private static double area(double x1, double y1, double x2, double y2, double x3, double y3) {
+        return Math.abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
     }
 
     /*
-
+        (Geometry: two rectangles) Write a program that prompts the user to enter the
+        center x-, y-coordinates, width, and height of two rectangles and determines
+        whether the second rectangle is inside the first or overlaps with the first, as
+        shown in Figure 3.9. Test your program to cover all cases.
+            Enter r1’s center x-, y-coordinates, width, and height: 2.5 4 2.5 43
+            Enter r2’s center x-, y-coordinates, width, and height: 1.5 5 0.5 3
+            r2 is inside r1
+            Enter r1’s center x-, y-coordinates, width, and height: 1 2 3 5.5
+            Enter r2’s center x-, y-coordinates, width, and height: 3 4 4.5 5
+            r2 overlaps r1
+            Enter r1’s center x-, y-coordinates, width, and height: 1 2 3 3
+            Enter r2’s center x-, y-coordinates, width, and height: 40 45 3 2
+            r2 does not overlap r1
      */
     public static void ch3_28() {
+        System.out.print("Enter r1’s center x-, y-coordinates, width, and height: ");
+        double x1 = scanner.nextDouble();
+        double y1 = scanner.nextDouble();
+        double w1 = scanner.nextDouble();
+        double h1 = scanner.nextDouble();
+        System.out.print("Enter r2’s center x-, y-coordinates, width, and height: ");
+        double x2 = scanner.nextDouble();
+        double y2 = scanner.nextDouble();
+        double w2 = scanner.nextDouble();
+        double h2 = scanner.nextDouble();
+
+        double x1max = x1 + w1 / 2;
+        double x1min = x1 - w1 / 2;
+        double y1max = y1 + h1 / 2;
+        double y1min = y1 - h1 / 2;
+        double x2max = x2 + w2 / 2;
+        double x2min = x2 - w2 / 2;
+        double y2max = y2 + h2 / 2;
+        double y2min = y2 - h2 / 2;
+
+        if (x1max >= x2max && x1min <= x2min && y1max >= y2max && y1min <= y2min) {
+            System.out.println("r2 is inside r1");
+        } else if (x2min > x1max || x2max < x1min || y2min > y1max || y2max < y1min) {
+            System.out.println("r2 does not overlap r1");
+        } else {
+            System.out.println("r2 overlaps r1");
+        }
     }
 
     /*
