@@ -280,8 +280,10 @@ public class Chapter3 {
     public static void ch3_9() {
         System.out.print("Enter the first 9 digits of an ISBN as integer: ");
         int digits = scanner.nextInt();
-        List<Integer> digitsList = Arrays.stream(String.format("%09d", digits).split("")).map(Integer::parseInt).toList();
-        int checksum = IntStream.range(0, digitsList.size()).reduce(0, (acc, next) -> acc + digitsList.get(next) * (next + 1)) % 11;
+        List<Integer> digitsList =
+                Arrays.stream(String.format("%09d", digits).split("")).map(Integer::parseInt).toList();
+        int checksum = IntStream.range(0, digitsList.size()).reduce(0,
+                (acc, next) -> acc + digitsList.get(next) * (next + 1)) % 11;
         System.out.printf("The ISBN-10 number is %09d%s", digits, checksum == 10 ? "X" : checksum);
     }
 
@@ -365,7 +367,8 @@ public class Chapter3 {
      */
     public static void ch3_13() {
         // Prompt the user to enter filing status
-        System.out.print("(0-single filer, 1-married jointly or " + "qualifying widow(er), 2-married separately, 3-head of " + "household) Enter the filing status: ");
+        System.out.print("(0-single filer, 1-married jointly or " + "qualifying widow(er), 2-married separately, " +
+                "3-head of " + "household) Enter the filing status: ");
 
         int status = scanner.nextInt();
 
@@ -660,10 +663,8 @@ public class Chapter3 {
         double x = scanner.nextDouble();
         double y = scanner.nextDouble();
         double distanceToZero = Math.sqrt(x * x + y * y);
-        if (distanceToZero <= radius)
-            System.out.printf("Point (%.1f, %.1f) is in the circle\n", x, y);
-        else
-            System.out.printf("Point (%.1f, %.1f) is not the circle\n", x, y);
+        if (distanceToZero <= radius) System.out.printf("Point (%.1f, %.1f) is in the circle\n", x, y);
+        else System.out.printf("Point (%.1f, %.1f) is not the circle\n", x, y);
     }
 
     /*
@@ -687,8 +688,7 @@ public class Chapter3 {
         double y = scanner.nextDouble();
         if (Math.abs(x) <= width / 2 && Math.abs(y) <= height / 2)
             System.out.printf("Point (%.1f, %.1f) is in the rectangle\n", x, y);
-        else
-            System.out.printf("Point (%.1f, %.1f) is not the rectangle\n", x, y);
+        else System.out.printf("Point (%.1f, %.1f) is not the rectangle\n", x, y);
     }
 
     /*
@@ -858,15 +858,69 @@ public class Chapter3 {
     }
 
     /*
+        (Geometry: two circles) Write a program that prompts the user to enter the center coordinates and radii of two
+        circles and determines whether the second circle is inside the first or overlaps with the first, as shown in
+        Figure 3.10. (Hint: cir- cle2 is inside circle1 if the distance between the two centers 6 = r1 − r2
+        and circle2 overlaps circle1 if the distance between the two centers 6 = r1 + r2.
+        Test your program to cover all cases.)
+        Here are the sample runs:
+            Enter circle1’s center x-, y-coordinates, and radius: 0.5 5.1 13
+            Enter circle2’s center x-, y-coordinates, and radius: 1 1.7 4.5
+            circle2 is inside circle1
 
+            Enter circle1’s center x-, y-coordinates, and radius: 3.4 5.7 5.5
+            Enter circle2’s center x-, y-coordinates, and radius: 6.7 3.5 3
+            circle2 overlaps circle1
+
+            Enter circle1’s center x-, y-coordinates, and radius: 3.4 5.5 1
+            Enter circle2’s center x-, y-coordinates, and radius: 5.5 7.2 1
+            circle2 does not overlap circle1
      */
     public static void ch3_29() {
+        System.out.print("Enter circle1’s center x-, y-coordinates, and radius: ");
+        double x1 = scanner.nextDouble();
+        double y1 = scanner.nextDouble();
+        double r1 = scanner.nextDouble();
+        System.out.print("Enter circle2’s center x-, y-coordinates, and radius: ");
+        double x2 = scanner.nextDouble();
+        double y2 = scanner.nextDouble();
+        double r2 = scanner.nextDouble();
+
+        double centersDistance = distance(x1, y1, x2, y2);
+        if (centersDistance <= r1 - r2) {
+            System.out.println("circle2 is inside circle1");
+        } else if (centersDistance <= r1 + r2) {
+            System.out.println("circle2 overlaps circle1");
+        } else {
+            System.out.println("circle2 does not overlap circle1");
+        }
+    }
+
+    private static double distance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     /*
-
+        (Current time) Revise Programming Exercise 2.8 to display the hour using a 12-hour clock.
+        Here is a sample run:
+            Enter the time zone offset to GMT: −5
+            The current time is 4:50:34 AM
      */
     public static void ch3_30() {
+        System.out.print("Enter the time zone offset to GMT: ");
+        int offset = scanner.nextInt();
+        long totalMilliseconds = System.currentTimeMillis();
+        long totalSeconds = totalMilliseconds / 1000;
+        long currentSecond = totalSeconds % 60;
+        long totalMinutes = totalSeconds / 60;
+        long currentMinute = totalMinutes % 60;
+        long totalHours = totalMinutes / 60 + offset;
+        long currentHour24 = totalHours % 24;
+        String currentPeriod = currentHour24 < 12 ? "AM" : "PM";
+        long currentHour12 = currentHour24 <= 12 ? currentHour24 : currentHour24 - 12;
+
+        System.out.printf("Current time is %02d:%02d:%02d %s\n", currentHour12, currentMinute, currentSecond,
+                currentPeriod);
     }
 
     /*
