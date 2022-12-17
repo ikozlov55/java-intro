@@ -858,11 +858,12 @@ public class Chapter3 {
     }
 
     /*
-        (Geometry: two circles) Write a program that prompts the user to enter the center coordinates and radii of two
-        circles and determines whether the second circle is inside the first or overlaps with the first, as shown in
-        Figure 3.10. (Hint: cir- cle2 is inside circle1 if the distance between the two centers 6 = r1 − r2
-        and circle2 overlaps circle1 if the distance between the two centers 6 = r1 + r2.
-        Test your program to cover all cases.)
+        (Geometry: two circles) Write a program that prompts the user to enter the center
+        coordinates and radii of two circles and determines whether the second circle
+        is inside the first or overlaps with the first, as shown in Figure 3.10. (Hint: cir-
+        cle2 is inside circle1 if the distance between the two centers 6 = r1 − r2
+        and circle2 overlaps circle1 if the distance between the two centers 6 =
+        r1 + r2. Test your program to cover all cases.)
         Here are the sample runs:
             Enter circle1’s center x-, y-coordinates, and radius: 0.5 5.1 13
             Enter circle2’s center x-, y-coordinates, and radius: 1 1.7 4.5
@@ -901,8 +902,8 @@ public class Chapter3 {
     }
 
     /*
-        (Current time) Revise Programming Exercise 2.8 to display the hour using a 12-hour clock.
-        Here is a sample run:
+        (Current time) Revise Programming Exercise 2.8 to display the hour using a
+        12-hour clock. Here is a sample run:
             Enter the time zone offset to GMT: −5
             The current time is 4:50:34 AM
      */
@@ -924,26 +925,136 @@ public class Chapter3 {
     }
 
     /*
+        (Financials: currency exchange) Write a program that prompts the user to enter
+        the exchange rate from currency in U.S. dollars to Chinese RMB. Prompt the
+        user to enter 0 to convert from U.S. dollars to Chinese RMB and 1 to convert
+        from Chinese RMB to U.S. dollars. Prompt the user to enter the amount in U.S.
+        dollars or Chinese RMB to convert it to Chinese RMB or U.S. dollars, respec-
+        tively. Here are the sample runs:
+            Enter the exchange rate from dollars to RMB: 6.81
+            Enter 0 to convert dollars to RMB and 1 vice versa: 0
+            Enter the dollar amount: 100
+            $100.0 is 681.0 yuan
 
+            Enter the exchange rate from dollars to RMB: 6.81
+            Enter 0 to convert dollars to RMB and 1 vice versa: 1
+            Enter the RMB amount: 10000
+            10000.0 yuan is $1468.43
+
+            Enter the exchange rate from dollars to RMB: 6.81
+            Enter 0 to convert dollars to RMB and 1 vice versa: 5
+            CIncorrect input
      */
     public static void ch3_31() {
+        System.out.print("Enter the exchange rate from dollars to RMB: ");
+        double exchangeRate = scanner.nextDouble();
+        System.out.print("Enter 0 to convert dollars to RMB and 1 vice versa: ");
+        switch (scanner.nextInt()) {
+            case 0 -> {
+                System.out.print("Enter the dollar amount: ");
+                double dollars = scanner.nextDouble();
+                System.out.printf("$%.2f is %.2f yuan\n", dollars, dollars * exchangeRate);
+            }
+            case 1 -> {
+                System.out.print("Enter the RMB amount: ");
+                double yuan = scanner.nextDouble();
+                System.out.printf("%.2f yuan is $%.2f\n", yuan, yuan / exchangeRate);
+            }
+            default -> System.out.println("CIncorrect input");
+        }
     }
 
     /*
-
+        (Geometry: point position) Given a directed line from point p0(x0, y0) to p1(x1,
+        y1), you can use the following condition to decide whether a point p2(x2, y2) is
+        on the left of the line, on the right, or on the same line (see Figure 3.11):
+        (x1 - x0)*(y2 - y0) - (x2 - x0)*(y1 - y0)
+        >0 p2 is on the left side of the line
+        =0 p2 is on the same line
+        <0 p2 is on the right side of the line
+        Write a program that prompts the user to enter the three points for p0, p1, and p2
+        and displays whether p2 is on the left of the line from p0 to p1, to the right, or on
+        the same line. Here are some sample runs:
+            Enter three points for p0, p1, and p2: 4.4 2 6.5 9.5 −5 4
+            p2 is on the left side of the line
+            Enter three points for p0, p1, and p2: 1 1 5 5 2 2
+            p2 is on the same line
+            Enter three points for p0, p1, and p2: 3.4 2 6.5 9.5 5 2.5
+            p2 is on the right side of the line
      */
     public static void ch3_32() {
+        System.out.print("Enter three points for p0, p1, and p2: ");
+        double x0 = scanner.nextDouble();
+        double y0 = scanner.nextDouble();
+        double x1 = scanner.nextDouble();
+        double y1 = scanner.nextDouble();
+        double x2 = scanner.nextDouble();
+        double y2 = scanner.nextDouble();
+        double d = (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0);
+        if (d > 0) {
+            System.out.println("p2 is on the left side of the line");
+        } else if (d == 0) {
+            System.out.println("p2 is on the same line");
+        } else {
+            System.out.println("p2 is on the right side of the line");
+        }
     }
 
     /*
+        (Financial: compare costs) Suppose you shop for rice in two different packages.
+        You would like to write a program to compare the cost. The program prompts the
+        user to enter the weight and price of each package and displays the one with the
+        better price. Here is a sample run:
+            Enter weight and price for package 1: 50 24.59
+            Enter weight and price for package 2: 25 11.99
+            Package 2 has a better price.
 
+            Enter weight and price for package 1: 50 25
+            Enter weight and price for package 2: 25 12.5
+            Two packages have the same price.
      */
     public static void ch3_33() {
+        System.out.print("Enter weight and price for package 1: ");
+        double weight1 = scanner.nextDouble();
+        double price1 = scanner.nextDouble();
+        System.out.print("Enter weight and price for package 2: ");
+        double weight2 = scanner.nextDouble();
+        double price2 = scanner.nextDouble();
+        if (price1 / weight1 < price2 / weight2) {
+            System.out.println("Package 1 has a better price.");
+        } else if (price1 / weight1 == price2 / weight2) {
+            System.out.println("Two packages have the same price.");
+        } else {
+            System.out.println("Package 2 has a better price.");
+        }
     }
 
     /*
-
+        (Geometry: point on line segment) Exercise 3.32 shows how to test whether a
+        point is on an unbounded line. Revise Exercise 3.32 to test whether a point is on
+        a line segment. Write a program that prompts the user to enter the three points for
+        p0, p1, and p2 and displays whether p2 is on the line segment from p0 to p1. Here
+        are some sample runs:
+            Enter three points for p0, p1, and p2: 1 1 2.5 2.5 1.5 1.5
+            (1.5, 1.5) is on the line segment from (1.0, 1.0) to (2.5, 2.5)
+            Enter three points for p0, p1, and p2: 1 1 2 2 3.5 3.5
+            (3.5, 3.5) is not on the line segment from (1.0, 1.0) to (2.0, 2.0)
      */
     public static void ch3_34() {
+        System.out.print("Enter three points for p0, p1, and p2: ");
+        double x0 = scanner.nextDouble();
+        double y0 = scanner.nextDouble();
+        double x1 = scanner.nextDouble();
+        double y1 = scanner.nextDouble();
+        double x2 = scanner.nextDouble();
+        double y2 = scanner.nextDouble();
+        double d = (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0);
+        System.out.printf("(%.1f, %.1f) ", x2, y2);
+        if (d == 0 && distance(x0, y0, x2, y2) < distance(x0, y0, x1, y1) && distance(x1, y1, x2, y2) < distance(x0, y0, x1, y1)) {
+            System.out.print("is on");
+        } else {
+            System.out.print("is not on");
+        }
+        System.out.printf(" the line segment from (%.1f, %.1f) to (%.1f, %.1f)", x0, y0, x1, y1);
     }
 }
