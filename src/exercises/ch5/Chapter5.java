@@ -169,99 +169,443 @@ public class Chapter5 {
     }
 
     /*
-
+        (Financial application: compute future tuition) Suppose the tuition for a univer-
+        sity is $10,000 this year and increases 5% every year. In one year, the tuition will
+        be $10,500. Write a program that displays the tuition in 10 years, and the total
+        cost of four years’ worth of tuition starting after the tenth year.
      */
     public static void ch5_7() {
+        final int INCREASE_RATE_PERCENT = 5;
+        double tuition = 10_000;
+        for (int i = 1; i <= 10; i++) {
+            tuition = tuition + tuition * (INCREASE_RATE_PERCENT / 100.0);
+        }
+        System.out.printf("Tuition cost in ten years will be: $%.2f\n", tuition);
+        double total = 0;
+        for (int i = 1; i <= 4; i++) {
+            tuition = tuition + tuition * (INCREASE_RATE_PERCENT / 100.0);
+            total += tuition;
+        }
+        System.out.printf("Total cost of four years after the tenth year: $%.2f", total);
     }
 
     /*
-
+        (Find the highest score) Write a program that prompts the user to enter the num-
+        ber of students and each student’s name and score, and finally displays the name
+        of the student with the highest score. Use the next() method in the Scanner
+        class to read a name, rather than using the nextLine() method. Assume that the
+        number of students is at least 1
      */
     public static void ch5_8() {
+        System.out.print("Enter the number of students: ");
+        int students = scanner.nextInt();
+        String bestStudent = "";
+        int bestScore = -1;
+        for (int i = 0; i < students; i++) {
+            System.out.print("Enter student’s name and score: ");
+            String name = scanner.next();
+            int score = scanner.nextInt();
+            if (score > bestScore) {
+                bestScore = score;
+                bestStudent = name;
+            }
+        }
+        System.out.printf("Student with the highest score is %s\n", bestStudent);
     }
 
     /*
-
+        (Find the two highest scores) Write a program that prompts the user to enter the
+        number of students and each student’s name and score, and finally displays the
+        student with the highest score and the student with the second-highest score. Use
+        the next() method in the Scanner class to read a name rather than using the
+        nextLine() method. Assume that the number of students is at least 2.
      */
     public static void ch5_9() {
+        System.out.print("Enter the number of students: ");
+        int students = scanner.nextInt();
+        String bestStudent = "";
+        String secondBestStudent = "";
+        int bestScore = -1;
+        int secondBestScore = -1;
+        for (int i = 0; i < students; i++) {
+            System.out.print("Enter student’s name and score: ");
+            String name = scanner.next();
+            int score = scanner.nextInt();
+            if (score > bestScore) {
+                bestScore = score;
+                bestStudent = name;
+            } else if (score > secondBestScore) {
+                secondBestScore = score;
+                secondBestStudent = name;
+            }
+        }
+        System.out.printf("Student with the highest score is %s\n", bestStudent);
+        System.out.printf("Student with the second best score is %s\n", secondBestStudent);
     }
 
     /*
-
+        (Find numbers divisible by 5 and 6) Write a program that displays all the num-
+        bers from 100 to 1,000 (10 per line) that are divisible by 5 and 6. Numbers are
+        separated by exactly one space.
      */
     public static void ch5_10() {
+        final int START = 100;
+        final int STOP = 1000;
+        final int NUMBERS_PER_LINE = 10;
+        int numbersOnTheLine = 0;
+        for (int i = START; i <= STOP; i++) {
+            if (i % 30 != 0) continue;
+            System.out.printf("%d ", i);
+            numbersOnTheLine++;
+            if (numbersOnTheLine == NUMBERS_PER_LINE) {
+                numbersOnTheLine = 0;
+                System.out.println();
+            }
+        }
     }
 
     /*
-
+        (Find numbers divisible by 5 or 6, but not both) Write a program that displays
+        all the numbers from 100 to 200 (10 per line) that are divisible by 5 or 6, but not
+        both. Numbers are separated by exactly one space.
      */
     public static void ch5_11() {
+        final int START = 100;
+        final int STOP = 200;
+        final int NUMBERS_PER_LINE = 10;
+        int numbersOnTheLine = 0;
+        for (int i = START; i <= STOP; i++) {
+            if ((i % 5 == 0 || i % 6 == 0) && i % 30 != 0) {
+                System.out.printf("%d ", i);
+                numbersOnTheLine++;
+                if (numbersOnTheLine == NUMBERS_PER_LINE) {
+                    numbersOnTheLine = 0;
+                    System.out.println();
+                }
+            }
+        }
     }
 
     /*
-
+        (Find the smallest n such that n2 > 12,000) Use a while loop to find the small-
+        est integer n such that n2 is greater than 12,000.
      */
     public static void ch5_12() {
+        final int MAX = 12_000;
+        int n = 0;
+        while (Math.pow(n, 2) < MAX) {
+            n++;
+        }
+        System.out.printf("%d^2 = %.0f", n, Math.pow(n, 2));
     }
 
     /*
-
+        (Find the largest n such that n3 < 12,000) Use a while loop to find the largest
+        integer n such that n3 is less than 12,000.
      */
     public static void ch5_13() {
+        final int MAX = 12_000;
+        int n = 0;
+        while (Math.pow(n, 3) < MAX) {
+            n++;
+        }
+        n--;
+        System.out.printf("%d^3 = %.0f", n, Math.pow(n, 3));
     }
 
     /*
-
+        (Compute the greatest common divisor) Another solution for Listing 5.9 to find
+        the greatest common divisor of two integers n1 and n2 is as follows: First find d
+        to be the minimum of n1 and n2, then check whether d, d–1, d–2, …, 2, or 1 is
+        a divisor for both n1 and n2 in this order. The first such common divisor is the
+        greatest common divisor for n1 and n2. Write a program that prompts the user to
+        enter two positive integers and displays the gcd.
      */
     public static void ch5_14() {
+        System.out.print("Enter two positive integers: ");
+        int n1 = scanner.nextInt();
+        int n2 = scanner.nextInt();
+        int d = Math.min(n1, n2);
+
+        while (d > 0) {
+            if (n1 % d == 0 && n2 % d == 0) break;
+            d--;
+        }
+        System.out.printf("Greatest common divisor of %d and %d is %d\n", n1, n2, d);
     }
 
     /*
-
+        (Display the ASCII character table) Write a program that prints the characters in
+        the ASCII character table from ! to ~. Display 10 characters per line. The ASCII
+        table is given in Appendix B. Characters are separated by exactly one space.
      */
     public static void ch5_15() {
+        final char START = '!';
+        final char STOP = '~';
+        final int NUMBERS_PER_LINE = 10;
+        int counter = 0;
+        for (char i = START; i <= STOP; i++) {
+            System.out.printf("%c ", i);
+            counter++;
+            if (counter == NUMBERS_PER_LINE) {
+                counter = 0;
+                System.out.println();
+            }
+        }
     }
 
     /*
-
+        (Find the factors of an integer) Write a program that reads an integer and dis-
+        plays all its smallest factors in an increasing order. For example, if the input
+        integer is 120, the output should be as follows: 2, 2, 2, 3, 5.
      */
     public static void ch5_16() {
+        System.out.print("Enter an integer: ");
+        int n = scanner.nextInt();
+        while (n > 1) {
+            for (int i = 2; i <= n; i++) {
+                if (n % i == 0) {
+                    System.out.printf("%d ", i);
+                    n /= i;
+                    break;
+                }
+            }
+        }
     }
 
     /*
-
+        (Display pyramid) Write a program that prompts the user to enter an integer from
+        1 to 15 and displays a pyramid, as presented in the following sample run:
+        Enter the number of lines: 7
+                    1
+                  2 1 2
+                3 2 1 2 3
+              4 3 2 1 2 3 4
+            5 4 3 2 1 2 3 4 5
+          6 5 4 3 2 1 2 3 4 5 6
+        7 6 5 4 3 2 1 2 3 4 5 6 7
      */
     public static void ch5_17() {
+        System.out.print("Enter the number of lines: ");
+        int n = scanner.nextInt();
+        if (n < 1 || n > 15) {
+            System.out.println("Invalid input: enter an integer from 1 to 15");
+            return;
+        }
+        for (int i = 1; i <= n; i++) {
+            int j = n;
+            while (j > 0) {
+                System.out.print(j > i ? "    " : String.format("%4d", j));
+                j--;
+            }
+            j += 2;
+            while (j <= n) {
+                System.out.print(j > i ? "    " : String.format("%4d", j));
+                j++;
+            }
+            System.out.println();
+        }
     }
 
     /*
-
+        (Display four patterns using loops) Use nested loops that display the following
+        patterns in four separate programs:
+        Pattern A       Pattern B       Pattern C       Pattern D
+        1               1 2 3 4 5 6             1       1 2 3 4 5 6
+        1 2             1 2 3 4 5             2 1         1 2 3 4 5
+        1 2 3           1 2 3 4             3 2 1           1 2 3 4
+        1 2 3 4         1 2 3             4 3 2 1             1 2 3
+        1 2 3 4 5       1 2             5 4 3 2 1               1 2
+        1 2 3 4 5 6     1             6 5 4 3 2 1                 1
      */
     public static void ch5_18() {
+        final int MIN = 1;
+        final int MAX = 6;
+
+        System.out.println("Pattern A");
+        for (int i = MIN; i <= MAX; i++) {
+            for (int j = MIN; j <= MAX; j++) {
+                System.out.print(j > i ? "  " : j + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+        System.out.println("Pattern B");
+        for (int i = MAX; i >= MIN; i--) {
+            for (int j = MIN; j <= MAX; j++) {
+                System.out.print(j > i ? "  " : j + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+        System.out.println("Pattern C");
+        for (int i = MIN; i <= MAX; i++) {
+            for (int j = MAX; j >= MIN; j--) {
+                System.out.print(j > i ? "  " : j + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+        System.out.println("Pattern B");
+        for (int i = MAX; i >= MIN; i--) {
+            for (int k = i; k < MAX; k++) {
+                System.out.print("  ");
+            }
+            for (int j = MIN; j <= MAX; j++) {
+                if (j <= i) {
+                    System.out.print(j + " ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     /*
-
+        (Display numbers in a pyramid pattern) Write a nested for loop that prints the
+        following output:
+                                    1
+                                1   2   1
+                            1   2   4   2   1
+                        1   2   4   8   4   2   1
+                    1   2   4   8  16   8   2   1
+                1   2   4   8  16  32  16   8   4   2   1
+            1   2   4   8  16  32  64  32  16   8   4   2   1
+        1   2   4   8  16  32  64 128  64  32  16   8   4   2   1
      */
     public static void ch5_19() {
+        final int LINES = 8;
+        for (int i = 0; i < LINES; i++) {
+            int current = 1;
+            for (int j = 1; j < LINES * 2; j++) {
+                if (j < LINES - i || j > LINES + i) {
+                    System.out.print("\t");
+                } else {
+                    System.out.printf("%4d", current);
+                    current = j < LINES ? current * 2 : current / 2;
+                }
+            }
+            System.out.println();
+        }
     }
 
     /*
-
+        (Display prime numbers between 2 and 1,000) Modify the program given in Listing
+        5.15 to display all the prime numbers between 2 and 1,000, inclusive. Display eight
+        prime numbers per line. Numbers are separated by exactly one space.
      */
     public static void ch5_20() {
+        final int START = 2;
+        final int END = 1000;
+        final int NUMBER_OF_PRIMES_PER_LINE = 8;
+        int number = START;
+        int count = 0;
+        System.out.printf("Prime numbers between %d and %d\n\n", START, END);
+
+        while (number <= END) {
+            boolean isPrime = true;
+            for (int divisor = 2; divisor <= number / 2; divisor++) {
+                if (number % divisor == 0) {
+                    isPrime = false;
+                    break;
+                }
+            }
+            if (isPrime) {
+                count++;
+                System.out.printf("%-4d", number);
+                System.out.print(count % NUMBER_OF_PRIMES_PER_LINE == 0 ? "\n" : " ");
+            }
+            number++;
+        }
     }
 
     /*
-
+        (Financial application: compare loans with various interest rates) Write a pro-
+        gram that lets the user enter the loan amount and loan period in number of years,
+        and displays the monthly and total payments for each interest rate starting from
+        5% to 8%, with an increment of 1/8. Here is a sample run:
+            Loan Amount: 10000
+            Number of Years: 5
+            Interest Rate   Monthly Payment     Total Payment
+            5.000%          188.71              11322.74
+            5.125%          189.29              11357.13
+            5.250%          189.86              11391.59
+            ...
+            7.875%          202.17              12129.97
+            8.000%          202.76              12165.84
      */
     public static void ch5_21() {
+        final double INCREMENT = 0.125;
+        final double INTEREST_MIN = 5;
+        final double INTEREST_MAX = 8;
+        System.out.print("Loan Amount: ");
+        double amount = scanner.nextDouble();
+        System.out.print("Number of Years: ");
+        int years = scanner.nextInt();
+
+        System.out.println("Interest Rate    Monthly Payment    Total Payment");
+        for (double interest = INTEREST_MIN; interest <= INTEREST_MAX; interest += INCREMENT) {
+            double months = years * 12;
+            double r = interest / 100 / 12;
+            double n = years * 12;
+            double monthlyPayment = amount * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            double totalPayment = monthlyPayment * months;
+
+            System.out.printf("%.3f%%    %13.2f    %17.2f\n", interest, monthlyPayment, totalPayment);
+        }
     }
 
-    /*
 
+    /*
+        (Financial application: loan amortization schedule) The monthly payment for a given
+        loan pays the principal and the interest. The monthly interest is computed by multiply-
+        ing the monthly interest rate and the balance (the remaining principal). The principal
+        paid for the month is therefore the monthly payment minus the monthly interest. Write
+        a program that lets the user enter the loan amount, number of years, and interest rate
+        then displays the amortization schedule for the loan. Here is a sample run:
+            Loan Amount: 10000
+            Number of Years: 1
+            Annual Interest Rate: 7
+
+            Monthly Payment: 865.26
+            Total Payment: 10383.21
+
+            Payment#       Interest      Principal     Balance
+            1                 58.33         806.93      9193.07
+            2                 53.62         811.64      8381.43
+            ...
+            11                10.00         855.26       860.27
+            12                 5.01         860.25         0.01
      */
     public static void ch5_22() {
+        System.out.print("Loan Amount: ");
+        double amount = scanner.nextDouble();
+        System.out.print("Number of Years: ");
+        int years = scanner.nextInt();
+        System.out.print("Annual Interest Rate: ");
+        double annualInterest = scanner.nextDouble();
+        System.out.println();
+
+        double months = years * 12;
+        double r = annualInterest / 100 / 12;
+        double n = years * 12;
+        double monthlyPayment = amount * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+        double totalPayment = monthlyPayment * months;
+
+        System.out.printf("Monthly Payment: %.2f\n", monthlyPayment);
+        System.out.printf("Total Payment: %.2f\n\n", totalPayment);
+
+        System.out.printf("%-15s%8s%15s%15s\n", "Payment#", "Interest", "Principal", "Balance");
+        double balance = amount;
+        for (int i = 1; i <= years * 12; i++) {
+            double interest = r * balance;
+            double principal = monthlyPayment - interest;
+            balance -= principal;
+            System.out.printf("%-15d%8.2f%15.2f%15.2f\n", i, interest, principal, balance);
+        }
     }
 
     /*
