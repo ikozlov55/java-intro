@@ -1,5 +1,7 @@
 package exercises.ch5;
 
+import exercises.utils.Calendar;
+
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -609,69 +611,311 @@ public class Chapter5 {
     }
 
     /*
-
+        (Demonstrate cancellation errors) A cancellation error occurs when you are
+        manipulating a very large number with a very small number. The large number
+        may cancel out the smaller number. For example, the result of 100000000.0
+        + 0.000000001 is equal to 100000000.0. To avoid cancellation errors and
+        obtain more accurate results, carefully select the order of computation. For ex-
+        ample, in computing the following summation, you will obtain more accurate
+        results by computing from right to left rather than from left to right:
+        1 + 1/2 + 1/3 + ... + 1/n
+        Write a program that compares the results of the summation of the preceding
+        series, computing from left to right and from right to left with n = 50000.
      */
     public static void ch5_23() {
+        final int N = 50000;
+        double rightToLeft = 0;
+        double leftToRight = 0;
+        for (int i = 1; i <= N; i++) {
+            rightToLeft += 1.0 / i;
+        }
+        for (int i = N; i > 0; i--) {
+            leftToRight += 1.0 / i;
+        }
+        System.out.printf("Right to left: %.20f\n", rightToLeft);
+        System.out.printf("Left to right: %.20f\n", leftToRight);
     }
 
     /*
-
+        (Sum a series) Write a program to compute the following summation:
+        1/3 + 3/5 + 5/7 + 7/9 + 9/11 + 11/13 + ... + 95/97 + 97/99
      */
     public static void ch5_24() {
+        double sum = 0;
+        for (int i = 1, j = 3; i <= 97; i += 2, j += 2) {
+            sum += (double) i / j;
+        }
+        System.out.println(sum);
     }
 
     /*
-
+        (Compute p) You can approximate p by using the following summation:
+        p = 4*(1 - 1/3 + 1/5 - 1/7 + 1/9 - 1/11 + ... + (-1)^i/(2*i - 1)
+        Write a program that displays the p value for i = 10000, 20000, …, and 100000.
      */
     public static void ch5_25() {
+        System.out.printf("computePi(%d) = %.10f\n", 10000, computePi(10000));
+        System.out.printf("computePi(%d) = %.10f\n", 20000, computePi(20000));
+        System.out.printf("computePi(%d) = %.10f\n", 100000, computePi(100000));
+    }
+
+    private static double computePi(int n) {
+        double pi = 0;
+        for (int i = 1; i <= n; i++) {
+            pi += Math.pow(-1, i) / (2 * i - 1);
+        }
+        return Math.abs(pi * 4);
     }
 
     /*
-
+        (Compute e) You can approximate e using the following summation:
+        e = 1 + 1/1! + 1/2! + 1/3! + 1/4! + ... + 1/i!
+        Write a program that displays the e value for i = 1, 2, …, and 20. Format
+        the number to display 16 digits after the decimal point. (Hint: Because
+        i! = i * (i - 1) * ... * 2 * 1, then
+        1/i! is 1/i(i - 1)!
+        Initialize e and item to be 1, and keep adding a new item to e. The new item is
+        the previous item divided by i, for i >= 2.)
      */
     public static void ch5_26() {
+        for (int i = 1; i <= 20; i++) {
+            System.out.printf("computeEulers(%d) = %.20f\n", i, computeEulers(i));
+        }
+    }
+
+    private static double computeEulers(int n) {
+        double e = 1;
+        double item = 1;
+        for (int i = 2; i <= n; i++) {
+            e += item;
+            item /= i;
+        }
+        return e;
     }
 
     /*
-
+        (Display leap years) Write a program that displays all the leap years, 10 per line,
+        from 101 to 2100, separated by exactly one space. Also display the number of
+        leap years in this period.
      */
     public static void ch5_27() {
+        final int START = 101;
+        final int END = 2100;
+        final int NUMBERS_PER_LINE = 10;
+
+        int perLineCounter = 0;
+        int totalCounter = 0;
+        for (int i = START; i <= END; i++) {
+            if (!Calendar.isLeapYear(i)) continue;
+            perLineCounter++;
+            totalCounter++;
+            System.out.printf(perLineCounter % NUMBERS_PER_LINE == 0 ? "%d\n" : "%d ", i);
+        }
+        System.out.printf("\n\nTotal number of leap years between %d and %d is %d\n", START, END, totalCounter);
     }
 
     /*
-
+        (Display the first days of each month) Write a program that prompts the user to
+        enter the year and first day of the year, then displays the first day of each month
+        in the year. For example, if the user entered the year 2013, and 2 for Tuesday,
+        January 1, 2013, your program should display the following output:
+            January 1, 2013 is Tuesday
+            ...
+            December 1, 2013 is Sunday
      */
     public static void ch5_28() {
+        System.out.print("Enter a year: ");
+        int year = scanner.nextInt();
+        System.out.print("Enter a first day of this year: ");
+        int firstDay = scanner.nextInt();
+        for (int i = 1; i <= 12; i++) {
+            int day = firstDay;
+            for (int j = 1; j < i; j++) {
+                day += Calendar.getNumberOfDays(j, year);
+            }
+            System.out.printf("%s 1, %d is %s\n", Calendar.getMonthName(i), year, Calendar.getWeekdayOf(day % 7));
+        }
     }
 
-    /*
 
+    /*
+        (Display calendars) Write a program that prompts the user to enter the year and
+        first day of the year and displays the calendar table for the year on the console. For
+        example, if the user entered the year 2013, and 2 for Tuesday, January 1, 2013,
+        your program should display the calendar for each month in the year, as follows:
+                   January 2013
+            Sun Mon Tue Wed Thu Fri Sat
+                      1   2   3   4   5
+              6   7   8   9  10  11  12
+             13  14  15  16  17  18  19
+             20  21  22  23  24  25  26
+             27  28  29  30  31
+            . . .
+                  December 2013
+            Sun Mon Tue Wed Thu Fri Sat
+              1   2   3   4   5   6   7
+              8   9  10  11  12  13  14
+             15  16  17  18  19  20  21
+             22  23  24  25  26  27  28
+             29  30  31
      */
     public static void ch5_29() {
+        System.out.print("Enter a year: ");
+        int year = scanner.nextInt();
+        System.out.print("Enter a first day of this year: ");
+        int weekDay = scanner.nextInt();
+        System.out.println();
+        for (int month = 1; month <= 12; month++) {
+            System.out.printf("%14s %d\n", Calendar.getMonthName(month), year);
+            System.out.println("─".repeat(28));
+            System.out.printf("%4s%4s%4s%4s%4s%4s%4s\n", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+            int day = 1;
+            int lastDay = Calendar.getNumberOfDays(month, year);
+            for (int i = 0; i < 42; i++) {
+                int weekdaySpace = i % 7;
+                if (weekdaySpace < weekDay || day > lastDay) {
+                    System.out.print(weekdaySpace == 6 ? "\t\n" : "\t");
+                    continue;
+                }
+                System.out.printf(weekDay == 6 ? "%3d\n" : "%3d ", day);
+                day++;
+                weekDay = (weekDay + 1) % 7;
+            }
+        }
     }
 
     /*
-
+        (Financial application: compound value) Suppose you save $100 each month
+        into a savings account with the annual interest rate 5%. Thus, the monthly in-
+        terest rate is 0.05 / 12 = 0.00417. After the first month, the value in the
+        account becomes
+        100 * (1 + 0.00417) = 100.417
+        After the second month, the value in the account becomes
+        (100 + 100.417) * (1 + 0.00417) = 201.252
+        After the third month, the value in the account becomes
+        (100 + 201.252) * (1 + 0.00417) = 302.507
+        and so on.
+        Write a program that prompts the user to enter an amount (e.g., 100), the an-
+        nual interest rate (e.g., 5), and the number of months (e.g., 6) then displays the
+        amount in the savings account after the given month
      */
     public static void ch5_30() {
+        System.out.print("Enter deposit amount: ");
+        double monthlyDeposit = scanner.nextDouble();
+        System.out.print("Annual interest rate: ");
+        double annualInterest = scanner.nextDouble();
+        System.out.print("Number of months: ");
+        int months = scanner.nextInt();
+        System.out.println();
+
+        double monthlyInterestRate = annualInterest / 100 / 12;
+        double deposit = 0;
+        for (int i = 0; i < months; i++) {
+            deposit = (monthlyDeposit + deposit) * (1 + monthlyInterestRate);
+        }
+        System.out.printf("Deposit after %d months will be: $%.2f\n", months, deposit);
     }
 
     /*
-
+        (Financial application: compute CD value) Suppose you put $10,000 into a CD
+        with an annual percentage yield of 5.75%. After one month, the CD is worth
+        10000 + 10000 * 5.75 / 1200 = 10047.92
+        After two months, the CD is worth
+        10047.91 + 10047.91 * 5.75 / 1200 = 10096.06
+        After three months, the CD is worth
+        10096.06 + 10096.06 * 5.75 / 1200 = 10144.44
+        and so on.
+        Write a program that prompts the user to enter an amount (e.g., 10000), the
+        annual percentage yield (e.g., 5.75), and the number of months (e.g., 18) and
+        displays a table as presented in the sample run.
+            Enter the initial deposit amount: 10000
+            Enter annual percentage yield: 5.75
+            Enter maturity period (number of months): 18
+            Month     CD Value
+            1         10047.92
+            2         10096.06
+            ...
+            17        10846.57
+            18        10898.54
      */
     public static void ch5_31() {
+        System.out.print("Enter the initial deposit amount: ");
+        double deposit = scanner.nextDouble();
+        System.out.print("Enter annual percentage yield: ");
+        double annualInterest = scanner.nextDouble();
+        System.out.print("Enter maturity period (number of months): ");
+        int months = scanner.nextInt();
+        double monthlyInterestRate = annualInterest / 100 / 12;
+        System.out.printf("%-10s %10s\n", "Month", "CD Value");
+        for (int month = 1; month <= months; month++) {
+            deposit = deposit + deposit * monthlyInterestRate;
+            System.out.printf("%-10d %10.2f\n", month, deposit);
+        }
     }
 
     /*
-
+        (Game: lottery) Revise Listing 3.8, Lottery.java, to generate a lottery of a two-
+        digit number. The two digits in the number are distinct. (Hint: Generate the first
+        digit. Use a loop to continuously generate the second digit until it is different
+        from the first digit.)
      */
     public static void ch5_32() {
+        // Generate a lottery number
+        int lotteryDigit1 = (int) (Math.random() * 10);
+        int lotteryDigit2 = lotteryDigit1;
+        while (lotteryDigit2 == lotteryDigit1) {
+            lotteryDigit2 = (int) (Math.random() * 10);
+        }
+        int lottery = lotteryDigit1 * 10 + lotteryDigit2;
+
+        // Prompt the user to enter a guess
+        System.out.print("Enter your lottery pick (two digits): ");
+        int guess = scanner.nextInt();
+
+        // Get digits from guess
+        int guessDigit1 = guess / 10;
+        int guessDigit2 = guess % 10;
+
+        System.out.println("The lottery number is " + lottery);
+
+        // Check the guess
+        if (guess == lottery)
+            System.out.println("Exact match: you win $10,000");
+        else if (guessDigit2 == lotteryDigit1
+                && guessDigit1 == lotteryDigit2)
+            System.out.println("Match all digits: you win $3,000");
+        else if (guessDigit1 == lotteryDigit1
+                || guessDigit1 == lotteryDigit2
+                || guessDigit2 == lotteryDigit1
+                || guessDigit2 == lotteryDigit2)
+
+            System.out.println("Match one digit: you win $1,000");
+        else
+            System.out.println("Sorry, no match");
     }
 
     /*
-
+        (Perfect number) A positive integer is called a perfect number if it is equal to the sum
+        of all of its positive divisors, excluding itself. For example, 6 is the first perfect num-
+        ber because 6 = 3 + 2 + 1. The next is 28 = 14 + 7 + 4 + 2 + 1. There are
+        four perfect numbers < 10,000. Write a program to find all these four numbers.
      */
     public static void ch5_33() {
+        final int MAX = 10_000;
+        System.out.printf("Perfect numbers < %d are: \n", MAX);
+        for (int i = 1; i <= MAX; i++) {
+            if (isPerfect(i)) {
+                System.out.println(i);
+            }
+        }
+    }
+
+    private static boolean isPerfect(int n) {
+        int divisorsSum = 0;
+        for (int i = 1; i < n; i++) {
+            if (n % i == 0) divisorsSum += i;
+        }
+        return divisorsSum == n;
     }
 
     /*
