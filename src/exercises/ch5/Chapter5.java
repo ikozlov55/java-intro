@@ -919,27 +919,103 @@ public class Chapter5 {
     }
 
     /*
-
+        (Game: scissor, rock, paper) Programming Exercise 3.17 gives a program that
+        plays the scissor–rock–paper game. Revise the program to let the user continu-
+        ously play until either the user or the computer wins more than two times than its
+        opponent.
      */
     public static void ch5_34() {
+        final int WIN_COUNT = 2;
+        int computerWins = 0;
+        int playerWins = 0;
+        int gamesCount = 1;
+        while (Math.abs(playerWins - computerWins) <= WIN_COUNT) {
+            System.out.printf("Game %d Player: %d Computer: %d\n", gamesCount, playerWins, computerWins);
+            int computer = (int) (Math.random() * 3);
+            System.out.print("scissor (0), rock (1), paper (2): ");
+            int player = scanner.nextInt();
+
+            System.out.printf("The computer is %s. You are %s. ", srpGameResolve(computer), srpGameResolve(player));
+            if (computer == player) {
+                System.out.print("It is a draw");
+            } else if (player == 0 && computer == 2 || player == 1 && computer == 0 || player == 2 && computer == 1) {
+                System.out.print("You won");
+                playerWins++;
+            } else {
+                System.out.print("Computer won");
+                computerWins++;
+            }
+            gamesCount++;
+            System.out.print("\n\n");
+        }
+    }
+
+    private static String srpGameResolve(int choice) {
+        return switch (choice) {
+            case 0 -> "scissor";
+            case 1 -> "rock";
+            case 2 -> "paper";
+            default -> "unknown";
+        };
     }
 
     /*
-
+        (Summation) Write a program to compute the following summation:
+        1/(1 + sqrt(2)) + 1/(sqrt(2) + sqrt(3)) + 1/(sqrt(3) + sqrt(4)) + ... +  + 1/(sqrt(624) + sqrt(625))
      */
     public static void ch5_35() {
+        final int START = 2;
+        final int END = 625;
+        double sum = 0;
+        for (int i = START; i <= END; i++) {
+            sum += 1 / (Math.sqrt(i - 1) + Math.sqrt(i));
+        }
+        System.out.println(sum);
     }
 
     /*
+        (Business application: checking ISBN) Use loops to simplify Programming
+        Exercise 3.9.
 
+        (Business: check ISBN-10) An ISBN-10 (International Standard Book Number)
+        consists of 10 digits: d1 d2 d3 d4 d5 d6 d7 d8 d9 d10. The last digit, d10, is a checksum,
+        which is calculated from the other 9 digits using the following formula:
+        (d1 * 1 + d2 * 2 + d3 * 3 + d4 * 4 + d5 * 5 +
+        d6 * 6 + d7 * 7 + d8 * 8 + d9 * 9)%11
+        If the checksum is 10, the last digit is denoted as X according to the ISBN-10
+        convention. Write a program that prompts the user to enter the first 9 digits and
+        displays the 10-digit ISBN (including leading zeros). Your program should read
+        the input as an integer. Here are sample runs:
+            Enter the first 9 digits of an ISBN as integer: 013601267
+            The ISBN-10 number is 0136012671
+            Enter the first 9 digits of an ISBN as integer: 013031997
+            The ISBN-10 number is 013031997X
      */
     public static void ch5_36() {
+        System.out.print("Enter the first 9 digits of an ISBN as integer: ");
+        String digits = scanner.nextLine().strip();
+        int checksum = 0;
+        for (int i = 0; i < digits.length(); i++) {
+            checksum += Integer.parseInt(digits.substring(i, i + 1)) * (i + 1);
+        }
+        checksum %= 11;
+        System.out.printf("The ISBN-10 number is %s%s", digits, checksum == 10 ? "X" : checksum);
     }
 
     /*
-
+        (Decimal to binary) Write a program that prompts the user to enter a decimal
+        integer then displays its corresponding binary value. Don’t use Java’s Integer.
+        toBinaryString(int) in this program.
      */
     public static void ch5_37() {
+        System.out.print("Enter an integer value: ");
+        int number = scanner.nextInt();
+        String binary = number == 0 ? "0" : "";
+        while (number > 0) {
+            binary = number % 2 + binary;
+            number /= 2;
+        }
+        System.out.println(binary);
     }
 
     /*
