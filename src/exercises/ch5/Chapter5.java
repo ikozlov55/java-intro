@@ -1019,27 +1019,103 @@ public class Chapter5 {
     }
 
     /*
-
+        (Decimal to octal) Write a program that prompts the user to enter a decimal
+        integer and displays its corresponding octal value. Don’t use Java’s Integer.
+        toOctalString(int) in this program.
      */
     public static void ch5_38() {
+        System.out.print("Enter an integer value: ");
+        int number = scanner.nextInt();
+        String octal = number == 0 ? "0" : "";
+        while (number > 0) {
+            octal = number % 8 + octal;
+            number /= 8;
+        }
+        System.out.println(octal);
     }
 
     /*
-
+        (Financial application: find the sales amount) You have just started a sales job
+        in a department store. Your pay consists of a base salary and a commission. The
+        base salary is $5,000. The scheme shown below is used to determine the commis-
+        sion rate.
+        Sales Amount            Commission Rate
+        $0.01–$5,000                    8%
+        $5,000.01–$10,000               10%
+        $10,000.01 and above            12%
+        Note this is a graduated rate. The rate for the first $5,000 is at 8%, the next
+        $5,000 is at 10%, and the rest is at 12%. If the sales amount is 25,000, the com-
+        mission is 5,000 * 8 + 5,000 * 10 + 15,000 * 12 = 2,700
+        Your goal is to earn $30,000 a year. Write a program that finds out the mini-
+        mum number of sales you have to generate in order to make $30,000
      */
     public static void ch5_39() {
+        final double GOAL = 30_000;
+        double sales = 0;
+        double step = 1;
+        double income = 0;
+        while (income < GOAL) {
+            income = (sales < 5000 ? sales : 5000) * 0.08 +
+                    (sales < 10000 ? sales - 5000 : 5000) * 0.1 +
+                    (sales - 10000) * 0.12;
+            sales += step;
+        }
+        System.out.printf("Minimal amount of sales to make $%.2f is $%.2f\n", income, sales);
     }
 
     /*
-
+        (Simulation: heads or tails) Write a program that simulates flipping a coin one
+        million times and displays the number of heads and tails.
      */
     public static void ch5_40() {
+        final int FLIPS = 1_000_000;
+        int heads = 0;
+        int tails = 0;
+        for (int i = 1; i <= FLIPS; i++) {
+            if (Math.random() > 0.5) {
+                heads++;
+            } else {
+                tails++;
+            }
+        }
+        System.out.printf("%d flips was made\nHeads: %d\nTails: %d\n", heads + tails, heads, tails);
     }
 
     /*
-
+        (Occurrence of max numbers) Write a program that reads integers, finds the larg-
+        est of them, and counts its occurrences. Assume the input ends with number 0.
+        Suppose you entered 3 5 2 5 5 5 0; the program finds that the largest is 5 and
+        the occurrence count for 5 is 4. If no input is entered, display "No numbers are
+        entered except 0".
+        (Hint: Maintain two variables, max and count. max stores the current max
+        number and count stores its occurrences. Initially, assign the first number to
+        max and 1 to count. Compare each subsequent number with max. If the num-
+        ber is greater than max, assign it to max and reset count to 1. If the number is
+        equal to max, increment count by 1.)
+            Enter numbers: 3 5 2 5 5 5 0
+            The largest number is 5
+            The occurrence count of the largest number is 4
      */
     public static void ch5_41() {
+        System.out.print("Enter numbers: ");
+        int input;
+        int max = 0;
+        int count = 0;
+        do {
+            input = scanner.nextInt();
+            if (input > max) {
+                max = input;
+                count = 1;
+            } else if (input == max) {
+                count++;
+            }
+        } while (input != 0);
+        if (max == 0) {
+            System.out.println("No numbers are entered except 0");
+        } else {
+            System.out.println("The largest number is " + max);
+            System.out.println("The occurrence count of the largest number is " + count);
+        }
     }
 
     /*
