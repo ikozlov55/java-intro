@@ -1060,7 +1060,7 @@ public class Chapter5 {
                     (sales - 10000) * 0.12;
             sales += step;
         }
-        System.out.printf("Minimal amount of sales to make $%.2f is $%.2f\n", income, sales);
+        System.out.printf("Minimal amount of sales to make $%.2f in commission is $%.2f\n", income, sales);
     }
 
     /*
@@ -1119,63 +1119,232 @@ public class Chapter5 {
     }
 
     /*
-
+        (Financial application: find the sales amount) Rewrite Programming Exercise
+        5.39 as follows:
+        ■ Use a for loop instead of a do-while loop.
+        ■ Let the user enter COMMISSION_SOUGHT instead of fixing it as a constant.
      */
     public static void ch5_42() {
+        System.out.print("Enter commission sought: ");
+        double goal = scanner.nextDouble();
+        double income = 0;
+        double sales;
+        for (sales = 0; income < goal; sales += 1) {
+            income = (sales < 5000 ? sales : 5000) * 0.08 +
+                    (sales < 10000 ? sales - 5000 : 5000) * 0.1 +
+                    (sales - 10000) * 0.12;
+        }
+
+        System.out.printf("Minimal amount of sales to make $%.2f in commission is $%.2f\n", income, sales);
     }
 
     /*
-
+        (Math: combinations) Write a program that displays all possible combinations
+        for picking two numbers from integers 1 to 7. Also display the total number of
+        all combinations.
+        1 2
+        1 3
+        ...
+        ...
+        The total number of all combinations is 21
      */
     public static void ch5_43() {
+        final int MIN = 1;
+        final int MAX = 7;
+        int totalCombinations = 0;
+        for (int i = MIN; i <= MAX; i++) {
+            for (int j = MIN + i; j <= MAX; j++) {
+                if (i == j) continue;
+                System.out.printf("%d %d\n", i, j);
+                totalCombinations++;
+            }
+        }
+        System.out.println("The total number of all combinations is " + totalCombinations);
     }
 
     /*
-
+        (Computer architecture: bit-level operations) A short value is stored in 16 bits.
+        Write a program that prompts the user to enter a short integer and displays the 16
+        bits for the integer. Here are sample runs:
+            Enter an integer: 5
+            The bits are 0000000000000101
+            Enter an integer: –5
+            The bits are 1111111111111011
+            (Hint: You need to use the bitwise right shift operator (>>) and the bitwise AND
+            operator (&), which are covered in Appendix G, Bitwise Operations.)
      */
     public static void ch5_44() {
+        System.out.print("Enter an integer: ");
+        int value = scanner.nextInt();
+        System.out.print("The bits are ");
+        for (int i = 15; i >= 0; i--) {
+            System.out.print((value >> i) & 1);
+        }
     }
 
     /*
-
+        (Statistics: compute mean and standard deviation) In business applications, you
+        are often asked to compute the mean and standard deviation of data. The mean is
+        simply the average of the numbers. The standard deviation is a statistic that tells
+        you how tightly all the various data are clustered around the mean in a set of data.
+        For example, what is the average age of the students in a class? How close are the
+        ages? If all the students are the same age, the deviation is 0.
+        Write a program that prompts the user to enter 10 numbers and displays the
+        mean and standard deviations of these numbers using the following formula:
+        mean = Σxi = (x1 + x2 + ... + xn) / n
+        deviation = sqrt( (Σxi^2 - (Σxi)^2/n) / (n-1) )
+        Here is a sample run:
+            Enter 10 numbers: 1 2 3 4.5 5.6 6 7 8 9 10
+            The mean is 5.61
+            The standard deviation is 2.99794
      */
     public static void ch5_45() {
+        final int N = 10;
+        double sigma = 0;
+        double squaresSigma = 0;
+        System.out.printf("Enter %d numbers: ", N);
+        for (int i = 1; i <= N; i++) {
+            double number = scanner.nextDouble();
+            sigma += number;
+            squaresSigma += number * number;
+        }
+        double mean = sigma / N;
+        double deviation = Math.sqrt((squaresSigma - (sigma * sigma) / N) / (N - 1));
+        System.out.printf("The mean is %.2f\n", mean);
+        System.out.printf("The standard deviation is %.5f\n", deviation);
     }
 
     /*
-
+        (Reverse a string) Write a program that prompts the user to enter a string and
+        displays the string in reverse order.
+        Enter a string: ABCD
+        The reversed string is DCBA
      */
     public static void ch5_46() {
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        System.out.print("The reversed string is ");
+        for (int i = input.length() - 1; i >= 0; i--) {
+            System.out.print(input.charAt(i));
+        }
     }
 
     /*
-
+        (Business: check ISBN-13) ISBN-13 is a new standard for identifying books. It
+        uses 13 digits d1d2d3d4d5d6d7d8d9d10d11d12d13. The last digit d13 is a checksum,
+        which is calculated from the other digits using the following formula:
+        10 - (d1 + 3d2 + d3 + 3d4 + d5 + 3d6 + d7 + 3d8 + d9 + 3d10 + d11 + 3d12)%10
+        If the checksum is 10, replace it with 0. Your program should read the input as a
+        string. Display “invalid input” if the input is invalid. Here are sample runs:
+            Enter the first 12 digits of an ISBN-13 as a string: 978013213080
+            The ISBN-13 number is 9780132130806
+            Enter the first 12 digits of an ISBN-13 as a string: 978013213079
+            The ISBN-13 number is 9780132130790
+            Enter the first 12 digits of an ISBN-13 as a string: 97801320
+            97801320 is an invalid input
      */
     public static void ch5_47() {
+        System.out.print("Enter the first 12 digits of an ISBN-13 as a string: ");
+        String input = scanner.nextLine();
+        if (input.length() != 12) {
+            System.out.printf("%s is an invalid input\n", input);
+            return;
+        }
+        int checksum = 0;
+        for (int i = 1; i <= input.length(); i++) {
+            int digit = Integer.parseInt(Character.toString(input.charAt(i - 1)));
+            checksum += i % 2 == 0 ? digit * 3 : digit;
+        }
+        checksum = 10 - checksum % 10;
+        System.out.printf("The ISBN-13 number is %s%d", input, checksum == 10 ? 0 : checksum);
     }
 
     /*
-
+        (Process string) Write a program that prompts the user to enter a string and dis-
+        plays the characters at odd positions. Here is a sample run:
+            Enter a string: Beijing Chicago
+            BiigCiao
      */
     public static void ch5_48() {
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        for (int i = 1; i <= input.length(); i++) {
+            if (i % 2 != 0) {
+                System.out.print(input.charAt(i - 1));
+            }
+        }
     }
 
     /*
-
+        (Count vowels and consonants) Assume that the letters A, E, I, O, and U are vow-
+        els. Write a program that prompts the user to enter a string, and displays the
+        number of vowels and consonants in the string.
+        Enter a string: Programming is fun
+        The number of vowels is 5
+        The number of consonants is 11
      */
     public static void ch5_49() {
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        int vowels = 0;
+        int consonants = 0;
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            if (!Character.isAlphabetic(ch)) continue;
+            boolean isVowel = switch (Character.toUpperCase(ch)) {
+                case 'A', 'E', 'I', 'O', 'U' -> true;
+                default -> false;
+            };
+            if (isVowel) {
+                vowels++;
+            } else {
+                consonants++;
+            }
+        }
+        System.out.println("The number of vowels is " + vowels);
+        System.out.println("The number of consonants is " + consonants);
     }
 
     /*
-
+        (Count uppercase letters) Write a program that prompts the user to enter a string
+        and displays the number of the uppercase letters in the string.
+            Enter a string: Welcome to Java
+            The number of uppercase letters is 2
      */
     public static void ch5_50() {
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        long uppercaseCount = input.chars().filter(Character::isUpperCase).count();
+        System.out.println("The number of uppercase letters is " + uppercaseCount);
     }
 
     /*
-
+        (Longest common prefix) Write a program that prompts the user to enter two
+        strings and displays the largest common prefix of the two strings. Here are some
+        sample runs:
+            Enter the first string: Welcome to C++
+            Enter the second string: Welcome to programming
+            The common prefix is Welcome to
+            Enter the first string: Atlanta
+            Enter the second string: Macon
+            Atlanta and Macon have no common prefix
      */
     public static void ch5_51() {
+        System.out.print("Enter the first string: ");
+        String s1 = scanner.nextLine();
+        System.out.print("Enter the second string: ");
+        String s2 = scanner.nextLine();
+        String prefix = "";
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(i)) break;
+            prefix += s1.charAt(i);
+        }
+
+        if (prefix.length() > 0) {
+            System.out.println("The common prefix is " + prefix);
+        } else {
+            System.out.printf("%s and %s have no common prefix\n", s1, s2);
+        }
     }
 
 }
