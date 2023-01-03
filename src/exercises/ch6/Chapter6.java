@@ -311,6 +311,7 @@ public class Chapter6 {
     }
 
     public static boolean isPrime(int number) {
+        if (number <= 1) return false;
         for (int divisor = 2; divisor <= number / 2; divisor++) {
             if (number % divisor == 0) { // If true, number is not prime
                 return false; // Number is not a prime
@@ -631,73 +632,315 @@ public class Chapter6 {
     }
 
     /*
-
+        (Phone keypads) The international standard letter/number mapping for tele-
+        phones is given in Programming Exercise 4.15. Write a method that returns a
+        number, given an uppercase letter, as follows:
+        public static int getNumber(char uppercaseLetter)
+        Write a test program that prompts the user to enter a phone number as a string.
+        The input number may contain letters. The program translates a letter (uppercase
+        or lowercase) to a digit and leaves all other characters intact. Here are sample
+        runs of the program:
+            Enter a string: 1-800-Flowers
+            1-800-3569377
+            Enter a string: 1800flowers
+            18003569377
      */
     public static void ch6_21() {
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        String phoneNumber = "";
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (Character.isLetter(c)) {
+                phoneNumber += getNumber(Character.toUpperCase(c));
+            } else {
+                phoneNumber += c;
+            }
+        }
+        System.out.println(phoneNumber);
+    }
 
+    public static int getNumber(char uppercaseLetter) {
+        return switch (uppercaseLetter) {
+            case 'A', 'B', 'C' -> 2;
+            case 'D', 'E', 'F' -> 3;
+            case 'G', 'H', 'I' -> 4;
+            case 'J', 'K', 'L' -> 5;
+            case 'M', 'N', 'O' -> 6;
+            case 'P', 'Q', 'R', 'S' -> 7;
+            case 'T', 'U', 'V' -> 8;
+            case 'W', 'X', 'Y', 'Z' -> 9;
+            default -> -1;
+        };
     }
 
     /*
-
+        (Math: approximate the square root) There are several techniques for imple-
+        menting the sqrt method in the Math class. One such technique is known as the
+        Babylonian method. It approximates the square root of a number, n, by repeat-
+        edly performing the calculation using the following formula:
+        nextGuess = (lastGuess + n / lastGuess) / 2
+        When nextGuess and lastGuess are almost identical, nextGuess is the
+        approximated square root. The initial guess can be any positive value (e.g., 1).
+        This value will be the starting value for lastGuess. If the difference between
+        nextGuess and lastGuess is less than a very small number, such as 0.0001,
+        you can claim that nextGuess is the approximated square root of n. If not,
+        nextGuess becomes lastGuess and the approximation process continues.
+        Implement the following method that returns the square root of n:
+        public static double sqrt(long n)
+        Write a test program that prompts the user to enter a positive double value and
+        displays its square root.
      */
     public static void ch6_22() {
+        System.out.print("Enter a positive double value: ");
+        double input = scanner.nextDouble();
+        System.out.printf("It's square root is %.2f", sqrt((long) input));
+    }
 
+    public static double sqrt(long n) {
+        double lastGuess = 0;
+        double nextGuess = 1;
+        while (Math.abs(lastGuess - nextGuess) > 0.0001) {
+            lastGuess = nextGuess;
+            nextGuess = (lastGuess + n / lastGuess) / 2;
+            System.out.println(nextGuess);
+        }
+        return nextGuess;
     }
 
     /*
-
+        (Occurrences of a specified character) Write a method that finds the number of
+        occurrences of a specified character in a string using the following header:
+        public static int count(String str, char a)
+        For example, count("Welcome", 'e') returns 2. Write a test program that
+        prompts the user to enter a string followed by a character then displays the
+        number of occurrences of the character in the string.
      */
     public static void ch6_23() {
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        System.out.print("Enter a character: ");
+        char ch = scanner.nextLine().strip().charAt(0);
+        System.out.printf("There is %d occurrences of '%c' in string %s\n", count(str, ch), ch, str);
 
     }
 
-    /*
+    public static int count(String str, char a) {
+        return (int) str.chars().filter(x -> (char) x == a).count();
+    }
 
+    /*
+        (Display current date and time) Listing 2.7, ShowCurrentTime.java, displays the
+        current time. Revise this example to display the current date and time. The calen-
+        dar example in Listing 6.12, PrintCalendar.java, should give you some ideas on
+        how to find the year, month, and day.
      */
     public static void ch6_24() {
+        // Obtain the total milliseconds since midnight, Jan 1, 1970
+        long totalMilliseconds = System.currentTimeMillis();
+        long totalSeconds = totalMilliseconds / 1000;
+        long totalMinutes = totalSeconds / 60;
+        long totalHours = totalMinutes / 60;
+        long totalDays = totalHours / 24;
+        int currentYear = 1970;
+        int currentMonth = 1;
+        int currentDay = 0;
+        while (totalDays > 0) {
+            int daysInCurrentMonth = Calendar.getNumberOfDays(currentMonth, currentYear);
+            if (totalDays > daysInCurrentMonth) {
+                totalDays -= daysInCurrentMonth;
+                currentMonth++;
+            } else {
+                currentDay = (int) totalDays + 1;
+                totalDays = 0;
+            }
 
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
+            }
+
+        }
+        long currentSecond = totalSeconds % 60;
+        long currentMinute = totalMinutes % 60;
+        long currentHour = totalHours % 24;
+
+        System.out.printf("%d %s %d %02d:%02d:%02d\n",
+                currentDay,
+                Calendar.getMonthName(currentMonth),
+                currentYear,
+                currentHour,
+                currentMinute,
+                currentSecond
+        );
     }
 
     /*
-
+        (Convert milliseconds to hours, minutes, and seconds) Write a method that con-
+        verts milliseconds to hours, minutes, and seconds using the following header:
+        public static String convertMillis(long millis)
+        The method returns a string as hours:minutes:seconds. For example, con-
+        vertMillis(5500) returns a string 0:0:5, convertMillis(100000)
+        returns a string 0:1:40, and convertMillis(555550000) returns a string
+        154:19:10. Write a test program that prompts the user to enter a long integer
+        for milliseconds and displays a string in the format of hours:minutes:seconds.
      */
     public static void ch6_25() {
+        System.out.print("Enter a number of milliseconds: ");
+        long millis = scanner.nextInt();
+        System.out.println(convertMillis(millis));
+    }
 
+    public static String convertMillis(long millis) {
+        long seconds = millis / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        return String.format("%d:%d:%d", hours, minutes % 60, seconds % 60);
     }
 
     /*
-
+        (Palindromic prime) A palindromic prime is a prime number and also palin-
+        dromic. For example, 131 is a prime and also a palindromic prime, as are 313
+        and 757. Write a program that displays the first 100 palindromic prime numbers.
+        Display 10 numbers per line, separated by exactly one space, as follows:
+        2 3 5 7 11 101 131 151 181 191
+        313 353 373 383 727 757 787 797 919 929
+        ..
      */
     public static void ch6_26() {
-
+        final int TOTAL_NUMBERS = 100;
+        final int NUMBERS_PER_LINE = 10;
+        int numbers = 0;
+        for (int i = 2; numbers <= TOTAL_NUMBERS; i++) {
+            if (!isPrime(i) || !isPalindrome(i)) continue;
+            numbers++;
+            System.out.printf("%5d", i);
+            System.out.print(numbers % NUMBERS_PER_LINE == 0 ? "\n" : " ");
+        }
     }
 
     /*
-
+        (Emirp) An emirp (prime spelled backward) is a nonpalindromic prime number
+        whose reversal is also a prime. For example, 17 is a prime and 71 is a prime, so
+        17 and 71 are emirps. Write a program that displays the first 100 emirps. Display
+        10 numbers per line, separated by exactly one space, as follows:
+        13 17 31 37 71 73 79 97 107 113
+        149 157 167 179 199 311 337 347 359 389
+        ...
      */
     public static void ch6_27() {
+        final int TOTAL_NUMBERS = 100;
+        final int NUMBERS_PER_LINE = 10;
+        int numbers = 0;
+        for (int i = 2; numbers <= TOTAL_NUMBERS; i++) {
+            if (!isEmirp(i)) continue;
+            numbers++;
+            System.out.printf("%5d", i);
+            System.out.print(numbers % NUMBERS_PER_LINE == 0 ? "\n" : " ");
+        }
+    }
 
+    public static boolean isEmirp(int number) {
+        return !isPalindrome(number) && isPrime(number) && isPrime(reverse(number));
     }
 
     /*
-
+        (Mersenne prime) A prime number is called a Mersenne prime if it can be written
+        in the form 2^p - 1 for some positive integer p. Write a program that finds all
+        Mersenne primes with p … 31 and displays the output as follows:
+        p         2^p – 1
+        ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        2         3
+        3         7
+        5         31
+        ...
      */
     public static void ch6_28() {
+        final int MAX_P = 31;
+        System.out.println("p\t\t2^p – 1");
+        System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
+        for (int p = 0; p <= MAX_P; p++) {
+            if (!isMersennePrime(p)) continue;
+            System.out.printf("%d\t\t%d\n", p, (int) Math.pow(2, p) - 1);
+        }
+    }
 
+    public static boolean isMersennePrime(int number) {
+        return isPrime(number) && isPrime((int) Math.pow(2, number) - 1);
     }
 
     /*
-
+        (Twin primes) Twin primes are a pair of prime numbers that differ by 2. For
+        example, 3 and 5 are twin primes, 5 and 7 are twin primes, and 11 and 13 are
+        twin primes. Write a program to find all twin primes less than 1,000. Display the
+        output as follows:
+        (3, 5)
+        (5, 7)
+        ...
      */
     public static void ch6_29() {
-
+        final int MAX = 1000;
+        for (int i = 0; i < MAX; i++) {
+            if (!isPrime(i) || !isPrime(i + 2)) continue;
+            System.out.printf("(%d, %d)\n", i, i + 2);
+        }
     }
 
     /*
-
+        (Game: craps) Craps is a popular dice game played in casinos. Write a program
+        to play a variation of the game, as follows:
+        Roll two dice. Each die has six faces representing values 1, 2, . . ., and 6, respec-
+        tively. Check the sum of the two dice. If the sum is 2, 3, or 12 (called craps), you
+        lose; if the sum is 7 or 11 (called natural), you win; if the sum is another value
+        (i.e., 4, 5, 6, 8, 9, or 10), a point is established. Continue to roll the dice until either
+        a 7 or the same point value is rolled. If 7 is rolled, you lose. Otherwise, you win.
+        Your program acts as a single player. Here are some sample runs.
+            You rolled 5 + 6 = 11
+            You win
+            You rolled 1 + 2 = 3
+            You lose
+            You rolled 4 + 4 = 8
+            point is 8
+            You rolled 6 + 2 = 8
+            You win
+            You rolled 3 + 2 = 5
+            point is 5
+            You rolled 2 + 5 = 7
+            You lose
      */
     public static void ch6_30() {
+        int dice1 = rollADice();
+        int dice2 = rollADice();
+        int sum = dice1 + dice2;
+        int point;
 
+        System.out.printf("You rolled %d + %d = %d\n", dice1, dice2, sum);
+        if (sum == 2 || sum == 3 || sum == 12) {
+            System.out.println("You lose");
+        } else if (sum == 7 || sum == 11) {
+            System.out.println("You win");
+        } else {
+            point = sum;
+            System.out.printf("point is %d\n", sum);
+            while (sum != 7 || sum != point) {
+                dice1 = rollADice();
+                dice2 = rollADice();
+                sum = dice1 + dice2;
+                System.out.printf("You rolled %d + %d = %d\n", dice1, dice2, sum);
+                if (sum == 7) {
+                    System.out.println("You lose");
+                    return;
+                } else if (sum == point) {
+                    System.out.println("You win");
+                    return;
+                }
+            }
+        }
+    }
+
+    public static int rollADice() {
+        return (int) (Math.random() * 6 + 1);
     }
 
     /*

@@ -5,6 +5,10 @@ public class Calendar {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 
+    public static boolean isLeapYear(long year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
     public static int getNumberOfDays(int month, int year) {
         return switch (month) {
             case 1, 3, 5, 7, 8, 10, 12 -> 31;
