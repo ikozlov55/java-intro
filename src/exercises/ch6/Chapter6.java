@@ -237,12 +237,7 @@ public class Chapter6 {
         double fahrenheit = 120;
         System.out.printf("%-10s\t%-10s\t|\t%-10s\t%-10s\n", "Celsius", "Fahrenheit", "Fahrenheit", "Celsius");
         for (double celsius = 40; celsius >= 31; celsius--) {
-            System.out.printf("%-10.1f\t%-10.1f\t|\t%-10.1f\t%-10.2f\n",
-                    celsius,
-                    celsiusToFahrenheit(celsius),
-                    fahrenheit,
-                    fahrenheitToCelsius(fahrenheit)
-            );
+            System.out.printf("%-10.1f\t%-10.1f\t|\t%-10.1f\t%-10.2f\n", celsius, celsiusToFahrenheit(celsius), fahrenheit, fahrenheitToCelsius(fahrenheit));
             fahrenheit -= 10;
         }
     }
@@ -281,12 +276,7 @@ public class Chapter6 {
         double meters = 20;
         System.out.printf("%-10s\t%-10s\t|\t%-10s\t%-10s\n", "Feet", "Meters", "Meters", "Feet");
         for (double feet = 1; feet <= 10; feet++) {
-            System.out.printf("%-10.1f\t%-10.3f\t|\t%-10.1f\t%-10.3f\n",
-                    feet,
-                    footToMeter(feet),
-                    meters,
-                    meterToFoot(meters)
-            );
+            System.out.printf("%-10.1f\t%-10.3f\t|\t%-10.1f\t%-10.3f\n", feet, footToMeter(feet), meters, meterToFoot(meters));
             meters += 5;
         }
     }
@@ -348,9 +338,7 @@ public class Chapter6 {
     }
 
     public static double getCommission(double sales) {
-        return (sales < 5000 ? sales : 5000) * 0.08 +
-                (sales < 10000 ? sales - 5000 : 5000) * 0.1 +
-                (sales - 10000) * 0.12;
+        return (sales < 5000 ? sales : 5000) * 0.08 + (sales < 10000 ? sales - 5000 : 5000) * 0.1 + (sales - 10000) * 0.12;
     }
 
     /*
@@ -466,13 +454,7 @@ public class Chapter6 {
         System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "Income", "", "or Qualifying", "Separate", "House hold");
         System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "", "", "Widow(er)", "", "");
         for (double income = 50_000; income <= 60_000; income += 50) {
-            System.out.printf("%-14d%-14d%-18d%-14d%-14d\n",
-                    Math.round(income),
-                    Math.round(computeTax(0, income)),
-                    Math.round(computeTax(1, income)),
-                    Math.round(computeTax(2, income)),
-                    Math.round(computeTax(3, income))
-            );
+            System.out.printf("%-14d%-14d%-18d%-14d%-14d\n", Math.round(income), Math.round(computeTax(0, income)), Math.round(computeTax(1, income)), Math.round(computeTax(2, income)), Math.round(computeTax(3, income)));
         }
     }
 
@@ -566,9 +548,7 @@ public class Chapter6 {
             return false;
         }
 
-        boolean onlyAlphanumeric = password.chars()
-                .filter(x -> !Character.isAlphabetic(x) && !Character.isDigit(x))
-                .count() == 0;
+        boolean onlyAlphanumeric = password.chars().filter(x -> !Character.isAlphabetic(x) && !Character.isDigit(x)).count() == 0;
         if (!onlyAlphanumeric) {
             return false;
         }
@@ -765,14 +745,7 @@ public class Chapter6 {
         long currentMinute = totalMinutes % 60;
         long currentHour = totalHours % 24;
 
-        System.out.printf("%d %s %d %02d:%02d:%02d\n",
-                currentDay,
-                Calendar.getMonthName(currentMonth),
-                currentYear,
-                currentHour,
-                currentMinute,
-                currentSecond
-        );
+        System.out.printf("%d %s %d %02d:%02d:%02d\n", currentDay, Calendar.getMonthName(currentMonth), currentYear, currentHour, currentMinute, currentSecond);
     }
 
     /*
@@ -923,7 +896,7 @@ public class Chapter6 {
         } else {
             point = sum;
             System.out.printf("point is %d\n", sum);
-            while (sum != 7 || sum != point) {
+            while (true) {
                 dice1 = rollADice();
                 dice2 = rollADice();
                 sum = dice1 + dice2;
@@ -944,65 +917,475 @@ public class Chapter6 {
     }
 
     /*
-
+        (Financial: credit card number validation) Credit card numbers follow certain
+        patterns. A credit card number must have between 13 and 16 digits. It must start
+        with
+        ■ 4 for Visa cards
+        ■ 5 for Master cards
+        ■ 37 for American Express cards
+        ■ 6 for Discover cards
+        In 1954, Hans Luhn of IBM proposed an algorithm for validating credit card
+        numbers. The algorithm is useful to determine whether a card number is entered
+        correctly, or whether a credit card is scanned correctly by a scanner. Credit card
+        numbers are generated following this validity check, commonly known as the
+        Luhn check or the Mod 10 check, which can be described as follows (for illustra-
+        tion, consider the card number 4388576018402626):
+        1. Double every second digit from right to left. If doubling of a digit results in a
+        two-digit number, add up the two digits to get a single-digit number.
+        2. Now add all single-digit numbers from Step 1.
+        4 + 4 + 8 + 2 + 3 + 1 + 7 + 8 = 37
+        3. Add all digits in the odd places from right to left in the card number.
+        6 + 6 + 0 + 8 + 0 + 7 + 8 + 3 = 38
+        4. Sum the results from Step 2 and Step 3.
+        37 + 38 = 75
+        5. If the result from Step 4 is divisible by 10, the card number is valid; other-
+        wise, it is invalid. For example, the number 4388576018402626 is invalid,
+        but the number 4388576018410707 is valid.
+        Write a program that prompts the user to enter a credit card number as a long
+        integer. Display whether the number is valid or invalid. Design your program to
+        use the following methods:
+        Return true if the card number is valid:
+        public static boolean isValid(long number)
+        Get the result from Step 2:
+        public static int sumOfDoubleEvenPlace(long number)
+        Return this number if it is a single digit, otherwise,
+        return the sum of the two digits:
+        public static int getDigit(int number)
+        Return sum of odd-place digits in number:
+        public static int sumOfOddPlace(long number)
+        Return true if the number d is a prefix for number:
+        public static boolean prefixMatched(long number, int d)
+        Return the number of digits in d
+        public static int getSize(long d)
+        Return the first k number of digits from number. If the
+        number of digits in number is less than k, return number.:
+        public static long getPrefix(long number, int k)
+        (You may also implement this program by reading the input as a string and pro-
+        cessing the string to validate the credit card.)
+            Enter a credit card number as a long integer:
+            4388576018410707
+            4388576018410707 is valid
+            Enter a credit card number as a long integer:
+            4388576018402626
+            4388576018402626 is invalid
      */
     public static void ch6_31() {
+        System.out.print("Enter a credit card number as a long integer: ");
+        long cardNumber = scanner.nextLong();
+        System.out.printf("%d is %s\n", cardNumber, LuhnAlgorithm.isValid(cardNumber) ? "valid" : "invalid");
+    }
 
+    static class LuhnAlgorithm {
+        public static boolean isValid(long number) {
+            int size = getSize(number);
+            if (size < 13 || size > 16) return false;
+            if (!prefixMatched(number, 4) && !prefixMatched(number, 5) && !prefixMatched(number, 37) && !prefixMatched(number, 6)) {
+                return false;
+            }
+            int checksum = sumOfDoubleEvenPlace(number) + sumOfOddPlace(number);
+            return checksum % 10 == 0;
+        }
+
+        public static int sumOfDoubleEvenPlace(long number) {
+            int result = 0;
+            String cardNumber = Long.toString(number);
+            for (int i = 0; i < getSize(number); i += 2) {
+                int value = Character.getNumericValue(cardNumber.charAt(i));
+                value *= 2;
+                result += getDigit(value);
+            }
+            return result;
+        }
+
+        public static int getDigit(int number) {
+            return number <= 9 ? number : number / 10 + number % 10;
+        }
+
+        public static int sumOfOddPlace(long number) {
+            int result = 0;
+            String cardNumber = Long.toString(number);
+            for (int i = getSize(number) - 1; i > 0; i -= 2) {
+                result += Character.getNumericValue(cardNumber.charAt(i));
+            }
+            return result;
+        }
+
+        public static boolean prefixMatched(long number, int d) {
+            return getPrefix(number, getSize(d)) == d;
+        }
+
+        public static int getSize(long d) {
+            if (d == 0) return 1;
+            int result = 0;
+            while (d > 0) {
+                d /= 10;
+                result++;
+            }
+            return result;
+        }
+
+        public static long getPrefix(long number, int k) {
+            int size = getSize(number);
+            if (size < k) return number;
+            while (size > k) {
+                number /= 10;
+                size--;
+            }
+            return number;
+        }
     }
 
     /*
-
+        (Game: chance of winning at craps) Revise Programming Exercise 6.30 to run it
+        10,000 times and display the number of winning games.
      */
     public static void ch6_32() {
+        final int NUMBER_OF_GAMES = 10_000;
+        int games = 1;
+        int wins = 0;
 
+        while (games <= NUMBER_OF_GAMES) {
+            int dice1 = rollADice();
+            int dice2 = rollADice();
+            int sum = dice1 + dice2;
+            int point;
+            if (sum == 7 || sum == 11) {
+                wins++;
+            } else if (sum != 2 && sum != 3 && sum != 12) {
+                point = sum;
+                while (true) {
+                    dice1 = rollADice();
+                    dice2 = rollADice();
+                    sum = dice1 + dice2;
+                    if (sum == 7) {
+                        break;
+                    } else if (sum == point) {
+                        wins++;
+                        break;
+                    }
+                }
+            }
+            games++;
+        }
+        System.out.printf("You've won %d out of %d games", wins, NUMBER_OF_GAMES);
     }
 
     /*
-
+        (Current date and time) Invoking System.currentTimeMillis() returns the
+        elapsed time in milliseconds since midnight of January 1, 1970. Write a program
+        that displays the date and time. Here is a sample run:
+        Current date and time is May 16, 2012 10:34:23
      */
     public static void ch6_33() {
+        long totalMilliseconds = System.currentTimeMillis();
+        long totalSeconds = totalMilliseconds / 1000;
+        long totalMinutes = totalSeconds / 60;
+        long totalHours = totalMinutes / 60;
+        long totalDays = totalHours / 24;
+        int currentYear = 1970;
+        int currentMonth = 1;
+        int currentDay = 0;
+        while (totalDays > 0) {
+            int daysInCurrentMonth = Calendar.getNumberOfDays(currentMonth, currentYear);
+            if (totalDays > daysInCurrentMonth) {
+                totalDays -= daysInCurrentMonth;
+                currentMonth++;
+            } else {
+                currentDay = (int) totalDays + 1;
+                totalDays = 0;
+            }
 
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
+            }
+
+        }
+        long currentSecond = totalSeconds % 60;
+        long currentMinute = totalMinutes % 60;
+        long currentHour = totalHours % 24;
+
+        System.out.printf("Current date and time is %s %d, %d %02d:%02d:%02d\n", Calendar.getMonthName(currentMonth), currentDay, currentYear, currentHour, currentMinute, currentSecond);
     }
 
     /*
-
+        (Print calendar) Programming Exercise 3.21 uses Zeller’s congruence to calcu-
+        late the day of the week. Simplify Listing 6.12, PrintCalendar.java, using Zeller’s
+        algorithm to get the start day of the month
      */
     public static void ch6_34() {
+        // Prompt the user to enter year
+        System.out.print("Enter full year (e.g., 2012): ");
+        int year = scanner.nextInt();
 
+        // Prompt the user to enter month
+        System.out.print("Enter month as a number between 1 and 12: ");
+        int month = scanner.nextInt();
+
+        // Print calendar for the month of the year
+        printMonth(year, month);
     }
 
-    /*
+    /**
+     * Print the calendar for a month in a year
+     */
+    public static void printMonth(int year, int month) {
+        // Print the headings of the calendar
+        printMonthTitle(year, month);
 
+        // Print the body of the calendar
+        printMonthBody(year, month);
+    }
+
+    /**
+     * Print the month title, e.g., March 2012
+     */
+    public static void printMonthTitle(int year, int month) {
+        System.out.println(" " + Calendar.getMonthName(month) + " " + year);
+        System.out.println("−−−−−−−−−−−−−−−−−−−−−−−−−−−−−");
+        System.out.println(" Sun Mon Tue Wed Thu Fri Sat");
+    }
+
+
+    public static void printMonthBody(int year, int month) {
+        // Get start day of the week for the first date in the month
+        int startDay = getStartDay(year, month);
+
+        // Get number of days in the month
+        int numberOfDaysInMonth = Calendar.getNumberOfDays(month, year);
+
+        // Pad space before the first day of the month
+        int i = 0;
+        for (i = 0; i < startDay; i++)
+            System.out.print("    ");
+
+        for (i = 1; i <= numberOfDaysInMonth; i++) {
+            System.out.printf("%4d", i);
+
+            if ((i + startDay) % 7 == 0) System.out.println();
+        }
+
+        System.out.println();
+    }
+
+    /**
+     * Get the start day of month/1/year
+     */
+    public static int getStartDay(int year, int month) {
+        if (month == 1 || month == 2) {
+            month += 12;
+            year--;
+        }
+        int k = year % 100;
+        int j = year / 100;
+        int h = (1 + 26 * (month + 1) / 10 + k + k / 4 + j / 4 + 5 * j) % 7;
+        return switch (h) {
+            case 0 -> 6;
+            case 1 -> 0;
+            case 2, 3, 4, 5, 6 -> h - 1;
+            default -> -1;
+        };
+    }
+
+
+    /*
+        (Geometry: area of a pentagon) The area of a pentagon can be computed using
+        the following formula:
+        Area = (5 * s^2)/(4 * tan(pi/5))
+        Write a method that returns the area of a pentagon using the following header:
+        public static double area(double side)
+        Write a main method that prompts the user to enter the side of a pentagon and
+        displays its area. Here is a sample run:
+            Enter the side: 5.5
+            The area of the pentagon is 52.04444136781625
      */
     public static void ch6_35() {
+        System.out.print("Enter the side: ");
+        double side = scanner.nextDouble();
+        System.out.println("The area of the pentagon is " + area(side));
+    }
 
+    public static double area(double side) {
+        return (5 * side * side) / (4 * Math.tan(Math.PI / 5));
     }
 
     /*
-
+        (Geometry: area of a regular polygon) A regular polygon is an n-sided polygon
+        in which all sides are of the same length and all angles have the same degree (i.e.,
+        the polygon is both equilateral and equiangular). The formula for computing the
+        area of a regular polygon is
+        Area = (n * s^2)/(4 * tan(pi/n)
+        Write a method that returns the area of a regular polygon using the following
+        header:
+        public static double area(int n, double side)
+        Write a main method that prompts the user to enter the number of sides and the
+        side of a regular polygon and displays its area. Here is a sample run:
+            Enter the number of sides: 5
+            Enter the side: 6.5
+            The area of the polygon is 72.69017017488385
      */
     public static void ch6_36() {
+        System.out.print("Enter the number of sides: ");
+        int n = scanner.nextInt();
+        System.out.print("Enter the side: ");
+        double side = scanner.nextDouble();
+        System.out.println("The area of the polygon is " + area(n, side));
+    }
 
+    public static double area(int n, double side) {
+        return (n * side * side) / (4 * Math.tan(Math.PI / n));
     }
 
     /*
-
+        (Format an integer) Write a method with the following header to format the inte-
+        ger with the specified width.
+        public static String format(int number, int width)
+        The method returns a string for the number with one or more prefix 0s. The size
+        of the string is the width. For example, format(34, 4) returns 0034 and for-
+        mat(34, 5) returns 00034. If the number is longer than the width, the method
+        returns the string representation for the number. For example, format(34, 1)
+        returns 34.
+        Write a test program that prompts the user to enter a number and its width, and
+        displays a string returned by invoking format(number, width).
      */
     public static void ch6_37() {
+        System.out.print("Enter a number: ");
+        int number = scanner.nextInt();
+        System.out.print("Enter width: ");
+        int width = scanner.nextInt();
+        System.out.println(format(number, width));
+    }
 
+    public static String format(int number, int width) {
+        int size = getSize(number);
+        if (size > width) return Integer.toString(number);
+        String result = "";
+        int zeros = width - size;
+        while (zeros > 0) {
+            result += "0";
+            zeros--;
+        }
+        result += number;
+        return result;
+    }
+
+    public static int getSize(int d) {
+        if (d == 0) return 1;
+        int result = 0;
+        while (d > 0) {
+            d /= 10;
+            result++;
+        }
+        return result;
     }
 
     /*
-
+        (Generate random characters) Use the methods in RandomCharacter in Listing
+        6.10 to print 100 uppercase letters then 100 single digits, printing 50 per line.
      */
     public static void ch6_38() {
+        final int NUMBER_OF_CHARS = 100;
+        final int CHARS_PER_LINE = 50;
 
+        for (int i = 1; i <= NUMBER_OF_CHARS; i++) {
+            System.out.print(getRandomUpperCaseLetter());
+            System.out.print(i % CHARS_PER_LINE == 0 ? "\n" : " ");
+        }
+        for (int i = 1; i <= NUMBER_OF_CHARS; i++) {
+            System.out.print(getRandomDigitCharacter());
+            System.out.print(i % CHARS_PER_LINE == 0 ? "\n" : " ");
+        }
     }
 
-    /*
+    public static char getRandomCharacter(char ch1, char ch2) {
+        return (char) (ch1 + Math.random() * (ch2 - ch1 + 1));
+    }
 
+
+    /**
+     * Generate a random uppercase letter
+     */
+    public static char getRandomUpperCaseLetter() {
+        return getRandomCharacter('A', 'Z');
+    }
+
+    /**
+     * Generate a random digit character
+     */
+    public static char getRandomDigitCharacter() {
+        return getRandomCharacter('0', '9');
+    }
+
+
+    /*
+        (Geometry: point position) Programming Exercise 3.32 shows how to test
+        whether a point is on the left side of a directed line, on the right, or on the same
+        line. Write the methods with the following headers:
+        Return true if point (x2, y2) is on the left side of the
+        directed line from (x0, y0) to (x1, y1) :
+        public static boolean leftOfTheLine(double x0, double y0, double x1, double y1, double x2, double y2)
+        Return true if point (x2, y2) is on the same
+        line from (x0, y0) to (x1, y1):
+        public static boolean onTheSameLine(double x0, double y0, double x1, double y1, double x2, double y2)
+        Return true if point (x2, y2) is on the
+        line segment from (x0, y0) to (x1, y1):
+        public static boolean onTheLineSegment(double x0, double y0, double x1, double y1, double x2, double y2)
+        Write a program that prompts the user to enter the three points for p0, p1, and p2
+        and displays whether p2 is on the left side of the line from p0 to p1, right side,
+        the same line, or on the line segment. Here are some sample runs:
+            Enter three points for p0, p1, and p2: 1 1 2 2 1.5 1.5
+            (1.5, 1.5) is on the line segment from (1.0, 1.0) to (2.0, 2.0)
+
+            Enter three points for p0, p1, and p2: 1 1 2 2 3 3
+            (3.0, 3.0) is on the same line from (1.0, 1.0) to (2.0, 2.0)
+
+            Enter three points for p0, p1, and p2: 1 1 2 2 1 1.5
+            (1.0, 1.5) is on the left side of the line from (1.0, 1.0) to (2.0, 2.0)
+
+            Enter three points for p0, p1, and p2: 1 1 2 2 1 –1
+            (1.0, −1.0)from (1.0, 1.0) to (2.0, 2.0)
      */
     public static void ch6_39() {
+        System.out.print("Enter three points for p0, p1, and p2: ");
+        double x0 = scanner.nextDouble();
+        double y0 = scanner.nextDouble();
+        double x1 = scanner.nextDouble();
+        double y1 = scanner.nextDouble();
+        double x2 = scanner.nextDouble();
+        double y2 = scanner.nextDouble();
+        System.out.printf("(%.1f, %.1f)", x2, y2);
 
+        if (onTheLineSegment(x0, y0, x1, y1, x2, y2)) {
+            System.out.print(" is on the line segment ");
+        } else if (onTheSameLine(x0, y0, x1, y1, x2, y2)) {
+            System.out.print(" is on the same line ");
+        } else if (leftOfTheLine(x0, y0, x1, y1, x2, y2)) {
+            System.out.print(" is on the left side of the line ");
+        } else {
+            System.out.print(" is on the right side of the line ");
+        }
+        System.out.printf("from (%.1f, %.1f) to (%.1f, %.1f)", x0, y0, x1, y1);
+    }
+
+    public static boolean leftOfTheLine(double x0, double y0, double x1, double y1, double x2, double y2) {
+        return d(x0, y0, x1, y1, x2, y2) > 0;
+    }
+
+    public static boolean onTheSameLine(double x0, double y0, double x1, double y1, double x2, double y2) {
+        return d(x0, y0, x1, y1, x2, y2) == 0;
+    }
+
+    public static boolean onTheLineSegment(double x0, double y0, double x1, double y1, double x2, double y2) {
+        double d = d(x0, y0, x1, y1, x2, y2);
+        double lineDistance = distance(x0, y0, x1, y1);
+        return d == 0 && distance(x0, y0, x2, y2) < lineDistance && distance(x1, y1, x2, y2) < lineDistance;
+    }
+
+    private static double d(double x0, double y0, double x1, double y1, double x2, double y2) {
+        return (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0);
+    }
+
+    private static double distance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 }
