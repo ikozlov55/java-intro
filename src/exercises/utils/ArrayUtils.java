@@ -14,6 +14,16 @@ public class ArrayUtils {
         return false;
     }
 
+    public static int min(int[] array) {
+        int min = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] < min) {
+                min = array[i];
+            }
+        }
+        return min;
+    }
+
     public static int[] inputIntArray(int length, String prompt) {
         int[] result = new int[length];
         System.out.print(prompt);
@@ -31,4 +41,14 @@ public class ArrayUtils {
         }
         return result;
     }
+
+    public static String[] inputStringArray(int length, String prompt) {
+        String[] result = new String[length];
+        System.out.print(prompt);
+        for (int i = 0; i < length; i++) {
+            result[i] = scanner.next();
+        }
+        return result;
+    }
+
 }
