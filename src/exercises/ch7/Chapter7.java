@@ -5,7 +5,9 @@ import exercises.utils.ArrayUtils;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class Chapter7 {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -586,8 +588,8 @@ public class Chapter7 {
     }
 
     public static void bubbleSort(int[] array) {
-        for (int i = 0; i < array.length - 1; i++) {
-            for (int j = 0; j < array.length - 2; j++) {
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array.length - 1; j++) {
                 if (array[j] > array[j + 1]) {
                     array[j] += array[j + 1];
                     array[j + 1] = array[j] - array[j + 1];
@@ -1030,34 +1032,306 @@ public class Chapter7 {
     }
 
     /*
-
+        (Merge two sorted lists) Write the following method that merges two sorted lists
+        into a new sorted list:
+        public static int[] merge(int[] list1, int[] list2)
+        Implement the method in a way that takes at most list1.length + list2.
+        length comparisons. See liveexample.pearsoncmg.com/dsanimation/
+        MergeSortNeweBook.html for an animation of the implementation. Write a test
+        program that prompts the user to enter two sorted lists and displays the merged
+        list. Here is a sample run. Note the first number in the input indicates the number
+        of the elements in the list. This number is not part of the list.
+        Enter list1 size and contents: 5 1 5 16 61 111
+        Enter list2 size and contents: 4 2 4 5 6
+        list1 is 1 5 16 61 111
+        list2 is 2 4 5 6
+        The merged list is 1 2 4 5 5 6 16 61 111
      */
     public static void ch7_31() {
+        System.out.print("Enter list1 size and contents: ");
+        int size = scanner.nextInt();
+        int[] list1 = new int[size];
+        for (int i = 0; i < size; i++) {
+            list1[i] = scanner.nextInt();
+        }
+        System.out.print("Enter list2 size and contents: ");
+        size = scanner.nextInt();
+        int[] list2 = new int[size];
+        for (int i = 0; i < size; i++) {
+            list2[i] = scanner.nextInt();
+        }
+        int[] merged = merge(list1, list2);
+        System.out.print("list1 is ");
+        printList(list1);
+        System.out.print("list2 is ");
+        printList(list2);
+        System.out.print("The merged list is ");
+        printList(merged);
+
+    }
+
+    public static void printList(int[] list) {
+        for (int value : list) {
+            System.out.print(value + " ");
+        }
+        System.out.println();
+    }
+
+    public static int[] merge(int[] list1, int[] list2) {
+        int[] result = new int[list1.length + list2.length];
+        int index1 = 0;
+        int index2 = 0;
+
+        while (index1 <= list1.length - 1 || index2 <= list2.length - 1) {
+            if (index1 == list1.length) {
+                result[index1 + index2] = list2[index2];
+                index2++;
+            } else if (index2 == list2.length) {
+                result[index1 + index2] = list1[index1];
+                index1++;
+            } else if (list1[index1] < list2[index2]) {
+                result[index1 + index2] = list1[index1];
+                index1++;
+            } else {
+                result[index1 + index2] = list2[index2];
+                index2++;
+            }
+        }
+        return result;
     }
 
     /*
-
+        (Partition of a list) Write the following method that partitions the list using the
+        first element, called a pivot:
+        public static int partition(int[] list)
+        After the partition, the elements in the list are rearranged so all the elements before
+        the pivot are less than or equal to the pivot, and the elements after the pivot are
+        greater than the pivot. The method returns the index where the pivot is located in
+        the new list. For example, suppose the list is {5, 2, 9, 3, 6, 8}. After the partition,
+        the list becomes {3, 2, 5, 9, 6, 8}. Implement the method in a way that takes at
+        most list.length comparisons. See liveexample.pearsoncmg.com/dsanima-
+        tion/QuickSortNeweBook.html for an animation of the implementation. Write a
+        test program that prompts the user to enter the size of the list and the contents of
+        the list and displays the list after the partition. Here is a sample run.
+        Enter list size: 8
+        Enter list content: 10 1 5 16 61 9 11 1
+        After the partition, the list is 9 1 5 1 10 61 11 16
      */
     public static void ch7_32() {
+        System.out.print("Enter list size: ");
+        int size = scanner.nextInt();
+        int[] list = new int[size];
+        System.out.print("Enter list content: ");
+        for (int i = 0; i < size; i++) {
+            list[i] = scanner.nextInt();
+        }
+        int pivotIndex = partition(list);
+        System.out.print("After the partition, the list is ");
+        printList(list);
+        System.out.print("Pivot index is " + pivotIndex);
+    }
+
+    public static void test_ch7_32() {
+        for (int j = 0; j < 100_000; j++) {
+            int size = 16;
+            int[] list = new int[size];
+            for (int i = 0; i < size; i++) {
+                list[i] = (int) (Math.random() * 101);
+            }
+            int[] originalList = Arrays.copyOf(list, list.length);
+            int pivot = list[0];
+            int pivotIndex = partition(list);
+            try {
+                assert list[pivotIndex] == pivot;
+
+                for (int i = 0; i < pivotIndex; i++) {
+                    assert list[i] <= pivot;
+                }
+
+                for (int i = pivotIndex + 1; i < list.length; i++) {
+                    assert list[i] > pivot;
+                }
+
+                Set<Integer> originalElements = Arrays.stream(originalList).boxed().collect(Collectors.toSet());
+                Set<Integer> partitionElements = Arrays.stream(list).boxed().collect(Collectors.toSet());
+                assert originalElements.equals(partitionElements);
+            } catch (AssertionError e) {
+                System.out.println();
+                System.out.print("Original list: ");
+                printList(originalList);
+                System.out.print("After the partition, the list is ");
+                printList(list);
+                System.out.print("Pivot index is " + pivotIndex);
+                System.out.println();
+            }
+        }
+    }
+
+    public static int partition(int[] list) {
+        int pivot = list[0];
+        int low = 1;
+        int high = list.length - 1;
+        while (low != high) {
+            if (list[low] <= pivot) {
+                low++;
+            } else if (list[high] > pivot) {
+                high--;
+            } else {
+                int temp = list[low];
+                list[low] = list[high];
+                list[high] = temp;
+            }
+        }
+        while (high > 0 && list[high] > pivot) {
+            high--;
+        }
+        if (pivot >= list[high]) {
+            list[0] = list[high];
+            list[high] = pivot;
+            return high;
+        } else {
+            return 0;
+        }
+
     }
 
     /*
-
+        (Culture: Chinese Zodiac) Simplify Listing 3.9 using an array of strings to store
+        the animal names.
      */
     public static void ch7_33() {
+        String[] zodiac = {
+                "monkey", "rooster", "dog", "pig",
+                "rat", "ox", "tiger", "rabbit",
+                "dragon", "snake", "horse", "sheep"
+        };
+        System.out.print("Enter a year: ");
+        int year = scanner.nextInt();
+        System.out.println(zodiac[year % 12]);
     }
 
     /*
-
+        (Sort characters in a string) Write a method that returns a sorted string using the
+        following header:
+        public static String sort(String s)
+        For example, sort("acb") returns abc.
+        Write a test program that prompts the user to enter a string and displays the sorted
+        string.
      */
     public static void ch7_34() {
+        System.out.print("Enter a string: ");
+        String input = scanner.next();
+        System.out.println(sort(input));
+    }
+
+    public static String sort(String s) {
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            for (int j = 0; j < chars.length - 1; j++) {
+                if (chars[j] > chars[j + 1]) {
+                    char temp = chars[j];
+                    chars[j] = chars[j + 1];
+                    chars[j + 1] = temp;
+                }
+            }
+        }
+        return new String(chars);
     }
 
     /*
-
+        (Game: hangman) Write a hangman game that randomly generates a word and
+        prompts the user to guess one letter at a time, as presented in the sample run.
+        Each letter in the word is displayed as an asterisk. When the user makes a correct
+        guess, the actual letter is then displayed. When the user finishes a word, display
+        the number of misses and ask the user whether to continue to play with another
+        word. Declare an array to store words, as follows:
+        // Add any words you wish in this array
+        String[] words = {"write", "that",...};
+            (Guess) Enter a letter in word ******* > p
+            (Guess) Enter a letter in word p****** > r
+            (Guess) Enter a letter in word pr**r** > p
+            p is already in the word
+            (Guess) Enter a letter in word pr**r** > o
+            (Guess) Enter a letter in word pro*r** > g
+            (Guess) Enter a letter in word progr** > n
+            n is not in the word
+            (Guess) Enter a letter in word progr** > m
+            (Guess) Enter a letter in word progr*m > a
+            The word is program. You missed 1 time
+            Do you want to guess another word? Enter y or n>
      */
     public static void ch7_35() {
+        HangmanGame.start();
     }
+
+    class HangmanGame {
+        private static String word;
+        private static char[] chars;
+        private static boolean[] guessed;
+        private static int missed;
+
+        private static void start() {
+            while (true) {
+                word = generateWord();
+                chars = word.toCharArray();
+                guessed = new boolean[chars.length];
+                missed = 0;
+                System.out.println(word);
+                while (!allGuessed()) {
+                    System.out.printf("(Guess) Enter a letter in word %s > ", getWord());
+                    char guess = scanner.next().charAt(0);
+                    boolean isMiss = true;
+                    for (int i = 0; i < chars.length; i++) {
+                        if (chars[i] == guess && guessed[i]) {
+                            System.out.printf("%c is already in the word\n", guess);
+                            isMiss = false;
+                            break;
+                        }
+                        if (chars[i] == guess) {
+                            guessed[i] = true;
+                            isMiss = false;
+                        }
+                    }
+                    if (isMiss) {
+                        missed++;
+                        System.out.printf("%c is not in the word\n", guess);
+                    }
+                }
+                System.out.printf("The word is %s. You missed %d %s\n", getWord(), missed, missed == 1 ? "time" : "times");
+                System.out.print("Do you want to guess another word? Enter y or n> ");
+                char input = scanner.next().charAt(0);
+                if (input == 'y') {
+                    start();
+                } else {
+                    break;
+                }
+            }
+        }
+
+        public static String generateWord() {
+            String[] words = {"cat", "tree", "book", "teapot", "bottle"};
+            return words[(int) (Math.random() * words.length)];
+        }
+
+        public static String getWord() {
+            char[] result = Arrays.copyOf(chars, chars.length);
+            for (int i = 0; i < chars.length; i++) {
+                if (!guessed[i]) {
+                    result[i] = '*';
+                }
+            }
+
+            return new String(result);
+        }
+
+        public static boolean allGuessed() {
+            for (int i = 0; i < guessed.length; i++) {
+                if (!guessed[i]) return false;
+            }
+            return true;
+        }
+    }
+
 
     /*
 
