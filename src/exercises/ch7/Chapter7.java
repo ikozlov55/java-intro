@@ -1261,88 +1261,86 @@ public class Chapter7 {
             Do you want to guess another word? Enter y or n>
      */
     public static void ch7_35() {
-        HangmanGame.start();
-    }
-
-    class HangmanGame {
-        private static String word;
-        private static char[] chars;
-        private static boolean[] guessed;
-        private static int missed;
-
-        private static void start() {
-            while (true) {
-                word = generateWord();
-                chars = word.toCharArray();
-                guessed = new boolean[chars.length];
-                missed = 0;
-                System.out.println(word);
-                while (!allGuessed()) {
-                    System.out.printf("(Guess) Enter a letter in word %s > ", getWord());
-                    char guess = scanner.next().charAt(0);
-                    boolean isMiss = true;
-                    for (int i = 0; i < chars.length; i++) {
-                        if (chars[i] == guess && guessed[i]) {
-                            System.out.printf("%c is already in the word\n", guess);
-                            isMiss = false;
-                            break;
-                        }
-                        if (chars[i] == guess) {
-                            guessed[i] = true;
-                            isMiss = false;
-                        }
-                    }
-                    if (isMiss) {
-                        missed++;
-                        System.out.printf("%c is not in the word\n", guess);
-                    }
-                }
-                System.out.printf("The word is %s. You missed %d %s\n", getWord(), missed, missed == 1 ? "time" : "times");
-                System.out.print("Do you want to guess another word? Enter y or n> ");
-                char input = scanner.next().charAt(0);
-                if (input == 'y') {
-                    start();
-                } else {
-                    break;
-                }
-            }
-        }
-
-        public static String generateWord() {
-            String[] words = {"cat", "tree", "book", "teapot", "bottle"};
-            return words[(int) (Math.random() * words.length)];
-        }
-
-        public static String getWord() {
-            char[] result = Arrays.copyOf(chars, chars.length);
-            for (int i = 0; i < chars.length; i++) {
-                if (!guessed[i]) {
-                    result[i] = '*';
-                }
-            }
-
-            return new String(result);
-        }
-
-        public static boolean allGuessed() {
-            for (int i = 0; i < guessed.length; i++) {
-                if (!guessed[i]) return false;
-            }
-            return true;
-        }
+        HangmanGame game = new HangmanGame();
+        game.start();
     }
 
 
     /*
-
+        (Game: Eight Queens) The classic Eight Queens puzzle is to place eight queens on a
+        chessboard such that no two queens can attack each other (i.e., no two queens are on
+        the same row, same column, or same diagonal). There are many possible solutions.
+        Write a program that displays one such solution. A sample output is shown below:
+        |Q| | | | | | | |
+        | | | | |Q| | | |
+        | | | | | | | |Q|
+        | | | | | |Q| | |
+        | | |Q| | | | | |
+        | | | | | | |Q| |
+        | |Q| | | | | | |
+        | | | |Q| | | | |
      */
     public static void ch7_36() {
+        EightQueensPuzzle puzzle = new EightQueensPuzzle();
+        puzzle.solve();
+        System.out.println(puzzle);
     }
 
     /*
-
+        (Game: bean machine) The bean machine, also known as a quincunx or the Gal-
+        ton box, is a device for statistics experiments named after English scientist Sir
+        Francis Galton. It consists of an upright board with evenly spaced nails (or pegs)
+        in a triangular form, as shown in Figure 7.13.
+        Balls are dropped from the opening of the board. Every time a ball hits a nail, it
+        has a 50% chance of falling to the left or to the right. The piles of balls are accu-
+        mulated in the slots at the bottom of the board.
+        Write a program that simulates the bean machine. Your program should prompt the
+        user to enter the number of the balls and the number of the slots in the machine.
+        Simulate the falling of each ball by printing its path. For example, the path for
+        the ball in Figure 7.13b is LLRRLLR and the path for the ball in Figure 7.13c is
+        RLRRLRR. Display the final buildup of the balls in the slots in a histogram. Here
+        is a sample run of the program:
+        (Hint: Create an array named slots. Each element in slots stores the number of
+        balls in a slot. Each ball falls into a slot via a path. The number of Rs in a path is the
+        position of the slot where the ball falls. For example, for the path LRLRLRR, the ball
+        falls into slots[4], and for the path RRLLLLL, the ball falls into slots[2].)
+        Enter the number of balls to drop: 5
+        Enter the number of slots in the bean machine: 8
+            LRLRLRR
+            RRLLLRR
+            LLRLLRR
+            RRLLLLL
+            LRLRRLR
+                O
+                O
+              OOO
      */
     public static void ch7_37() {
+        System.out.print("Enter the number of balls to drop: ");
+        int numberOfBalls = scanner.nextInt();
+        System.out.print("Enter the number of slots in the bean machine:  ");
+        int numberOfSlots = scanner.nextInt();
+        int[] slots = new int[numberOfSlots];
+        for (int i = 0; i < numberOfBalls; i++) {
+            int n = 0;
+            for (int j = 0; j < numberOfSlots - 1; j++) {
+                if (Math.random() < 0.5) {
+                    System.out.print("R");
+                    n++;
+                } else {
+                    System.out.print("L");
+                }
+            }
+            System.out.println();
+            slots[n]++;
+        }
+
+        for (int i = numberOfBalls; i > 0; i--) {
+            for (int j = 0; j < slots.length; j++) {
+                System.out.print(i > slots[j] ? " " : 0);
+            }
+            System.out.println();
+        }
     }
 
 }
