@@ -1,5 +1,7 @@
 package exercises.ch8;
 
+import exercises.utils.ArrayUtils;
+
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
@@ -13,7 +15,7 @@ public class Chapter8 {
         public static double sumColumn(double[][] m, int columnIndex)
         Write a test program that reads a 3-by-4 matrix and displays the sum of each
         column. Here is a sample run:
-            Enter a 3−by−4 matrix row by row:
+            Enter a 3-by-4 matrix row by row:
             1.5 2 3 4
             5.5 6 7 8
             9.5 1 3 1
@@ -26,7 +28,7 @@ public class Chapter8 {
         final int ROWS = 3;
         final int COLUMNS = 4;
         double[][] matrix = new double[ROWS][COLUMNS];
-        System.out.printf("Enter a %d−by−%d matrix row by row: \n", ROWS, COLUMNS);
+        System.out.printf("Enter a %d-by-%d matrix row by row: \n", ROWS, COLUMNS);
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 matrix[i][j] = scanner.nextDouble();
@@ -48,7 +50,7 @@ public class Chapter8 {
         public static double sumMajorDiagonal(double[][] m)
         Write a test program that reads a 4-by-4 matrix and displays the sum of all its
         elements on the major diagonal. Here is a sample run:
-        Enter a 4−by−4 matrix row by row:
+        Enter a 4-by-4 matrix row by row:
         1 2 3 4.0
         5 6.5 7 8
         9 10 11 12
@@ -59,7 +61,7 @@ public class Chapter8 {
         final int ROWS = 4;
         final int COLUMNS = 4;
         double[][] matrix = new double[ROWS][COLUMNS];
-        System.out.printf("Enter a %d−by−%d matrix row by row: \n", ROWS, COLUMNS);
+        System.out.printf("Enter a %d-by-%d matrix row by row: \n", ROWS, COLUMNS);
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 matrix[i][j] = scanner.nextDouble();
@@ -176,38 +178,268 @@ public class Chapter8 {
     }
 
     /*
-
+        (Algebra: add two matrices) Write a method to add two matrices. The header of
+        the method is as follows:
+        public static double[][] addMatrix(double[][] a, double[][] b)
+        In order to be added, the two matrices must have the same dimensions and the
+        same or compatible types of elements. Let c be the resulting matrix. Each ele-
+        ment cij is aij + bij. For example, for two 3 * 3 matrices a and b, c is
+                a11 a12 a13   b11 b12 b13   a11+b11 a12+b12 a13+b13
+                a21 a22 a23 * b21 b22 b23 = a11+b11 a12+b12 a13+b13
+                a31 a32 a33   b31 b32 b33   a11+b11 a12+b12 a13+b13
+        Write a test program that prompts the user to enter two 3 * 3 matrices and dis-
+        plays their sum. Here is a sample run:
+        Enter matrix1: 1 2 3 4 5 6 7 8 9
+        Enter matrix2: 0 2 4 1 4.5 2.2 1.1 4.3 5.2
+        The matrices are added as follows
+        1.0 2.0 3.0   0.0 2.0 4.0   1.0 4.0 7.0
+        4.0 5.0 6.0 + 1.0 4.5 2.2 = 5.0 9.5 8.2
+        7.0 8.0 9.0   1.1 4.3 5.2   8.1 12.3 14.2
      */
     public static void ch8_5() {
+        final int N = 3;
+        System.out.print("Enter matrix1: ");
+        double[][] matrix1 = ArrayUtils.inputMatrix(N, N);
+        System.out.print("Enter matrix2: ");
+        double[][] matrix2 = ArrayUtils.inputMatrix(N, N);
 
+        double[][] added = addMatrix(matrix1, matrix2);
+        System.out.println("The matrices are added as follows");
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.printf("%-5.1f", matrix1[i][j]);
+            }
+            System.out.print(i == N / 2 ? " + " : "   ");
+            for (int j = 0; j < N; j++) {
+                System.out.printf("%-5.1f", matrix2[i][j]);
+            }
+            System.out.print(i == N / 2 ? " = " : "   ");
+            for (int j = 0; j < N; j++) {
+                System.out.printf("%-5.1f", added[i][j]);
+            }
+            System.out.println();
+        }
     }
 
-    /*
+    public static double[][] addMatrix(double[][] a, double[][] b) {
+        int N = a.length;
+        double[][] result = new double[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                result[i][j] = a[i][j] + b[i][j];
+            }
+        }
+        return result;
+    }
 
+
+    /*
+        (Algebra: multiply two matrices) Write a method to multiply two matrices. The
+        header of the method is:
+        public static double[][] multiplyMatrix(double[][] a, double[][] b)
+        To multiply matrix a by matrix b, the number of columns in a must be the same as
+        the number of rows in b, and the two matrices must have elements of the same or
+        compatible types. Let c be the result of the multiplication. Assume the column size
+        of matrix a is n. Each element cij is ai1 * b1j + ai2 * b2j + ... + ain * bnj.
+        For example, for two 3 * 3 matrices a and b, c is
+
+        a11 a12 a13   b11 b12 b13   c11 c12 c13
+        a21 a22 a23 * b21 b22 b23 = c21 c22 c23
+        a31 a32 a33   b31 b32 b33   c31 c32 c43
+
+        where cij = ai1 * b1j + ai2 * b2j + ai3 * b3j.
+        Write a test program that prompts the user to enter two 3 * 3 matrices and
+        displays their product. Here is a sample run:
+            Enter matrix1: 1 2 3 4 5 6 7 8 9
+            Enter matrix2: 0 2 4 1 4.5 2.2 1.1 4.3 5.2
+            The multiplication of the matrices is
+            1 2 3   0   2.0 4.0     5.3  23.9 24
+            4 5 6 * 1   4.5 2.2  =  11.6 56.3 58.2
+            7 8 9   1.1 4.3 5.2     17.9 88.7 92.4
      */
     public static void ch8_6() {
+        final int N = 3;
+        System.out.print("Enter matrix1: ");
+        double[][] matrix1 = ArrayUtils.inputMatrix(N, N);
+        System.out.print("Enter matrix2: ");
+        double[][] matrix2 = ArrayUtils.inputMatrix(N, N);
 
+        double[][] multiplied = multiplyMatrix(matrix1, matrix2);
+        System.out.println("The multiplication of the matrices is");
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.printf("%-5.1f", matrix1[i][j]);
+            }
+            System.out.print(i == N / 2 ? " * " : "   ");
+            for (int j = 0; j < N; j++) {
+                System.out.printf("%-5.1f", matrix2[i][j]);
+            }
+            System.out.print(i == N / 2 ? " = " : "   ");
+            for (int j = 0; j < N; j++) {
+                System.out.printf("%-5.1f", multiplied[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+    public static double[][] multiplyMatrix(double[][] a, double[][] b) {
+        int N = a.length;
+        double[][] result = new double[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                double value = 0;
+                for (int k = 0; k < N; k++) {
+                    value += a[i][k] * b[k][j];
+                }
+                result[i][j] = value;
+            }
+        }
+        return result;
     }
 
     /*
-
+        (Points nearest to each other) Listing 8.3 gives a program that finds two points in
+        a two-dimensional space nearest to each other. Revise the program so it finds two
+        points in a three-dimensional space nearest to each other. Use a two-dimensional
+        array to represent the points. Test the program using the following points:
+        310 Chapter 8 Multidimensional Arrays
+        double[][] points = {{-1, 0, 3}, {-1, -1, -1}, {4, 1, 1},
+        {2, 0.5, 9}, {3.5, 2, -1}, {3, 1.5, 3}, {-1.5, 4, 2},
+        {5.5, 4, -0.5}};
+        The formula for computing the distance between two points (x1, y1, z1) and
+        (x2, y2, z2) is sqrt((x2 - x1)^2 + (y2 - y1)^2 + (z2 - z1)^2).
      */
     public static void ch8_7() {
+        double[][] points = {
+                {-1, 0, 3}, {-1, -1, -1}, {4, 1, 1},
+                {2, 0.5, 9}, {3.5, 2, -1}, {3, 1.5, 3},
+                {-1.5, 4, 2}, {5.5, 4, -0.5}
+        };
 
+        // p1 and p2 are the indices in the points' array
+        int p1 = 0, p2 = 1; // Initial two points
+        double shortestDistance = distance3D(
+                points[p1][0], points[p1][1], points[p1][2],
+                points[p2][0], points[p2][1], points[p2][2]
+        ); // Initialize shortestDistance
+
+        // Compute distance for every two points
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                double distance = distance3D(
+                        points[i][0], points[i][1], points[i][2],
+                        points[j][0], points[j][1], points[j][2]
+                ); // Find distance
+
+                if (shortestDistance > distance) {
+                    p1 = i; // Update p1
+                    p2 = j; // Update p2
+                    shortestDistance = distance; // Update shortestDistance
+                }
+            }
+        }
+
+        // Display result
+        System.out.printf("The closest two points are (%.1f, %.1f, %.1f) and (%.1f, %.1f, %.1f)\n",
+                points[p1][0], points[p1][1], points[p1][2],
+                points[p2][0], points[p2][1], points[p2][2]
+        );
+    }
+
+    public static double distance3D(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
     }
 
     /*
-
+        (All closest pairs of points) Revise Listing 8.3, FindNearestPoints.java, to display
+        all closest pairs of points with the same minimum distance. Here is a sample run:
+        Enter the number of points: 8
+        Enter 8 points: 0 0 1 1 -1 -1 2 2 -2 -2 -3 -3 -4 -4 5 5
+        The closest two points are (0.0, 0.0) and (1.0, 1.0)
+        The closest two points are (0.0, 0.0) and (-1.0, -1.0)
+        The closest two points are (1.0, 1.0) and (2.0, 2.0)
+        The closest two points are (-1.0, -1.0) and (-2.0, -2.0)
+        The closest two points are (-2.0, -2.0) and (-3.0, -3.0)
+        The closest two points are (-3.0, -3.0) and (-4.0, -4.0)
+        Their distance is 1.4142135623730951
      */
     public static void ch8_8() {
+        System.out.print("Enter the number of points: ");
+        int numberOfPoints = scanner.nextInt();
+        double[][] points = new double[numberOfPoints][2];
+        System.out.printf("Enter %d points: ", numberOfPoints);
+        for (int i = 0; i < numberOfPoints; i++) {
+            points[i][0] = scanner.nextDouble();
+            points[i][1] = scanner.nextDouble();
+        }
 
+        double[][] closestPairs = new double[0][4];
+
+        // Initialize shortestDistance
+        double shortestDistance = distance(points[0][0], points[0][1], points[1][0], points[1][1]);
+
+        // Compute distance for every two points
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                // Find distance
+                double distance = distance(points[i][0], points[i][1], points[j][0], points[j][1]);
+
+                if (shortestDistance > distance) {
+                    shortestDistance = distance; // Update shortestDistance
+                    closestPairs = new double[][]{{points[i][0], points[i][1], points[j][0], points[j][1]}};
+                } else if (shortestDistance == distance) {
+                    closestPairs = Arrays.copyOf(closestPairs, closestPairs.length + 1);
+                    double[] pair = new double[]{points[i][0], points[i][1], points[j][0], points[j][1]};
+                    closestPairs[closestPairs.length - 1] = pair;
+                }
+            }
+        }
+
+        for (double[] pair : closestPairs) {
+            System.out.printf("The closest two points are (%.1f, %.1f) and (%.1f, %.1f)\n",
+                    pair[0], pair[1], pair[2], pair[3]
+            );
+        }
+        System.out.println("Their distance is " + shortestDistance);
+    }
+
+    public static double distance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     /*
-
+        (Game: play a tic-tac-toe game) In a game of tic-tac-toe, two players take turns
+        marking an available cell in a 3 * 3 grid with their respective tokens (either X
+        or O). When one player has placed three tokens in a horizontal, vertical, or diago-
+        nal row on the grid, the game is over and that player has won. A draw (no winner)
+        occurs when all the cells on the grid have been filled with tokens and neither
+        player has achieved a win. Create a program for playing a tic-tac-toe game.
+        The program prompts two players to alternately enter an X token and O token.
+        Whenever a token is entered, the program redisplays the board on the console and
+        determines the status of the game (win, draw, or continue). Here is a sample run:
+        | | | |
+        | | | |
+        | | | |
+        Enter a row (0, 1, or 2) for player X: 1
+        Enter a column (0, 1, or 2) for player X: 1
+        | | | |
+        | |X| |
+        | | | |
+        Enter a row (0, 1, or 2) for player O: 1
+        Enter a column (0, 1, or 2) for player O: 2
+        | | | |
+        | |X|O|
+        | | | |
+        Enter a row (0, 1, or 2) for player X:
+        . . .
+        |X| | |
+        |O|X|O|
+        | | |X|
+        X player won
      */
     public static void ch8_9() {
-
+        TicTacToeGame game = new TicTacToeGame();
+        game.start();
     }
 
     /*

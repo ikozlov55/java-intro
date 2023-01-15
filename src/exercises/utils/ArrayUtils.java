@@ -51,4 +51,15 @@ public class ArrayUtils {
         return result;
     }
 
+    public static double[][] inputMatrix(int rows, int columns) {
+        double[][] matrix = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = scanner.nextDouble();
+            }
+        }
+
+        return matrix;
+    }
+
 }
