@@ -84,16 +84,7 @@ public class Chapter8 {
      */
     public static void ch8_3() {
         // Students' answers to the questions
-        char[][] answers = {
-                {'A', 'B', 'A', 'C', 'C', 'D', 'E', 'E', 'A', 'D'},
-                {'D', 'B', 'A', 'B', 'C', 'A', 'E', 'E', 'A', 'D'},
-                {'E', 'D', 'D', 'A', 'C', 'B', 'E', 'E', 'A', 'D'},
-                {'C', 'B', 'A', 'E', 'D', 'C', 'E', 'E', 'A', 'D'},
-                {'A', 'B', 'D', 'C', 'C', 'D', 'E', 'E', 'A', 'D'},
-                {'B', 'B', 'E', 'C', 'C', 'D', 'E', 'E', 'A', 'D'},
-                {'B', 'B', 'A', 'C', 'C', 'D', 'E', 'E', 'A', 'D'},
-                {'E', 'B', 'E', 'C', 'C', 'D', 'E', 'E', 'A', 'D'}
-        };
+        char[][] answers = {{'A', 'B', 'A', 'C', 'C', 'D', 'E', 'E', 'A', 'D'}, {'D', 'B', 'A', 'B', 'C', 'A', 'E', 'E', 'A', 'D'}, {'E', 'D', 'D', 'A', 'C', 'B', 'E', 'E', 'A', 'D'}, {'C', 'B', 'A', 'E', 'D', 'C', 'E', 'E', 'A', 'D'}, {'A', 'B', 'D', 'C', 'C', 'D', 'E', 'E', 'A', 'D'}, {'B', 'B', 'E', 'C', 'C', 'D', 'E', 'E', 'A', 'D'}, {'B', 'B', 'A', 'C', 'C', 'D', 'E', 'E', 'A', 'D'}, {'E', 'B', 'E', 'C', 'C', 'D', 'E', 'E', 'A', 'D'}};
 
         // Key to the questions
         char[] keys = {'D', 'B', 'D', 'C', 'C', 'D', 'A', 'E', 'A', 'D'};
@@ -105,8 +96,7 @@ public class Chapter8 {
             grades[i][0] = i;
             // Grade one student
             for (int j = 0; j < answers[i].length; j++) {
-                if (answers[i][j] == keys[j])
-                    grades[i][1]++;
+                if (answers[i][j] == keys[j]) grades[i][1]++;
             }
         }
 
@@ -143,16 +133,7 @@ public class Chapter8 {
         Employee 7   6  3  5  9  2  7  9
      */
     public static void ch8_4() {
-        int[][] weeklyHours = {
-                {2, 4, 3, 4, 5, 8, 8},
-                {7, 3, 4, 3, 3, 4, 4},
-                {3, 3, 4, 3, 3, 2, 2},
-                {9, 3, 4, 7, 3, 4, 1},
-                {3, 5, 4, 3, 6, 3, 8},
-                {3, 4, 4, 6, 3, 4, 4},
-                {3, 7, 4, 8, 3, 8, 4},
-                {6, 3, 5, 9, 2, 7, 9},
-        };
+        int[][] weeklyHours = {{2, 4, 3, 4, 5, 8, 8}, {7, 3, 4, 3, 3, 4, 4}, {3, 3, 4, 3, 3, 2, 2}, {9, 3, 4, 7, 3, 4, 1}, {3, 5, 4, 3, 6, 3, 8}, {3, 4, 4, 6, 3, 4, 4}, {3, 7, 4, 8, 3, 8, 4}, {6, 3, 5, 9, 2, 7, 9},};
         int[][] totalHours = new int[weeklyHours.length][2];
 
         for (int i = 0; i < weeklyHours.length; i++) {
@@ -310,26 +291,16 @@ public class Chapter8 {
         (x2, y2, z2) is sqrt((x2 - x1)^2 + (y2 - y1)^2 + (z2 - z1)^2).
      */
     public static void ch8_7() {
-        double[][] points = {
-                {-1, 0, 3}, {-1, -1, -1}, {4, 1, 1},
-                {2, 0.5, 9}, {3.5, 2, -1}, {3, 1.5, 3},
-                {-1.5, 4, 2}, {5.5, 4, -0.5}
-        };
+        double[][] points = {{-1, 0, 3}, {-1, -1, -1}, {4, 1, 1}, {2, 0.5, 9}, {3.5, 2, -1}, {3, 1.5, 3}, {-1.5, 4, 2}, {5.5, 4, -0.5}};
 
         // p1 and p2 are the indices in the points' array
         int p1 = 0, p2 = 1; // Initial two points
-        double shortestDistance = distance3D(
-                points[p1][0], points[p1][1], points[p1][2],
-                points[p2][0], points[p2][1], points[p2][2]
-        ); // Initialize shortestDistance
+        double shortestDistance = distance3D(points[p1][0], points[p1][1], points[p1][2], points[p2][0], points[p2][1], points[p2][2]); // Initialize shortestDistance
 
         // Compute distance for every two points
         for (int i = 0; i < points.length; i++) {
             for (int j = i + 1; j < points.length; j++) {
-                double distance = distance3D(
-                        points[i][0], points[i][1], points[i][2],
-                        points[j][0], points[j][1], points[j][2]
-                ); // Find distance
+                double distance = distance3D(points[i][0], points[i][1], points[i][2], points[j][0], points[j][1], points[j][2]); // Find distance
 
                 if (shortestDistance > distance) {
                     p1 = i; // Update p1
@@ -340,10 +311,7 @@ public class Chapter8 {
         }
 
         // Display result
-        System.out.printf("The closest two points are (%.1f, %.1f, %.1f) and (%.1f, %.1f, %.1f)\n",
-                points[p1][0], points[p1][1], points[p1][2],
-                points[p2][0], points[p2][1], points[p2][2]
-        );
+        System.out.printf("The closest two points are (%.1f, %.1f, %.1f) and (%.1f, %.1f, %.1f)\n", points[p1][0], points[p1][1], points[p1][2], points[p2][0], points[p2][1], points[p2][2]);
     }
 
     public static double distance3D(double x1, double y1, double z1, double x2, double y2, double z2) {
@@ -396,9 +364,7 @@ public class Chapter8 {
         }
 
         for (double[] pair : closestPairs) {
-            System.out.printf("The closest two points are (%.1f, %.1f) and (%.1f, %.1f)\n",
-                    pair[0], pair[1], pair[2], pair[3]
-            );
+            System.out.printf("The closest two points are (%.1f, %.1f) and (%.1f, %.1f)\n", pair[0], pair[1], pair[2], pair[3]);
         }
         System.out.println("Their distance is " + shortestDistance);
     }
@@ -443,37 +409,300 @@ public class Chapter8 {
     }
 
     /*
-
+        (Largest row and column) Write a program that randomly fills in 0s and 1s into
+        a 4-by-4 matrix, prints the matrix, and finds the first row and column with the
+        most 1s. Here is a sample run of the program:
+        0011
+        0011
+        1101
+        1010
+        The largest row index: 2
+        The largest column index: 2
      */
     public static void ch8_10() {
+        final int N = 4;
+        int[][] matrix = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                matrix[i][j] = Math.random() < 0.5 ? 1 : 0;
+                System.out.print(matrix[i][j]);
+            }
+            System.out.println();
+        }
+        int maxRowIndex = 0;
+        int maxOnesInRow = 0;
+        int maxColumnIndex = 0;
+        int maxOnesInColumn = 0;
 
+        for (int i = 0; i < N; i++) {
+            int onesInRow = 0;
+            int onesColumn = 0;
+            for (int j = 0; j < N; j++) {
+                if (matrix[i][j] == 1) {
+                    onesInRow++;
+                }
+                if (matrix[j][i] == 1) {
+                    onesColumn++;
+                }
+            }
+            if (onesInRow > maxOnesInRow) {
+                maxOnesInRow = onesInRow;
+                maxRowIndex = i;
+            }
+            if (onesColumn > maxOnesInColumn) {
+                maxOnesInColumn = onesColumn;
+                maxColumnIndex = i;
+            }
+        }
+
+        System.out.println("The largest row index: " + maxRowIndex);
+        System.out.println("The largest column index: " + maxColumnIndex);
     }
 
     /*
-
+        (Game: nine heads and tails) Nine coins are placed in a 3-by-3 matrix with some
+        face up and some face down. You can represent the state of the coins using a
+        3-by-3 matrix with values 0 (heads) and 1 (tails). Here are some examples:
+        0 0 0   1 0 1   1 1 0   1 0 1   1 0 0
+        0 1 0   0 0 1   1 0 0   1 1 0   1 1 1
+        0 0 0   1 0 0   0 0 1   1 0 0   1 1 0
+        Each state can also be represented using a binary number. For example, the pre-
+        ceding matrices correspond to the numbers
+        000010000 101001100 110100001 101110100 100111110
+        There are a total of 512 possibilities, so you can use decimal numbers 0, 1, 2, 3, . . . ,
+        and 511 to represent all states of the matrix. Write a program that prompts the
+        user to enter a number between 0 and 511 and displays the corresponding matrix
+        with the characters H and T. In the following sample run, the user entered 7, which
+        corresponds to 000000111. Since 0 stands for H and 1 for T, the output is correct.
+            Enter a number between 0 and 511: 7
+            H H H
+            H H H
+            T T T
      */
     public static void ch8_11() {
+        final int MIN = 0;
+        final int MAX = 511;
+        final int N = 3;
+        System.out.printf("Enter a number between %d and %d: ", MIN, MAX);
+        int n = scanner.nextInt();
+        if (n < MIN || n > MAX) {
+            System.out.println("Invalid input");
+        }
+        String binary = String.format("%9s", Integer.toBinaryString(n)).replace(" ", "0");
+        char[][] matrix = new char[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                matrix[i][j] = binary.charAt(i * N + j) == '0' ? 'H' : 'T';
+            }
+        }
+        System.out.println(binary);
 
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     /*
-
+        (Financial application: compute tax) Rewrite Listing 3.5, ComputeTax.java,
+        using arrays. For each filing status, there are six tax rates. Each rate is applied
+        to a certain amount of taxable income. For example, from the taxable income of
+        $400,000 for a single filer, $8,350 is taxed at 10%, (33,950 - 8,350) at 15%,
+        (82,250 - 33,950) at 25%, (171,550 - 82,550) at 28%, (372,550 - 82,250) at
+        33%, and (400,000 - 372,950) at 36%. The six rates are the same for all filing
+        statuses, which can be represented in the following array:
+        double[] rates = {0.10, 0.15, 0.25, 0.28, 0.33, 0.35};
+        The brackets for each rate for all the filing statuses can be represented in a two-
+        dimensional array as follows:
+        int[][] brackets = {
+                {8350, 33950, 82250, 171550, 372950},// Single filer
+                {16700, 67900, 137050, 20885, 372950}, // Married jointly −or qualifying widow(er)
+                {8350, 33950, 68525, 104425, 186475},// Married separately
+                {11950, 45500, 117450, 190200, 372950} // Head of household
+        };
+        Suppose the taxable income is $400,000 for single filers. The tax can be com-
+        puted as follows:
+        tax = brackets[0][0] * rates[0] +
+        (brackets[0][1] – brackets[0][0]) * rates[1] +
+        (brackets[0][2] – brackets[0][1]) * rates[2] +
+        (brackets[0][3] – brackets[0][2]) * rates[3] +
+        (brackets[0][4] – brackets[0][3]) * rates[4] +
+        (400000 – brackets[0][4]) * rates[5];
      */
     public static void ch8_12() {
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "Taxable", "Single", "Married Joint", "Married", "Head of");
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "Income", "", "or Qualifying", "Separate", "House hold");
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "", "", "Widow(er)", "", "");
+        for (double income = 50_000; income <= 60_000; income += 50) {
+            System.out.printf("%-14d%-14d%-18d%-14d%-14d\n", Math.round(income), Math.round(computeTax(0, income)), Math.round(computeTax(1, income)), Math.round(computeTax(2, income)), Math.round(computeTax(3, income)));
+        }
+    }
 
+    public static double computeTax(int status, double income) {
+        double[] rates = {0.10, 0.15, 0.25, 0.28, 0.33, 0.35};
+        int[][] brackets = {{8350, 33950, 82250, 171550, 372950},// Single filer
+                {16700, 67900, 137050, 20885, 372950}, // Married jointly −or qualifying widow(er)
+                {8350, 33950, 68525, 104425, 186475},// Married separately
+                {11950, 45500, 117450, 190200, 372950} // Head of household
+        };
+        int[] m = brackets[status];
+        if (income <= m[0]) return income * rates[0];
+        else if (income <= m[1]) return m[0] * rates[0] + (income - m[0]) * rates[1];
+        else if (income <= m[2]) return m[0] * rates[0] + (m[1] - m[0]) * rates[1] + (income - m[1]) * rates[2];
+        else if (income <= m[3])
+            return m[0] * rates[0] + (m[1] - m[0]) * rates[1] + (m[2] - m[1]) * rates[2] + (income - m[2]) * rates[3];
+        else if (income <= m[4])
+            return m[0] * rates[0] + (m[1] - m[0]) * rates[1] + (m[2] - m[1]) * rates[2] + (m[3] - m[2]) * rates[3] + (income - m[3]) * rates[4];
+        else
+            return m[0] * rates[0] + (m[1] - m[0]) * rates[1] + (m[2] - m[1]) * rates[2] + (m[3] - m[2]) * rates[3] + (m[4] - m[3]) * rates[4] + (income - m[4]) * rates[5];
     }
 
     /*
-
+        (Locate the largest element) Write the following method that returns the location
+        of the largest element in a two-dimensional array:
+        public static int[] locateLargest(double[][] a)
+        The return value is a one-dimensional array that contains two elements. These
+        two elements indicate the row and column indices of the largest element in the
+        two-dimensional array. If there are more than one largest element, return the
+        smallest row index and then the smallest column index.
+        Write a test program that prompts the user to enter a two-dimensional array and
+        displays the location of the largest element in the array. Here is a sample run:
+        Enter the number of rows and columns of the array: 3 4
+        Enter the array:
+        23.5 35 2 10
+        4.5 3 45 3.5
+        35 44 5.5 9.6
+        The location of the largest element is at (1, 2)
      */
     public static void ch8_13() {
+        System.out.print("Enter the number of rows and columns of the array: ");
+        int rows = scanner.nextInt();
+        int columns = scanner.nextInt();
+        System.out.println("Enter the array: ");
+        double[][] matrix = ArrayUtils.inputMatrix(rows, columns);
 
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        int[] max = locateLargest(matrix);
+        System.out.printf("The location of the largest element is at (%d, %d)\n", max[0], max[1]);
+    }
+
+    public static int[] locateLargest(double[][] a) {
+        int[] result = {0, 0};
+        double maxValue = a[0][0];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+                if (a[i][j] > maxValue) {
+                    maxValue = a[i][j];
+                    result = new int[]{i, j};
+                }
+            }
+
+        }
+
+        return result;
     }
 
     /*
-
+        (Explore matrix) Write a program that prompts the user to enter the length of a
+        square matrix, randomly fills in 0s and 1s into the matrix, prints the matrix, and
+        finds the rows, columns, and diagonals with all 0s or 1s. Here is a sample run of
+        the program:
+            Enter the size for the matrix: 4
+            0111
+            0000
+            0100
+            1111
+            All 0s on row 2
+            All 1s on row 4
+            No same numbers on a column
+            No same numbers on the major diagonal
+            No same numbers on the sub−diagonal
      */
     public static void ch8_14() {
+        System.out.print("Enter the size for the matrix: ");
+        int N = scanner.nextInt();
+        int[][] matrix = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                matrix[i][j] = Math.random() < 0.5 ? 1 : 0;
+                System.out.print(matrix[i][j]);
+            }
+            System.out.println();
+        }
+        int[][] sameRows = new int[0][2];
+        int[][] sameColumns = new int[0][2];
+        for (int i = 0; i < N; i++) {
+            boolean isSameInRow = true;
+            boolean isSameInColumn = true;
+            int rowValue = matrix[i][0];
+            int columnValue = matrix[0][i];
+            for (int j = 0; j < N; j++) {
+                if (matrix[i][j] != rowValue) {
+                    isSameInRow = false;
+                }
+                if (matrix[j][i] != columnValue) {
+                    isSameInColumn = false;
+                }
+            }
+            if (isSameInRow) {
+                sameRows = Arrays.copyOf(sameRows, sameRows.length + 1);
+                sameRows[sameRows.length - 1] = new int[]{rowValue, i + 1};
+            }
+            if (isSameInColumn) {
+                sameColumns = Arrays.copyOf(sameColumns, sameColumns.length + 1);
+                sameColumns[sameColumns.length - 1] = new int[]{columnValue, i + 1};
+            }
+        }
+        boolean isSameOnMajorDiagonal = true;
+        int majorDiagonalValue = matrix[0][0];
+        for (int i = 0, j = 0; i < N && j < N; i++, j++) {
+            if (matrix[i][j] != majorDiagonalValue) {
+                isSameOnMajorDiagonal = false;
+            }
+        }
+        boolean isSameOnSubDiagonal = true;
+        int subDiagonalValue = matrix[0][N - 1];
+        for (int i = 0, j = N - 1; i < N && j >= 0; i++, j--) {
+            if (matrix[i][j] != subDiagonalValue) {
+                isSameOnSubDiagonal = false;
+            }
+        }
+
+        if (sameRows.length > 0) {
+            for (int[] values : sameRows) {
+                System.out.printf("All %ds on row %d\n", values[0], values[1]);
+            }
+        } else {
+            System.out.println("No same numbers on a row");
+        }
+
+        if (sameColumns.length > 0) {
+            for (int[] values : sameColumns) {
+                System.out.printf("All %ds on column %d\n", values[0], values[1]);
+            }
+        } else {
+            System.out.println("No same numbers on a column");
+        }
+
+        if (isSameOnMajorDiagonal) {
+            System.out.printf("All %ds on major diagonal\n", majorDiagonalValue);
+        } else {
+            System.out.println("No same numbers on the major diagonal");
+        }
+
+        if (isSameOnSubDiagonal) {
+            System.out.printf("All %ds on sub−diagonal\n", subDiagonalValue);
+        } else {
+            System.out.println("No same numbers on the sub−diagonal");
+        }
 
     }
 
