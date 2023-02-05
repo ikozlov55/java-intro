@@ -707,45 +707,317 @@ public class Chapter8 {
     }
 
     /*
-
+        (Geometry: same line?) Programming Exercise 6.39 gives a method for testing
+        whether three points are on the same line.
+        Write the following method to test whether all the points in the array points are
+        on the same line:
+        public static boolean sameLine(double[][] points)
+        Write a program that prompts the user to enter five points and displays whether
+        they are on the same line. Here are sample runs:
+            Enter five points: 3.4 2 6.5 9.5 2.3 2.3 5.5 5 -5 4
+            The five points are not on the same line
+            Enter five points: 1 1 2 2 3 3 4 4 5 5
+            The five points are on the same line
      */
     public static void ch8_15() {
-
+        double[][] points = new double[5][2];
+        System.out.print("Enter five points: ");
+        for (int i = 0; i < points.length; i++) {
+            double x = scanner.nextDouble();
+            double y = scanner.nextDouble();
+            points[i] = new double[]{x, y};
+        }
+        if (sameLine(points)) {
+            System.out.println("The five points are on the same line");
+        } else {
+            System.out.println("The five points are not on the same line");
+        }
     }
 
-    /*
+    public static boolean sameLine(double[][] points) {
+        if (points.length <= 2) return true;
+        double[] first = points[0];
+        double[] last = points[points.length - 1];
+        boolean result = true;
 
+        for (int i = 1; i < points.length - 1; i++) {
+            if (!onTheSameLine(first, last, points[i])) return false;
+        }
+
+        return result;
+    }
+
+    public static boolean onTheSameLine(double[] p0, double[] p1, double[] p2) {
+        double x0 = p0[0];
+        double y0 = p0[1];
+        double x1 = p1[0];
+        double y1 = p1[1];
+        double x2 = p2[0];
+        double y2 = p2[1];
+        return (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0) == 0;
+    }
+
+
+    /*
+        (Sort two-dimensional array) Write a method to sort a two-dimensional array
+        using the following header:
+        public static void sort(int m[][])
+        The method performs a primary sort on rows, and a secondary sort on columns.
+        For example, the following array
+        {{4, 2},{1, 7},{4, 5},{1, 2},{1, 1},{4, 1}}
+        will be sorted to
+        {{1, 1},{1, 2},{1, 7},{4, 1},{4, 2},{4, 5}}.
      */
     public static void ch8_16() {
+        int[][] array = {{4, 2}, {1, 7}, {4, 5}, {1, 2}, {1, 1}, {4, 1}};
+        sort(array);
+        System.out.print("[");
+        Arrays.stream(array).map(Arrays::toString).forEach(System.out::print);
+        System.out.print("]");
+    }
 
+    public static void sort(int[][] m) {
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m.length - 1; j++) {
+                for (int k = 0; k < m[j].length; k++) {
+                    if (m[j][k] < m[j + 1][k]) break;
+                    if (m[j][k] > m[j + 1][k]) {
+                        int[] temp = m[j];
+                        m[j] = m[j + 1];
+                        m[j + 1] = temp;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     /*
-
+        (Financial tsunami) Banks lend money to each other. In tough economic times, if a
+        bank goes bankrupt, it may not be able to pay back the loan. A bank’s total assets are
+        its current balance plus its loans to other banks. The diagram in Figure 8.8 shows
+        five banks. The banks’ current balances are 25, 125, 175, 75, and 181 million dol-
+        lars, respectively. The directed edge from node 1 to node 2 indicates that bank 1
+        lends 40 million dollars to bank 2.
+        If a bank’s total assets are under a certain limit, the bank is unsafe. The money it
+        borrowed cannot be returned to the lender, and the lender cannot count the loan in
+        its total assets. Consequently, the lender may also be unsafe, if its total assets are
+        under the limit. Write a program to find all the unsafe banks. Your program reads
+        the input as follows. It first reads two integers n and limit, where n indicates the
+        number of banks and limit is the minimum total assets for keeping a bank safe. It
+        then reads n lines that describe the information for n banks with IDs from 0 to n−1.
+        The first number in the line is the bank’s balance, the second number indicates
+        the number of banks that borrowed money from the bank, and the rest are pairs
+        of two numbers. Each pair describes a borrower. The first number in the pair is
+        the borrower’s ID and the second is the amount borrowed. For example, the input
+        for the five banks in Figure 8.8 is as follows (note the limit is 201):
+        5 201
+        25 2 1 100.5 4 320.5
+        125 2 2 40 3 85
+        175 2 0 125 3 75
+        75 1 0 125
+        181 1 2 125
+        The total assets of bank 3 are (75 + 125), which is under 201, so bank 3 is unsafe.
+        After bank 3 becomes unsafe, the total assets of bank 1 fall below (125 + 40).
+        Thus, bank 1 is also unsafe. The output of the program should be
+        Unsafe banks are 3 1
+        (Hint: Use a two-dimensional array borrowers to represent loans. borrow-
+        ers[i][j] indicates the loan that bank i provides to bank j. Once bank j
+        becomes unsafe, borrowers[i][j] should be set to 0.)
      */
     public static void ch8_17() {
-
+        System.out.print("Enter a number of banks and safe assets limit: ");
+        int n = scanner.nextInt();
+        int limit = scanner.nextInt();
+        double[] balances = new double[n];
+        double[][] borrowers = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            balances[i] = scanner.nextDouble();
+            int borrowersNumber = scanner.nextInt();
+            for (int j = 0; j < borrowersNumber; j++) {
+                int borrowerId = scanner.nextInt();
+                double amountBorrowed = scanner.nextDouble();
+                borrowers[i][borrowerId] = amountBorrowed;
+            }
+        }
+        boolean[] unsafeBanks = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            double amount = balances[i] + Arrays.stream(borrowers[i]).sum();
+            if (amount < limit && !unsafeBanks[i]) {
+                unsafeBanks[i] = true;
+                for (int j = 0; j < n; j++) {
+                    borrowers[j][i] = 0;
+                }
+                i = 0;
+            }
+        }
+        System.out.print("Unsafe banks are");
+        for (int i = 0; i < n; i++) {
+            if (unsafeBanks[i]) {
+                System.out.print(" " + i);
+            }
+        }
     }
 
     /*
-
+        (Shuffle rows) Write a method that shuffles the rows in a two-dimensional int
+        array using the following header:
+        public static void shuffle(int[][] m)
+        Write a test program that shuffles the following matrix:
+        int[][] m = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 10}};
      */
     public static void ch8_18() {
+        int[][] m = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 10}};
+        shuffle(m);
+        System.out.print("[");
+        Arrays.stream(m).map(Arrays::toString).forEach(System.out::print);
+        System.out.print("]");
+    }
 
+    public static void shuffle(int[][] m) {
+        for (int i = 0; i < m.length; i++) {
+            int index = (int) (Math.random() * m.length);
+            int[] temp = m[i];
+            m[i] = m[index];
+            m[index] = temp;
+        }
     }
 
     /*
-
+        (Pattern recognition: four consecutive equal numbers) Write the following
+        method that tests whether a two-dimensional array has four consecutive numbers
+        of the same value, either horizontally, vertically, or diagonally:
+        public static boolean isConsecutiveFour(int[][] values)
+        Write a test program that prompts the user to enter the number of rows and
+        columns of a two-dimensional array then the values in the array, and displays true
+        if the array contains four consecutive numbers with the same value. Otherwise,
+        the program displays false.
      */
     public static void ch8_19() {
-
+        System.out.print("Enter number of rows: ");
+        int rows = scanner.nextInt();
+        System.out.print("Enter number of columns: ");
+        int columns = scanner.nextInt();
+        int[][] matrix = new int[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = scanner.nextInt();
+            }
+        }
+        System.out.println(isConsecutiveFour(matrix));
     }
 
-    /*
+    public static boolean isConsecutiveFour(int[][] values) {
+        if (values.length == 0) return false;
+        final int n = 4;
+        int rows = values.length;
+        int columns = values[0].length;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                int value = values[i][j];
+                int counter = 0;
+                //down
+                for (int k = i; k < rows; k++) {
+                    if (values[k][j] == value) {
+                        counter++;
+                        if (counter == n) {
+                            System.out.printf("down [%d,%d] - [%d,%d]\n", i, j, k, j);
+                            return true;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                counter = 0;
+                //right
+                for (int k = j; k < columns; k++) {
+                    if (values[i][k] == value) {
+                        counter++;
+                        if (counter == n) {
+                            System.out.printf("right [%d,%d] - [%d,%d]\n", i, j, i, k);
+                            return true;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                counter = 0;
+                //down left
+                for (int k = i, l = j; k < rows && l >= 0; k++, l--) {
+                    if (values[k][l] == value) {
+                        counter++;
+                        if (counter == n) {
+                            System.out.printf("down left [%d,%d] - [%d,%d]\n", i, j, k, l);
+                            return true;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                counter = 0;
+                //down right
+                for (int k = i, l = j; k < rows && l < columns; k++, l++) {
+                    if (values[k][l] == value) {
+                        counter++;
+                        if (counter == n) {
+                            System.out.printf("down right [%d,%d] - [%d,%d]\n", i, j, k, l);
+                            return true;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
+
+    /*
+        (Game: connect four) Connect four is a two-player board game in which the
+        players alternately drop colored disks into a seven-column, six-row vertically
+        suspended grid, as shown below
+        The objective of the game is to connect four same-colored disks in a row, a col-
+        umn, or a diagonal before your opponent can do likewise. The program prompts
+        two players to drop a red or yellow disk alternately. Whenever a disk is dropped,
+        the program redisplays the board on the console and determines the status of the
+        game (win, draw, or continue). Here is a sample run:
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        Drop a red disk at column (0–6): 0
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        |R| | | | | | |
+        ---------------
+        Drop a yellow disk at column (0–6): 3
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        |R| | |Y| | | |
+        . . .
+        . . .
+        . . .
+        Drop a yellow disk at column (0–6): 6
+        | | | | | | | |
+        | | | | | | | |
+        | | | |R| | | |
+        | | | |Y|R|Y| |
+        | | |R|Y|Y|Y|Y|
+        |R|Y|R|Y|R|R|R|
+        The yellow player won
      */
     public static void ch8_20() {
-
+        ConnectFourGame game = new ConnectFourGame();
+        game.start();
     }
 
     /*
