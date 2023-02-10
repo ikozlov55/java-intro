@@ -5,6 +5,7 @@ import exercises.utils.ArrayUtils;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Chapter8 {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -1021,73 +1022,481 @@ public class Chapter8 {
     }
 
     /*
-
+        (Central city) Given a set of cities, the central city is the city that has the shortest
+        total distance to all other cities. Write a program that prompts the user to enter
+        the number of cities and the locations of the cities (coordinates), and finds the
+        central city and its total distance to all other cities.
+        Enter the number of cities: 5
+        Enter the coordinates of the cities:
+        2.5 5 5.1 3 1 9 5.4 54 5.5 2.1
+        The central city is at (2.5, 5.0)
+        The total distance to all other cities is 60.81
      */
     public static void ch8_21() {
+        System.out.print("Enter the number of cities: ");
+        int cities = scanner.nextInt();
+        System.out.println("Enter the coordinates of the cities:");
+        double[][] coordinates = new double[5][2];
+        for (int i = 0; i < cities; i++) {
+            coordinates[i][0] = scanner.nextDouble();
+            coordinates[i][1] = scanner.nextDouble();
+        }
+        int centralCity = 0;
+        double minTotalDistance = 0;
+        for (int i = 0; i < cities; i++) {
+            double totalDistance = 0;
+            double x1 = coordinates[i][0];
+            double y1 = coordinates[i][1];
+            for (int j = 0; j < cities; j++) {
+                double x2 = coordinates[j][0];
+                double y2 = coordinates[j][1];
+                totalDistance += distance(x1, y1, x2, y2);
+            }
+            if (i == 0) {
+                minTotalDistance = totalDistance;
+            }
+            if (totalDistance < minTotalDistance) {
+                centralCity = i;
+                minTotalDistance = totalDistance;
+            }
+        }
 
+        double x = coordinates[centralCity][0];
+        double y = coordinates[centralCity][1];
+        System.out.printf("The central city is at (%.1f, %.1f)\n", x, y);
+        System.out.printf("The total distance to all other cities is %.2f\n", minTotalDistance);
     }
 
     /*
-
+        (Even number of 1s) Write a program that generates a 6-by-6 two-dimensional
+        matrix filled with 0s and 1s, displays the matrix, and checks if every row and
+        every column have an even number of 1s
      */
     public static void ch8_22() {
-
+        final int N = 6;
+        int[][] matrix = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                matrix[i][j] = Math.random() < 0.5 ? 1 : 0;
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+        boolean result = true;
+        for (int i = 0; i < N; i++) {
+            int onesInRow = 0;
+            int onesInColumn = 0;
+            for (int j = 0; j < N; j++) {
+                onesInRow += matrix[i][j];
+                onesInColumn += matrix[j][i];
+            }
+            if (onesInRow % 2 != 0 || onesInColumn % 2 != 0) {
+                result = false;
+                break;
+            }
+        }
+        System.out.println(result);
     }
 
     /*
-
+        (Game: find the flipped cell) Suppose you are given a 6-by-6 matrix filled with
+        0s and 1s. All rows and all columns have an even number of 1s. Let the user flip
+        one cell (i.e., flip from 1 to 0 or from 0 to 1) and write a program to find which
+        cell was flipped. Your program should prompt the user to enter a 6-by-6 array
+        with 0s and 1s and find the first row r and first column c where the even number
+        of the 1s property is violated (i.e., the number of 1s is not even). The flipped cell
+        is at (r, c). Here is a sample run
+        Enter a 6−by−6 matrix row by row:
+        1 1 1 0 1 1
+        1 1 1 1 0 0
+        0 1 0 1 1 1
+        1 1 1 1 1 1
+        0 1 1 1 1 0
+        1 0 0 0 0 1
+        The flipped cell is at (0, 1)
      */
     public static void ch8_23() {
-
+        final int N = 6;
+        System.out.println("Enter a 6−by−6 matrix row by row:");
+        int[][] matrix = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                matrix[i][j] = scanner.nextInt();
+            }
+        }
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                final int column = j;
+                boolean oddOnesInRow = Arrays.stream(matrix[i]).sum() % 2 != 0;
+                boolean oddOnesInColumn = IntStream.range(0, N).map(x -> matrix[x][column]).sum() % 2 != 0;
+                if (oddOnesInRow && oddOnesInColumn) {
+                    System.out.printf("The flipped cell is at (%d, %d)\n", i, j);
+                    break;
+                }
+            }
+        }
     }
 
     /*
+        (Check Sudoku solution) Listing 8.4 checks whether a solution is valid by check-
+        ing whether every number is valid in the board. Rewrite the program by checking
+        whether every row, every column, and every small box has the numbers 1 to 9.
 
+            Enter a Sudoku puzzle solution:
+            9 6 3 1 7 4 2 5 8
+            1 7 8 3 2 5 6 4 9
+            2 5 4 6 8 9 7 3 1
+            8 2 1 4 3 7 5 9 6
+            4 9 6 8 5 2 3 1 7
+            7 3 5 9 6 1 8 2 4
+            5 8 9 7 1 3 4 6 2
+            3 1 7 2 4 6 9 8 5
+            6 4 2 5 9 8 1 7 3
+            Valid solution
      */
     public static void ch8_24() {
+        // Read a Sudoku solution
+        int[][] grid = readASolution();
+        System.out.println(isValid(grid) ? "Valid solution" : "Invalid solution");
+    }
 
+    public static int[][] readASolution() {
+        System.out.println("Enter a Sudoku puzzle solution:");
+        int[][] grid = new int[9][9];
+        for (int i = 0; i < 9; i++)
+            for (int j = 0; j < 9; j++)
+                grid[i][j] = scanner.nextInt();
+
+        return grid;
+    }
+
+    /**
+     * Check whether a solution is valid
+     */
+    public static boolean isValid(int[][] grid) {
+        // check rows
+        for (int row = 0; row < 9; row++) {
+            if (!hasNumbersOneToNine(grid[row])) {
+                return false;
+            }
+        }
+
+        // check columns
+        for (int i = 0; i < 9; i++) {
+            final int column = i;
+            int[] columnArray = IntStream.range(0, 9).map(x -> grid[x][column]).toArray();
+            if (!hasNumbersOneToNine(columnArray)) {
+                return false;
+            }
+        }
+
+        // check 3x3 boxes
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                int[] boxArray = new int[9];
+                for (int k = 0; k < 9; k++) {
+                    boxArray[k] = grid[k / 3 + i * 3][k % 3 + j * 3];
+                }
+                if (!hasNumbersOneToNine(boxArray)) {
+                    return false;
+                }
+            }
+        }
+        return true; // The solution is valid
+    }
+
+    public static boolean hasNumbersOneToNine(int[] array) {
+        int[] oneToNineArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int[] copy = Arrays.copyOf(array, array.length);
+        Arrays.sort(copy);
+        return Arrays.equals(copy, oneToNineArray);
     }
 
     /*
+        (Markov matrix) An n * n matrix is called a positive Markov matrix if each
+        element is positive and the sum of the elements in each column is 1. Write the
+        following method to check whether a matrix is a Markov matrix:
+        public static boolean isMarkovMatrix(double[][] m)
+        Write a test program that prompts the user to enter a 3 * 3 matrix of double
+        values and tests whether it is a Markov matrix. Here are sample runs:
+            Enter a 3−by−3 matrix row by row:
+            0.15 0.875 0.375
+            0.55 0.005 0.225
+            0.30 0.12 0.4
+            It is a Markov matrix
 
+            Enter a 3−by−3 matrix row by row:
+            0.95 -0.875 0.375
+            0.65 0.005 0.225
+            0.30 0.22 -0.4
+            It is not a Markov matrix
      */
     public static void ch8_25() {
+        final int N = 3;
+        System.out.println("Enter a 3−by−3 matrix row by row:");
+        double[][] matrix = new double[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                matrix[i][j] = scanner.nextDouble();
+            }
+        }
+        System.out.printf("It %s a Markov matrix\n", isMarkov(matrix) ? "is" : "is not");
+    }
 
+    public static boolean isMarkov(double[][] matrix) {
+        final int N = matrix.length;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (matrix[i][j] < 0) {
+                    return false;
+                }
+            }
+        }
+        for (int i = 0; i < N; i++) {
+            final int column = i;
+            if (IntStream.range(0, N).mapToDouble(x -> matrix[x][column]).sum() != 1) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /*
-
+        (Row sorting) Implement the following method to sort the rows in a two-
+        dimensional array. A new array is returned and the original array is intact.
+        public static double[][] sortRows(double[][] m)
+        Write a test program that prompts the user to enter a 3 * 3 matrix of double
+        values and displays a new row-sorted matrix. Here is a sample run:
+            Enter a 3−by−3 matrix row by row:
+            0.15 0.875 0.375
+            0.55 0.005 0.225
+            0.30 0.12 0.4
+            The row−sorted array is
+            0.15 0.375 0.875
+            0.005 0.225 0.55
+            0.12 0.30 0.4
      */
     public static void ch8_26() {
+        final int N = 3;
+        System.out.println("Enter a 3−by−3 matrix row by row:");
+        double[][] matrix = new double[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                matrix[i][j] = scanner.nextDouble();
+            }
+        }
+        double[][] sorted = sortRows(matrix);
+        System.out.println("The row−sorted array is");
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(sorted[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 
+    public static double[][] sortRows(double[][] m) {
+        double[][] result = Arrays.copyOf(m, m.length);
+        Arrays.stream(result).forEach(Arrays::sort);
+        return result;
     }
 
     /*
-
+        (Column sorting) Implement the following method to sort the columns in a
+        two-dimensional array. A new array is returned and the original array is intact.
+        public static double[][] sortColumns(double[][] m)
+        318 Chapter 8 Multidimensional Arrays
+        Write a test program that prompts the user to enter a 3 * 3 matrix of double
+        values and displays a new column-sorted matrix. Here is a sample run:
+            Enter a 3−by−3 matrix row by row:
+            0.15 0.875 0.375
+            0.55 0.005 0.225
+            0.30 0.12 0.4
+            The column−sorted array is
+            0.15 0.0050 0.225
+            0.3 0.12 0.375
+            0.55 0.875 0.4
      */
     public static void ch8_27() {
+        final int N = 3;
+        System.out.println("Enter a 3−by−3 matrix row by row:");
+        double[][] matrix = new double[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                matrix[i][j] = scanner.nextDouble();
+            }
+        }
+        double[][] sorted = sortColumns(matrix);
+        System.out.println("The column−sorted array is");
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(sorted[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 
+    public static double[][] sortColumns(double[][] m) {
+        double[][] result = Arrays.copyOf(m, m.length);
+        int N = m.length;
+        for (int i = 0; i < N; i++) {
+            final int column = i;
+            double[] columnArray = IntStream.range(0, N)
+                    .mapToDouble(x -> result[x][column])
+                    .sorted()
+                    .toArray();
+            for (int j = 0; j < N; j++) {
+                result[j][column] = columnArray[j];
+            }
+        }
+        return result;
     }
 
     /*
-
+        (Strictly identical arrays) The two-dimensional arrays m1 and m2 are strictly
+        identical if their corresponding elements are equal. Write a method that returns
+        true if m1 and m2 are strictly identical, using the following header:
+        public static boolean equals(int[][] m1, int[][] m2)
+        Write a test program that prompts the user to enter two 3 * 3 arrays of integers
+        and displays whether the two are strictly identical. Here are the sample runs:
+            Enter list1: 51 22 25 6 1 4 24 54 6
+            Enter list2: 51 22 25 6 1 4 24 54 6
+            The two arrays are strictly identical
+            Enter list1: 51 25 22 6 1 4 24 54 6
+            Enter list2: 51 22 25 6 1 4 24 54 6
+            The two arrays are not strictly identical
      */
     public static void ch8_28() {
+        final int N = 3;
+        int[][] m1 = ArrayUtils.inputMatrix(N, N, "Enter list1: ");
+        int[][] m2 = ArrayUtils.inputMatrix(N, N, "Enter list2: ");
+        if (strictlyEquals(m1, m2)) {
+            System.out.println("The two arrays are strictly identical");
+        } else {
+            System.out.println("The two arrays are not strictly identical");
+        }
+    }
 
+    public static boolean strictlyEquals(int[][] m1, int[][] m2) {
+        final int N = m1.length;
+        if (m1.length != m2.length) {
+            return false;
+        }
+        for (int i = 0; i < N; i++) {
+            if (m1[i].length != m2[i].length) {
+                return false;
+            }
+            for (int j = 0; j < N; j++) {
+                if (m1[i][j] != m2[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /*
-
+        (Identical arrays) The two-dimensional arrays m1 and m2 are identical if they
+        have the same contents. Write a method that returns true if m1 and m2 are iden-
+        tical, using the following header:
+        public static boolean equals(int[][] m1, int[][] m2)
+        Write a test program that prompts the user to enter two 3 * 3 arrays of integers
+        and displays whether the two are identical. Here are the sample runs:
+        Enter list1: 51 25 22 6 1 4 24 54 6
+        Enter list2: 51 22 25 6 1 4 24 54 6
+        The two arrays are identical
+        Enter list1: 51 5 22 6 1 4 24 54 6
+        Enter list2: 51 22 25 6 1 4 24 54 6
+        The two arrays are not identical
      */
     public static void ch8_29() {
+        final int N = 3;
+        int[][] m1 = ArrayUtils.inputMatrix(N, N, "Enter list1: ");
+        int[][] m2 = ArrayUtils.inputMatrix(N, N, "Enter list2: ");
+        if (equals(m1, m2)) {
+            System.out.println("The two arrays are identical");
+        } else {
+            System.out.println("The two arrays are not identical");
+        }
 
     }
 
-    /*
+    public static boolean equals(int[][] m1, int[][] m2) {
+        int[][] m1Copy = Arrays.copyOf(m1, m1.length);
+        int[][] m2Copy = Arrays.copyOf(m2, m2.length);
+        final int N = m1Copy.length;
+        if (m1Copy.length != m2Copy.length) {
+            return false;
+        }
+        for (int i = 0; i < N; i++) {
+            if (m1Copy[i].length != m2Copy[i].length) {
+                return false;
+            }
+            Arrays.sort(m1Copy[i]);
+            Arrays.sort(m2Copy[i]);
+            for (int j = 0; j < N; j++) {
+                if (m1Copy[i][j] != m2Copy[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    /*
+            ax + by = e
+            cx + dy = f
+            x = ed - bf
+                ad - bc
+            y = af - ec
+                ad - bc
+
+        (Algebra: solve linear equations) Write a method that solves the following 2 * 2
+        system of linear equations:
+        a00*x + a01*y = b0
+        a10*x + a11*y = b1
+        x = (b0*a11 - b1*a01)/(a00*a11 - a01*a10)
+        y = (b1*a00 - b0*a10)/(a00*a11 - a01*a10)
+        The method header is:
+        public static double[] linearEquation(double[][] a, double[] b)
+        The method returns null if a00*a11 - a01*a10 is 0. Write a test program that
+        prompts the user to enter a00, a01, a10, a11, b0, and b1 and displays the result. If
+        a00*a11 - a01*a10 is 0, report that “The equation has no solution.” A sample run is
+        similar to Programming Exercise 3.3
+            Enter a, b, c, d, e, f: 9.0 4.0 3.0 -5.0 -6.0 -21.0
+            x is −2.0 and y is 3.0
+            Enter a, b, c, d, e, f: 1.0 2.0 2.0 4.0 4.0 5.0
+            The equation has no solution
      */
     public static void ch8_30() {
+        double[][] a = new double[2][2];
+        double[] b = new double[2];
+        System.out.print("Enter a, b, c, d, e, f: ");
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+                a[i][j] = scanner.nextDouble();
+            }
+        }
+        for (int i = 0; i < b.length; i++) {
+            b[i] = scanner.nextDouble();
+        }
+        double[] solution = linearEquation(a, b);
+        if (solution != null) {
+            System.out.printf("x is %.2f and y is %.2f\n", solution[0], solution[1]);
+        } else {
+            System.out.println("The equation has no solution");
+        }
+    }
 
+    public static double[] linearEquation(double[][] a, double[] b) {
+        if (a[0][0] * a[1][1] - a[0][1] * a[1][0] == 0) {
+            return null;
+        } else {
+            double x = (b[0] * a[1][1] - a[0][1] * b[1]) / (a[0][0] * a[1][1] - a[0][1] * a[1][0]);
+            double y = (a[0][0] * b[1] - b[0] * a[1][0]) / (a[0][0] * a[1][1] - a[0][1] * a[1][0]);
+            return new double[]{x, y};
+        }
     }
 
     /*

@@ -62,4 +62,15 @@ public class ArrayUtils {
         return matrix;
     }
 
+    public static int[][] inputMatrix(int rows, int column, String prompt) {
+        System.out.print(prompt);
+        int[][] matrix = new int[rows][column];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < column; j++) {
+                matrix[i][j] = scanner.nextInt();
+            }
+        }
+        return matrix;
+    }
+
 }
