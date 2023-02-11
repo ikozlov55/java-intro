@@ -733,9 +733,9 @@ public class Chapter3 {
         Exercise 3.3). If the equation has no solutions, the two lines are parallel (see
         Figure 3.8c). Write a program that prompts the user to enter four points and dis-
         plays the intersecting point. Here are sample runs:
-            Enter x1, y1, x2, y2, x3, y3, x4, y4: 2 2 5 −1.0 4.0 2.0 −1.0 −2.0
+            Enter x1, y1, x2, y2, x3, y3, x4, y4: 2 2 5 -1.0 4.0 2.0 -1.0 -2.0
             The intersecting point is at (2.88889, 1.1111)
-            Enter x1, y1, x2, y2, x3, y3, x4, y4: 2 2 7 6.0 4.0 2.0 −1.0 −2.0
+            Enter x1, y1, x2, y2, x3, y3, x4, y4: 2 2 7 6.0 4.0 2.0 −1.0 -2.0
             The two lines are parallel
      */
     public static void ch3_25() {
@@ -749,9 +749,9 @@ public class Chapter3 {
         double x4 = scanner.nextDouble();
         double y4 = scanner.nextDouble();
         double a = y1 - y2;
-        double b = x1 - x2;
+        double b = -(x1 - x2);
         double c = y3 - y4;
-        double d = x3 - x4;
+        double d = -(x3 - x4);
         double e = (y1 - y2) * x1 - (x1 - x2) * y1;
         double f = (y3 - y4) * x3 - (x3 - x4) * y3;
 

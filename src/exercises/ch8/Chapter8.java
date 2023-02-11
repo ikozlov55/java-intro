@@ -1500,51 +1500,331 @@ public class Chapter8 {
     }
 
     /*
-
+        (Geometry: intersecting point) Write a method that returns the intersecting point of
+        two lines. The intersecting point of the two lines can be found by using the formula
+        given in Programming Exercise 3.25. Assume that (x1, y1) and (x2, y2) are the
+        two points on line 1 and (x3, y3) and (x4, y4) are on line 2. The method header is:
+        public static double[] getIntersectingPoint(double[][] points)
+        The points are stored in a 4-by-2 two-dimensional array points with (points
+        [0][0], points[0][1]) for (x1, y1). The method returns the intersecting point
+        or null if the two lines are parallel. Write a program that prompts the user to enter
+        four points and displays the intersecting point. See Programming Exercise 3.25
+        for a sample run.
+            Enter x1, y1, x2, y2, x3, y3, x4, y4: 2 2 5 -1.0 4.0 2.0 -1.0 -2.0
+            The intersecting point is at (2.88889, 1.1111)
+            Enter x1, y1, x2, y2, x3, y3, x4, y4: 2 2 7 6.0 4.0 2.0 -1.0 -2.0
+            The two lines are parallel
      */
     public static void ch8_31() {
+        System.out.print("Enter x1, y1, x2, y2, x3, y3, x4, y4: ");
+        double[][] points = ArrayUtils.inputMatrix(4, 2);
+        double[] intersectingPoint = getIntersectingPoint(points);
+        if (intersectingPoint != null) {
+            double x = intersectingPoint[0];
+            double y = intersectingPoint[1];
+            System.out.printf("The intersecting point is at (%.4f, %.4f)\n", x, y);
+        } else {
+            System.out.println("The two lines are parallel");
+        }
+    }
 
+    public static double[] getIntersectingPoint(double[][] points) {
+        double a = points[0][1] - points[1][1];
+        double b = -(points[0][0] - points[1][0]);
+        double c = points[2][1] - points[3][1];
+        double d = -(points[2][0] - points[3][0]);
+        double e = (points[0][1] - points[1][1]) * points[0][0] - (points[0][0] - points[1][0]) * points[0][1];
+        double f = (points[2][1] - points[3][1]) * points[2][0] - (points[2][0] - points[3][0]) * points[2][1];
+        if (a * d - b * c == 0) {
+            return null;
+        } else {
+            double x = (e * d - b * f) / (a * d - b * c);
+            double y = (a * f - e * c) / (a * d - b * c);
+            return new double[]{x, y};
+        }
     }
 
     /*
-
+        (Geometry: area of a triangle) Write a method that returns the area of a triangle
+        using the following header:
+        public static double getTriangleArea(double[][] points)
+        The points are stored in a 3-by-2 two-dimensional array points with points
+        [0][0] and points[0][1] for (x1, y1). The triangle area can be computed
+        using the formula in Programming Exercise 2.19. The method returns 0 if the
+        three points are on the same line. Write a program that prompts the user to enter
+        three points of a triangle and displays the triangle’s area. Here are the sample runs:
+            Enter x1, y1, x2, y2, x3, y3: 2.5 2 5 -1.0 4.0 2.0
+            The area of the triangle is 2.25
+            Enter x1, y1, x2, y2, x3, y3: 2 2 4.5 4.5 6 6
+            The three points are on the same line
      */
     public static void ch8_32() {
+        System.out.print("Enter x1, y1, x2, y2, x3, y3: ");
+        double[][] points = ArrayUtils.inputMatrix(3, 2);
+        double area = getTriangleArea(points);
+        if (area == 0) {
+            System.out.println("The three points are on the same line");
+        } else {
+            System.out.printf("The area of the triangle is %.2f", area);
+        }
+    }
 
+    public static double getTriangleArea(double[][] points) {
+        double side1 = calcDistance(points[0][0], points[0][1], points[1][0], points[1][1]);
+        double side2 = calcDistance(points[1][0], points[1][1], points[2][0], points[2][1]);
+        double side3 = calcDistance(points[2][0], points[2][1], points[0][0], points[0][1]);
+        double s = (side1 + side2 + side3) / 2;
+        double area = Math.sqrt(s * (s - side1) * (s - side2) * (s - side3));
+        return Double.isNaN(area) ? 0 : area;
+    }
+
+    private static double calcDistance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     /*
-
+        (Geometry: polygon subareas) A convex four-vertex polygon is divided into four
+        triangles, as shown in Figure 8.9.
+        Write a program that prompts the user to enter the coordinates of four vertices and
+        displays the areas of the four triangles in increasing order. Here is a sample run:
+            Enter x1, y1, x2, y2, x3, y3, x4, y4:
+            -2.5 2 4 4 3 -2 -2 -3.5
+            The areas are 6.17 7.96 8.08 10.42
      */
     public static void ch8_33() {
-
+        System.out.println("Enter x1, y1, x2, y2, x3, y3, x4, y4:");
+        double[][] points = ArrayUtils.inputMatrix(4, 2);
+        double[] intersectingPoint = getIntersectingPoint(new double[][]{
+                points[0],
+                points[2],
+                points[1],
+                points[3]
+        });
+        if (intersectingPoint == null) {
+            System.out.println("Invalid input");
+            return;
+        }
+        double[] areas = new double[4];
+        for (int i = 0; i < areas.length; i++) {
+            double[][] trianglePoints = new double[][]{
+                    points[i],
+                    points[i + 1 < areas.length ? i + 1 : 0],
+                    intersectingPoint
+            };
+            areas[i] = getTriangleArea(trianglePoints);
+        }
+        Arrays.sort(areas);
+        System.out.print("The areas are");
+        for (double area : areas) {
+            System.out.printf(" %.2f", area);
+        }
     }
 
     /*
-
+        (Geometry: rightmost lowest point) In computational geometry, often you need
+        to find the rightmost lowest point in a set of points. Write the following method
+        that returns the rightmost lowest point in a set of points:
+        public static double[] getRightmostLowestPoint(double[][] points)
+        Write a test program that prompts the user to enter the coordinates of six points
+        and displays the rightmost lowest point. Here is a sample run:
+            Enter 6 points: 1.5 2.5 -3 4.5 5.6 -7 6.5 -7 8 1 10 2.5
+            The rightmost lowest point is (6.5, −7.0)
      */
     public static void ch8_34() {
+        System.out.print("Enter 6 points: ");
+        double[][] points = ArrayUtils.inputMatrix(6, 2);
+        double[] point = getRightmostLowestPoint(points);
+        System.out.printf("The rightmost lowest point is (%.1f, %.1f)\n", point[0], point[1]);
+    }
 
+    public static double[] getRightmostLowestPoint(double[][] points) {
+        double[] result = points[0];
+        for (int i = 1; i < points.length; i++) {
+            if (points[i][1] <= result[1] && points[i][0] > result[0]) {
+                result = points[i];
+            }
+        }
+        return result;
     }
 
     /*
-
+        (Largest block) Given a square matrix with the elements 0 or 1, write a program to
+        find a maximum square submatrix whose elements are all 1s. Your program should
+        prompt the user to enter the number of rows in the matrix. The program then dis-
+        plays the location of the first element in the maximum square submatrix and the
+        number of rows in the submatrix. Here is a sample run:
+            Enter the number of rows in the matrix: 5
+            Enter the matrix row by row:
+            1 0 1 0 1
+            1 1 1 0 1
+            1 0 1 1 1
+            1 0 1 1 1
+            1 0 1 1 1
+            The maximum square submatrix is at (2, 2) with size 3
+        Your program should implement and use the following method to find the max-
+        imum square submatrix:
+        public static int[] findLargestBlock(int[][] m)
+        The return value is an array that consists of three values. The first two values are
+        the row and column indices for the first element in the submatrix, and the third
+        value is the number of the rows in the submatrix. For an animation of this problem,
+        see https://liveexample.pearsoncmg.com/dsanimation/LargestBlockeBook.html
      */
     public static void ch8_35() {
+        System.out.print("Enter the number of rows in the matrix: ");
+        int N = scanner.nextInt();
+        int[][] matrix = ArrayUtils.inputMatrix(N, N, "Enter the matrix row by row:\n");
+        int[] largestBlock = findLargestBlock(matrix);
+        System.out.printf("The maximum square submatrix is at (%d, %d) with size %d\n",
+                largestBlock[0], largestBlock[1], largestBlock[2]);
+    }
 
+    public static int[] findLargestBlock(int[][] m) {
+        int[] result = new int[]{0, 0, 1};
+        int maxSize = 0;
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m.length; j++) {
+                int size = 1;
+                while (true) {
+                    if (isSubmatrixOfOnes(i, j, size, m)) {
+                        if (size > maxSize) {
+                            maxSize = size;
+                            result = new int[]{i, j, size};
+                        }
+                        size++;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static boolean isSubmatrixOfOnes(int row, int col, int size, int[][] m) {
+        if (row + size > m.length) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            if (col + size > m[i].length) {
+                return false;
+            }
+            for (int j = 0; j < size; j++) {
+                if (m[row + i][col + j] != 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /*
+        (Latin square) A Latin square is an n-by-n array filled with n different Latin let-
+        ters, each occurring exactly once in each row and once in each column. Write a
+        program that prompts the user to enter the number n and the array of characters,
+        as shown in the sample output, and checks if the input array is a Latin square.
+        The characters are the first n characters starting from A.
+        Enter number n: 4
+        Enter 4 rows of letters separated by spaces:
+        A B C D
+        B A D C
+        C D B A
+        D C A B
+        The input array is a Latin square
 
+        Enter number n: 3
+        Enter 3 rows of letters separated by spaces:
+        A F D
+        Wrong input: the letters must be from A to C
      */
     public static void ch8_36() {
+        final char start = 'A';
+        System.out.print("Enter number n: ");
+        int n = scanner.nextInt();
+        System.out.printf("Enter %d rows of letters separated by spaces:\n", n);
+        char[][] square = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                char c = scanner.next().charAt(0);
+                if (c == ' ') {
+                    i--;
+                    continue;
+                }
+                if (c < start || c > start + n) {
+                    System.out.printf("Wrong input: the letters must be from %c to %c\n", start, start + n - 1);
+                    return;
+                }
+                square[i][j] = c;
+            }
+        }
+        if (isLatinSquare(square)) {
+            System.out.println("The input array is a Latin square");
+        } else {
+            System.out.println("The input array is not a Latin square");
+        }
+    }
 
+    public static boolean isLatinSquare(char[][] square) {
+        for (int i = 0; i < square.length; i++) {
+            for (int j = 0; j < square[i].length; j++) {
+                char currentChar = square[i][j];
+                int countInRow = 0;
+                for (char c : square[i]) {
+                    if (currentChar == c) {
+                        countInRow++;
+                    }
+                }
+                if (countInRow > 1) {
+                    return false;
+                }
+                int countInColumn = 0;
+                for (int k = 0; k < square.length; k++) {
+                    if (square[j][k] == currentChar) {
+                        countInColumn++;
+                    }
+                }
+                if (countInColumn > 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /*
-
+        (Guess the capitals) Write a program that repeatedly prompts the user to enter
+        a capital for a state. Upon receiving the user input, the program reports whether
+        the answer is correct. Assume that 50 states and their capitals are stored in a
+        two-dimensional array, as shown in Figure 8.10. The program prompts the user to
+        answer all states’ capitals and displays the total correct count. The user’s answer
+        is not case-sensitive.
+            Alabama   Montgomery
+            Alaska    Juneau
+            Arizona   Phoenix
+            ...       ...
+            ...       ...
+        Here is a sample run:
+            What is the capital of Alabama? Montogomery
+            The correct answer should be Montgomery
+            What is the capital of Alaska? Juneau
+            Your answer is correct
+            What is the capital of Arizona? ...
+            ...
+            The correct count is 35
      */
     public static void ch8_37() {
-
+        String[][] questions = new String[][]{
+                {"Alabama", "Montgomery"},
+                {"Alaska", "Juneau"},
+                {"Arizona", "Phoenix"},
+        };
+        int count = 0;
+        for (String[] question : questions) {
+            System.out.printf("What is the capital of %s? ", question[0]);
+            String answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase(question[1])) {
+                count++;
+            }
+        }
+        System.out.printf("The correct count is %d\n", count);
     }
 }
