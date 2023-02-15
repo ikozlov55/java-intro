@@ -4,9 +4,12 @@ import exercises.ch10.ex1.Time;
 import exercises.ch10.ex2.BMI;
 import exercises.ch10.ex3.MyInteger;
 import exercises.ch10.ex4.MyPoint;
+import exercises.ch10.ex5.StackOfIntegers;
+import exercises.ch9.ex7.Account;
 
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Chapter10 {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -170,24 +173,147 @@ public class Chapter10 {
     }
 
     /*
-
+        (Display the prime factors) Write a program that prompts the user to enter a
+        positive integer and displays all its smallest factors in decreasing order. For
+        example, if the integer is 120, the smallest factors are displayed as 5, 3, 2, 2,
+        2. Use the StackOfIntegers class to store the factors (e.g., 2, 2, 2, 3, 5) and
+        retrieve and display them in reverse order.
      */
     public static void ch10_5() {
-
+        StackOfIntegers stack = new StackOfIntegers();
+        System.out.print("Enter a positive integer: ");
+        int n = scanner.nextInt();
+        while (n > 1) {
+            for (int i = 2; i <= n; i++) {
+                if (n % i == 0) {
+                    stack.push(i);
+                    n /= i;
+                    break;
+                }
+            }
+        }
+        while (!stack.empty()) {
+            System.out.print(stack.pop() + " ");
+        }
     }
 
     /*
-
+        (Display the prime numbers) Write a program that displays all the prime num-
+        bers less than 120 in decreasing order. Use the StackOfIntegers class to
+        store the prime numbers (e.g., 2, 3, 5, . . . ) and retrieve and display them in
+        reverse order.
      */
     public static void ch10_6() {
-
+        final int N = 120;
+        StackOfIntegers stack = new StackOfIntegers();
+        IntStream.rangeClosed(1, N)
+                .filter(MyInteger::isPrime)
+                .forEach(stack::push);
+        while (!stack.empty()) {
+            System.out.print(stack.pop() + " ");
+        }
     }
 
     /*
+        (Game: ATM machine) Use the Account class created in Programming Exer-
+        cise 9.7 to simulate an ATM machine. Create 10 accounts in an array with id
+        0, 1, . . . , 9, and an initial balance of $100. The system prompts the user to
+        enter an id. If the id is entered incorrectly, ask the user to enter a correct id.
+        Once an id is accepted, the main menu is displayed as shown in the sample
+        run. You can enter choice 1 for viewing the current balance, 2 for withdraw-
+        ing money, 3 for depositing money, and 4 for exiting the main menu. Once
+        you exit, the system will prompt for an id again. Thus, once the system starts,
+        it will not stop.
 
+        Enter an id: 4
+
+        Main menu
+        1: check balance
+        2: withdraw
+        3: deposit
+        4: exit
+        Enter a choice: 1
+        The balance is 100.0
+
+        Main menu
+        1: check balance
+        2: withdraw
+        3: deposit
+        4: exit
+        Enter a choice: 2
+        Enter an amount to withdraw: 3
+
+        Main menu
+        1: check balance
+        2: withdraw
+        3: deposit
+        4: exit
+        Enter a choice: 1
+        The balance is 97.0
+
+        Main menu
+        1: check balance
+        2: withdraw
+        3: deposit
+        4: exit
+        Enter a choice: 3
+        Enter an amount to deposit: 10
+
+        Main menu
+        1: check balance
+        2: withdraw
+        3: deposit
+        4: exit
+        Enter a choice: 1
+        The balance is 107.0
+
+        Main menu
+        1: check balance
+        2: withdraw
+        3: deposit
+        4: exit
+        Enter a choice: 4
+        Enter an id:
      */
     public static void ch10_7() {
-
+        final int N = 10;
+        Account[] accounts = IntStream.range(0, N)
+                .mapToObj(x -> new Account(x, 100))
+                .toArray(Account[]::new);
+        while (true) {
+            System.out.print("Enter an id: ");
+            int id = scanner.nextInt();
+            if (id < 0 || id > N) continue;
+            mainMenu:
+            while (true) {
+                System.out.println("Main menu");
+                System.out.println("1: check balance");
+                System.out.println("2: withdraw");
+                System.out.println("3: deposit");
+                System.out.println("4: exit");
+                System.out.print("Enter a choice: ");
+                int choice = scanner.nextInt();
+                switch (choice) {
+                    case 1 -> {
+                        System.out.printf("The balance is %.1f\n", accounts[id].getBalance());
+                    }
+                    case 2 -> {
+                        System.out.print("Enter an amount to withdraw: ");
+                        double amount = scanner.nextDouble();
+                        accounts[id].withdraw(amount);
+                    }
+                    case 3 -> {
+                        System.out.print("Enter an amount to deposit: ");
+                        double amount = scanner.nextDouble();
+                        accounts[id].deposit(amount);
+                    }
+                    case 4 -> {
+                        break mainMenu;
+                    }
+                }
+                System.out.println();
+            }
+        }
     }
 
     /*
