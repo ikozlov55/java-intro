@@ -1,10 +1,17 @@
 package exercises.ch10;
 
 import exercises.ch10.ex1.Time;
+import exercises.ch10.ex10.Queue;
+import exercises.ch10.ex11.Circle2D;
+import exercises.ch10.ex12.Triangle2D;
+import exercises.ch10.ex13.MyRectangle2D;
+import exercises.ch10.ex14.MyDate;
 import exercises.ch10.ex2.BMI;
 import exercises.ch10.ex3.MyInteger;
 import exercises.ch10.ex4.MyPoint;
 import exercises.ch10.ex5.StackOfIntegers;
+import exercises.ch10.ex8.Tax;
+import exercises.ch10.ex9.Course;
 import exercises.ch9.ex7.Account;
 
 import java.util.Locale;
@@ -317,52 +324,408 @@ public class Chapter10 {
     }
 
     /*
+        (Financial: the Tax class) Programming Exercise 8.12 writes a program for
+        computing taxes using arrays. Design a class named Tax to contain the follow-
+        ing instance data fields:
+        ■ int filingStatus: One of the four tax-filing statuses: 0—single filer,
+        1—married filing jointly or qualifying widow(er), 2—married filing separately,
+        and 3—head of household. Use the public static constants SINGLE_FILER
+        (0), MARRIED_JOINTLY_OR_QUALIFYING_WIDOW(ER) (1), MARRIED_
+        SEPARATELY (2), HEAD_OF_HOUSEHOLD (3) to represent the statuses.
+        ■ int[][] brackets: Stores the tax brackets for each filing status.
+        ■ double[] rates: Stores the tax rates for each bracket.
+        ■ double taxableIncome: Stores the taxable income.
+        Provide the getter and setter methods for each data field and the getTax()
+        method that returns the tax. Also, provide a no-arg constructor and the construc-
+        tor Tax(filingStatus, brackets, rates, taxableIncome).
+        Draw the UML diagram for the class and then implement the class. Write a test
+        program that uses the Tax class to print the 2001 and 2009 tax tables for taxable
+        income from $50,000 to $60,000 with intervals of $1,000 for all four statuses.
+        The tax rates for the year 2009 were given in Table 3.2. The tax rates for 2001
+        are shown in Table 10.1.
 
+                   Tax
+        ----------------------------
+        -filingStatus: int
+        -brackets: int[][]
+        -rates: double[]
+        -taxableIncome: double
+        +SINGLE_FILER: int <<static>>
+        +MARRIED_JOINTLY_OR_QUALIFYING_WIDOW_ER: int <<static>>
+        +MARRIED_SEPARATELY: int <<static>>
+        +HEAD_OF_HOUSEHOLD: int <<static>>
+        ----------------------------
+        +Tax()
+        +Tax(filingStatus: int, brackets: int[][], rates: double[], taxableIncome: double)
+        +getFilingStatus(filingStatus: int): int
+        +setFilingStatus(): void
+        +getBrackets(brackets: int[][]): int[][]
+        +setBrackets(): void
+        +getRates(): double[]
+        +setRates(rates: double[]): void
+        +getTaxableIncome(): double
+        +setTaxableIncome(taxableIncome: double): void
+        +getTax(): double
+        ----------------------------
      */
     public static void ch10_8() {
+        double incomeFrom = 50_000;
+        double incomeTo = 60_000;
+        double incomeInterval = 1_000;
+        int[][] brackets2001 = new int[][]{
+                {27050, 65550, 136750, 297350},
+                {45200, 109350, 166500, 297350},
+                {22600, 54625, 83250, 148675},
+                {36350, 93650, 151650, 297350}
+        };
+        double[] rates2001 = {0.15, 0.275, 0.305, 0.355, 0.391};
 
+        System.out.println("2009 U.S. Federal Personal Tax Rates");
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "Taxable", "Single", "Married Joint", "Married", "Head of");
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "Income", "", "or Qualifying", "Separate", "House hold");
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "", "", "Widow(er)", "", "");
+        for (double income = incomeFrom; income <= incomeTo; income += incomeInterval) {
+            Tax calculator = new Tax();
+            calculator.setTaxableIncome(income);
+            long tax1 = Math.round(calculator.getTax());
+            calculator.setFilingStatus(Tax.MARRIED_JOINTLY_OR_QUALIFYING_WIDOW_ER);
+            long tax2 = Math.round(calculator.getTax());
+            calculator.setFilingStatus(Tax.MARRIED_SEPARATELY);
+            long tax3 = Math.round(calculator.getTax());
+            calculator.setFilingStatus(Tax.HEAD_OF_HOUSEHOLD);
+            long tax4 = Math.round(calculator.getTax());
+            System.out.printf("%-14.0f%-14d%-18d%-14d%-14d\n", income, tax1, tax2, tax3, tax4);
+        }
+        System.out.println();
+        System.out.println("2001 U.S. Federal Personal Tax Rates");
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "Taxable", "Single", "Married Joint", "Married", "Head of");
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "Income", "", "or Qualifying", "Separate", "House hold");
+        System.out.printf("%-14s%-14s%-18s%-14s%-14s\n", "", "", "Widow(er)", "", "");
+        for (double income = incomeFrom; income <= incomeTo; income += incomeInterval) {
+            Tax calculator = new Tax(Tax.SINGLE_FILER, brackets2001, rates2001, income);
+            long tax1 = Math.round(calculator.getTax());
+            calculator.setFilingStatus(Tax.MARRIED_JOINTLY_OR_QUALIFYING_WIDOW_ER);
+            long tax2 = Math.round(calculator.getTax());
+            calculator.setFilingStatus(Tax.MARRIED_SEPARATELY);
+            long tax3 = Math.round(calculator.getTax());
+            calculator.setFilingStatus(Tax.HEAD_OF_HOUSEHOLD);
+            long tax4 = Math.round(calculator.getTax());
+            System.out.printf("%-14.0f%-14d%-18d%-14d%-14d\n", income, tax1, tax2, tax3, tax4);
+        }
     }
 
-    /*
 
+    /*
+        (The Course class) Revise the Course class as follows:
+        ■ Revise the getStudents() method to return an array whose length is the
+        same as the number of students in the course. (Hint: create a new array and
+        copy students to it.)
+        ■ The array size is fixed in Listing 10.6. Revise the addStudent method to automat-
+        ically increase the array size if there is no room to add more students. This is done
+        by creating a new larger array and copying the contents of the current array to it.
+        ■ Implement the dropStudent method.
+        ■ Add a new method named clear() that removes all students from the course.
+        Test your program using https://liveexample.pearsoncmg.com/test/Exercise10_09.txt
      */
     public static void ch10_9() {
+        Course course1 = new Course("Data Structures");
+        Course course2 = new Course("Database Systems");
 
+        course1.addStudent("Peter Jones");
+        course1.addStudent("Brian Smith");
+        course1.addStudent("Anne Kennedy");
+        course1.addStudent("Susan Kennedy");
+        course1.addStudent("John Kennedy");
+        course1.addStudent("Kim Johnson");
+        course1.addStudent("S1");
+        course1.addStudent("S2");
+        course1.addStudent("S3");
+        course1.addStudent("S4");
+        course1.addStudent("S5");
+        course1.addStudent("S6");
+        course1.addStudent("S7");
+
+        course2.addStudent("Peter Jones");
+        course2.addStudent("Steve Smith");
+
+        System.out.println("Number of students in course1: " + course1.getNumberOfStudents());
+        String[] students = course1.getStudents();
+        for (int i = 0; i < students.length; i++) {
+            System.out.print(students[i] + (i < course1.getNumberOfStudents() - 1 ? ", " : " "));
+        }
+
+
+        System.out.println();
+        System.out.println("Number of students in course2: " + course2.getNumberOfStudents());
+
+        course1.dropStudent("S1");
+        System.out.println("Number of students in course1: " + course1.getNumberOfStudents());
+        students = course1.getStudents();
+        for (int i = 0; i < course1.getNumberOfStudents(); i++) {
+            System.out.print(students[i] + (i < course1.getNumberOfStudents() - 1 ? ", " : " "));
+        }
+
+        course1.clear();
+        System.out.println("\nNumber of students in course1: " + course1.getNumberOfStudents());
     }
 
     /*
+        (The Queue class) Section 10.6 gives a class for Stack. Design a class named
+        Queue for storing integers. Like a stack, a queue holds elements. In a stack, the
+        elements are retrieved in a last-in first-out fashion. In a queue, the elements are
+        retrieved in a first-in first-out fashion. The class contains:
+        ■ An int[] data field named elements that stores the int values in the queue.
+        ■ A data field named size that stores the number of elements in the queue.
+        ■ A constructor that creates a Queue object with default capacity 8.
+        ■ The method enqueue(int v) that adds v into the queue.
+        ■ The method dequeue() that removes and returns the element from the queue.
+        ■ The method empty() that returns true if the queue is empty.
+        ■ The method getSize() that returns the size of the queue.
+        Draw an UML diagram for the class. Implement the class with the initial array size
+        set to 8. The array size will be doubled once the number of the elements exceeds
+        the size. After an element is removed from the beginning of the array, you need
+        to shift all elements in the array one position to the left. Write a test program that
+        adds 20 numbers from 1 to 20 into the queue then removes these numbers and
+        displays them.
 
+                    Queue
+        ----------------------------
+        -data: int[]
+        -size: int
+        ----------------------------
+        +Queue()
+        +getSize(): int
+        +enqueue(v: int): void
+        +dequeue(): int
+        +empty(): boolean
+        ----------------------------
      */
     public static void ch10_10() {
-
+        final int N = 20;
+        Queue queue = new Queue();
+        System.out.println(queue);
+        for (int i = 1; i <= N; i++) {
+            queue.enqueue(i);
+            System.out.println(queue);
+        }
+        while (!queue.empty()) {
+            queue.dequeue();
+            System.out.println(queue);
+        }
     }
 
     /*
+        (Geometry: the Circle2D class) Define the Circle2D class that contains:
+        ■ Two double data fields named x and y that specify the center of the circle
+        with getter methods.
+        ■ A data field radius with a getter method.
+        ■ A no-arg constructor that creates a default circle with (0, 0) for (x, y) and 1
+        for radius.
+        ■ A constructor that creates a circle with the specified x, y, and radius.
+        ■ A method getArea() that returns the area of the circle.
+        ■ A method getPerimeter() that returns the perimeter of the circle.
+        ■ A method contains(double x, double y) that returns true if the
+        specified point (x, y) is inside this circle (see Figure 10.21a).
+        ■ A method contains(Circle2D circle) that returns true if the specified
+        circle is inside this circle (see Figure 10.21b).
+        ■ A method overlaps(Circle2D circle) that returns true if the specified
+        circle overlaps with this circle (see Figure 10.21c).
+        Draw the UML diagram for the class then implement the class. Write a test
+        program that creates a Circle2D object c1 (new Circle2D(2, 2, 5.5)),
+        displays its area and perimeter, and displays the result of c1.contains(3,
+        3), c1.contains(new Circle2D(4, 5, 10.5)), and c1.overlaps(new
+        Circle2D(3, 5, 2.3)).
 
+                  Circle2D
+        ----------------------------
+        -x: double
+        -y: double
+        -radius: double
+        ----------------------------
+        +Circle2D()
+        +Circle2D(x: double, y: double, radius: double)
+        +getRadius(): double
+        +getArea(): double
+        +getPerimeter(): double
+        +contains(x: double, y: double): boolean
+        +contains(circle: Circle2D): boolean
+        +overlaps(circle: Circle2D): boolean
+        ----------------------------
      */
     public static void ch10_11() {
-
+        Circle2D c1 = new Circle2D(2, 2, 5.5);
+        Circle2D c2 = new Circle2D(4, 5, 10.5);
+        Circle2D c3 = new Circle2D(3, 5, 2.3);
+        System.out.println(c1);
+        System.out.println("c1.contains(3, 3) is " + c1.contains(3, 3));
+        System.out.println("c1.contains(new Circle2D(4, 5, 10.5)) is " + c1.contains(c2));
+        System.out.println("c1.overlaps(new Circle2D(3, 5, 2.3)) is " + c1.contains(c3));
     }
 
     /*
+        (Geometry: the Triangle2D class) Define the Triangle2D class that contains:
+        ■ Three points named p1, p2, and p3 of the type MyPoint with getter and
+        setter methods. MyPoint is defined in Programming Exercise 10.4.
+        ■ A no-arg constructor that creates a default triangle with the points (0, 0),
+        (1, 1), and (2, 5).
+        ■ A constructor that creates a triangle with the specified points.
+        ■ A method getArea() that returns the area of the triangle.
+        ■ A method getPerimeter() that returns the perimeter of the triangle.
+        ■ A method contains(MyPoint p) that returns true if the specified point
+        p is inside this triangle (see Figure 10.22a).
+        ■ A method contains(Triangle2D t) that returns true if the specified
+        triangle is inside this triangle (see Figure 10.22b).
+        ■ A method overlaps(Triangle2D t) that returns true if the specified
+        triangle overlaps with this triangle (see Figure 10.22c).
+        Draw the UML diagram for the class and then implement the class. Write a
+        test program that creates a Triangle2D object t1 using the constructor
+        new Triangle2D(new MyPoint(2.5, 2), new MyPoint(4.2, 3),
+        new MyPoint(5, 3.5)), displays its area and perimeter, and displays the
+        result of t1.contains(3, 3), r1.contains(new Triangle2D(new
+        MyPoint(2.9, 2), new MyPoint(4, 1), MyPoint(1, 3.4))), and t1
+        .overlaps(new Triangle2D(new MyPoint(2, 5.5), new MyPoint
+        (4, –3), MyPoint(2, 6.5))).
+        (Hint: For the formula to compute the area of a triangle, see Programming
+        Exercise 2.19. To detect whether a point is inside a triangle, draw three
+        dashed lines, as shown in Figure 10.23. Let Δ denote the area of a triangle.
+        If ΔABp + ΔACp + ΔBCp == ΔABC, the point p is inside the triangle, as
+        shown in Figure 10.23a. Otherwise, point p is not inside the triangle, as
+        shown in Figure 10.23b.
 
+                   Triangle2D
+        ----------------------------
+        -p1: MyPoint
+        -p2: MyPoint
+        -p3: MyPoint
+        ----------------------------
+        +MyPoint()
+        +MyPoint(p1: MyPoint, p2: MyPoint, p3: MyPoint)
+        +getP1(): MyPoint
+        +setP1(p: MyPoint) void
+        +getP2(): MyPoint
+        +setP2(p: MyPoint) void
+        +getP3(): MyPoint
+        +setP4(p: MyPoint) void
+        +getArea(): double
+        +getPerimeter(): double
+        +contains(p: MyPoint): boolean
+        +contains(t: Triangle2D): boolean
+        +overlaps(t: Triangle2D): boolean
+        ----------------------------
      */
     public static void ch10_12() {
-
+        Triangle2D t1 = new Triangle2D(new MyPoint(2.5, 2), new MyPoint(4.2, 3), new MyPoint(5, 3.5));
+        Triangle2D t2 = new Triangle2D(new MyPoint(2.9, 2), new MyPoint(4, 1), new MyPoint(1, 3.4));
+        Triangle2D t3 = new Triangle2D(new MyPoint(2, 5.5), new MyPoint(4, -3), new MyPoint(2, 6.5));
+        System.out.printf("t1 area = %.2f\n", t1.getArea());
+        System.out.printf("t2 perimeter = %.2f\n", t1.getPerimeter());
+        System.out.println("t1 contains (3, 3) is " + t1.contains(new MyPoint(3, 3)));
+        System.out.println("t1 contains t2 is " + t1.contains(t2));
+        System.out.println("t1 overlaps t3 is " + t1.overlaps(t3));
     }
 
     /*
+        (Geometry: the MyRectangle2D class) Define the MyRectangle2D class that
+        contains:
+        ■ Two double data fields named x and y that specify the center of the rectangle
+        with getter and setter methods. (Assume the rectangle sides are parallel to
+        x- or y-axis.)
+        ■ The data fields width and height with getter and setter methods.
+        ■ A no-arg constructor that creates a default rectangle with (0, 0) for (x, y) and
+        1 for both width and height.
+        ■ A constructor that creates a rectangle with the specified x, y, width, and
+        height.
+        ■ A method getArea() that returns the area of the rectangle.
+        ■ A method getPerimeter() that returns the perimeter of the rectangle.
+        ■ A method contains(double x, double y) that returns true if the
+        specified point (x, y) is inside this rectangle (see Figure 10.24a).
+        ■ A method contains(MyRectangle2D r) that returns true if the specified
+        rectangle is inside this rectangle (see Figure 10.24b).
+        ■ A method overlaps(MyRectangle2D r) that returns true if the specified
+        rectangle overlaps with this rectangle (see Figure 10.24c).
+        Draw the UML diagram for the class then implement the class. Write a test
+        program that creates a MyRectangle2D object r1 (new MyRectangle2D
+        (2, 2, 5.5, 4.9)), displays its area and perimeter, and displays the result
+        of r1.contains(3, 3), r1.contains(new MyRectangle2D(4, 5,
+        10.5, 3.2)), and r1.overlaps(new MyRectangle2D(3, 5, 2.3,
+        5.4)).
 
+                  MyRectangle2D
+        ----------------------------
+        -x: double
+        -y: double
+        -width: double
+        -height: double
+        ----------------------------
+        +MyRectangle2D()
+        +MyRectangle2D(x: double, y: double, width: double, height: double,)
+        +getX(): double
+        +setX(x: double): void
+        +getY(): double
+        +setY(y: double): void
+        +getWidth(): double
+        +setWidth(width: double): void
+        +getHeight(): double
+        +setHeight(height: double): void
+        +getArea(): double
+        +getPerimeter(): double
+        +contains(x: double, y: double): boolean
+        +contains(r: MyRectangle2D): boolean
+        +overlaps(r: MyRectangle2D): boolean
+        ----------------------------
      */
     public static void ch10_13() {
-
+        MyRectangle2D r1 = new MyRectangle2D(2, 2, 5.5, 4.9);
+        MyRectangle2D r2 = new MyRectangle2D(4, 5, 10.5, 3.2);
+        MyRectangle2D r3 = new MyRectangle2D(3, 5, 2.3, 5.4);
+        System.out.printf("r1 area = %.2f\n", r1.getArea());
+        System.out.printf("r1 perimeter = %.2f\n", r1.getPerimeter());
+        System.out.println("r1 contains (3, 3) is " + r1.contains(3, 3));
+        System.out.println("r1 contains r2 is " + r1.contains(r2));
+        System.out.println("r1 overlaps t3 is " + r1.overlaps(r3));
     }
 
     /*
+        (The MyDate class) Design a class named MyDate. The class contains:
+        ■ The data fields year, month, and day that represent a date. month is 0-based,
+        i.e., 0 is for January.
+        ■ A no-arg constructor that creates a MyDate object for the current date.
+        ■ A constructor that constructs a MyDate object with a specified elapsed time
+        since midnight, January 1, 1970, in milliseconds.
+        ■ A constructor that constructs a MyDate object with the specified year, month,
+        and day.
+        ■ Three getter methods for the data fields year, month, and day, respectively.
+        ■ A method named setDate(long elapsedTime) that sets a new date for
+        the object using the elapsed time.
+        Draw the UML diagram for the class then implement the class. Write a test
+        program that creates two MyDate objects (using new MyDate() and new
+        MyDate(34355555133101L)) and displays their year, month, and day.
+        (Hint: The first two constructors will extract the year, month, and day
+        from the elapsed time. For example, if the elapsed time is 561555550000
+        milliseconds, the year is 1987, the month is 9, and the day is 18. You may
+        use the GregorianCalendar class discussed in Programming Exercise 9.5
+        to simplify coding.)
 
+                  MyDate
+        ----------------------------
+        -year: int
+        -month: int
+        -day: int
+        ----------------------------
+        +MyDate()
+        +MyDate(millis: long)
+        +MyDate(year: int, month: int, day: int)
+        +getYear(): int
+        +getMonth(): int
+        +getDay(): int
+        +setDate(elapsedTime: long): void
+        ----------------------------
      */
     public static void ch10_14() {
-
+        MyDate date1 = new MyDate();
+        System.out.println(date1);
+        MyDate date2 = new MyDate(34355555133101L);
+        System.out.println(date2);
     }
 
     /*
