@@ -14,6 +14,11 @@ import exercises.ch10.ex8.Tax;
 import exercises.ch10.ex9.Course;
 import exercises.ch9.ex7.Account;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.IntStream;
@@ -729,52 +734,189 @@ public class Chapter10 {
     }
 
     /*
-
+        (Geometry: the bounding rectangle) A bounding rectangle is the minimum rect-
+        angle that encloses a set of points in a two-dimensional plane, as shown in
+        Figure 10.24d. Write a method that returns a bounding rectangle for a set of
+        points in a two-dimensional plane, as follows:
+        public static MyRectangle2D getRectangle(double[][] points)
+        The Rectangle2D class is defined in Programming Exercise 10.13. Write a test
+        program that prompts the user to enter five points and displays the bounding
+        rectangle’s center, width, and height.
+        Enter five points: 1.0 2.5 3 4 5 6 7 8 9 10
+        The bounding rectangle's center (5.0, 6.25), width 8.0, height 7.5
      */
     public static void ch10_15() {
+        System.out.print("Enter five points: ");
+        double[][] points = new double[5][2];
+        for (int i = 0; i < points.length; i++) {
+            points[i][0] = scanner.nextDouble();
+            points[i][1] = scanner.nextDouble();
+        }
+        MyRectangle2D r = getRectangle(points);
+        System.out.printf(
+                "The bounding rectangle's center (%.2f, %.2f), width %.1f, height %.1f\n",
+                r.getX(), r.getY(), r.getWidth(), r.getHeight()
+        );
+    }
 
+    public static MyRectangle2D getRectangle(double[][] points) {
+        double minX = Arrays.stream(points).map(x -> x[0]).min(Double::compare).get();
+        double maxX = Arrays.stream(points).map(x -> x[0]).max(Double::compare).get();
+        double minY = Arrays.stream(points).map(x -> x[1]).min(Double::compare).get();
+        double maxY = Arrays.stream(points).map(x -> x[1]).max(Double::compare).get();
+        return new MyRectangle2D((minX + maxX) / 2, (minY + maxY) / 2, maxX - minX, maxY - minY);
     }
 
     /*
-
+        (Divisible by 2 or 3) Find the first 10 numbers with 50 decimal digits that are
+        divisible by 2 or 3.
      */
     public static void ch10_16() {
-
+        final int minDigits = 50;
+        final int N = 10;
+        String startString = 1 + String.join("", Collections.nCopies(minDigits - 1, "0"));
+        BigInteger current = new BigInteger(startString);
+        BigInteger[] numbers = new BigInteger[N];
+        int index = 0;
+        BigInteger two = BigInteger.TWO;
+        BigInteger three = BigInteger.valueOf(3);
+        while (index < N) {
+            if (current.remainder(two).equals(BigInteger.ZERO) && current.remainder(three).equals(BigInteger.ZERO)) {
+                numbers[index] = current;
+                index++;
+            }
+            current = current.add(BigInteger.ONE);
+        }
+        for (BigInteger n : numbers) {
+            System.out.println(n);
+        }
     }
 
     /*
-
+        (Square numbers) Find the first 10 square numbers that are greater than Long.
+        MAX_VALUE. A square number is a number in the form of n^2. For example, 4, 9,
+        and 16 are square numbers. Find an efficient approach to run your program fast.
      */
     public static void ch10_17() {
-
+        final int N = 10;
+        BigInteger current = BigInteger.valueOf(Long.MAX_VALUE).sqrt();
+        BigInteger[] numbers = new BigInteger[N];
+        int index = 0;
+        while (index < N) {
+            current = current.add(BigInteger.ONE);
+            numbers[index] = current.pow(2);
+            index++;
+        }
+        for (BigInteger n : numbers) {
+            System.out.println(n);
+        }
     }
 
     /*
-
+        (Large prime numbers) Write a program that finds five prime numbers larger
+        than Long.MAX_VALUE.
      */
     public static void ch10_18() {
+        final int N = 5;
+        BigInteger current = BigInteger.valueOf(Long.MAX_VALUE);
+        BigInteger[] numbers = new BigInteger[N];
+        int index = 0;
+        while (index < N) {
+            current = current.add(BigInteger.ONE);
+            if (isPrime(current)) {
+                numbers[index] = current;
+                index++;
+            }
+        }
+        for (BigInteger n : numbers) {
+            System.out.println(n);
+        }
+    }
 
+    public static boolean isPrime(BigInteger n) {
+        if (n.equals(BigInteger.ONE) || n.remainder(BigInteger.TWO).equals(BigInteger.ZERO)) {
+            return false;
+        }
+        BigInteger start = BigInteger.TWO;
+        BigInteger stop = n.divide(BigInteger.TWO);
+        for (BigInteger i = start; i.compareTo(stop) <= 0; i = i.add(BigInteger.ONE)) {
+            if (n.remainder(i).equals(BigInteger.ZERO)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /*
-
+        (Mersenne prime) A prime number is called a Mersenne prime if it can be
+        written in the form 2p - 1 for some positive integer p. Write a program that
+        finds all Mersenne primes with p … 100 and displays the output as shown
+        below. (Hint: You have to use BigInteger to store the number because it is
+        too big to be stored in long. Your program may take several hours to run.)
+        p       2^p – 1
+        ---------------------
+        2       3
+        3       7
+        5       31
+        ...
      */
     public static void ch10_19() {
-
+        final int N = 100;
+        System.out.printf("%-10s%-10s\n", "p", "2^p – 1");
+        System.out.println("---------------------");
+        for (int p = 2; p <= N; p++) {
+            BigInteger mersenne = BigInteger.TWO.pow(p).subtract(BigInteger.ONE);
+            if (!isPrime(mersenne)) continue;
+            System.out.printf("%-10d%-10s\n", p, mersenne);
+        }
     }
 
     /*
-
+        (Approximate e) Programming Exercise 5.26 approximates e using the following
+        series:
+        e = 1 + 1/1! + 1/2! + 1/3! + 1/4! + ... + 1/i!
+        In order to get better precision, use BigDecimal with 25 digits of precision
+        in the computation. Write a program that displays the e value for i = 100,
+        200, . . . , and 1000.
      */
     public static void ch10_20() {
+        for (int i = 100; i <= 1000; i += 100) {
+            System.out.println(approximateE(i));
+        }
+    }
 
+    public static BigDecimal approximateE(int i) {
+        final int scale = 25;
+        BigDecimal e = BigDecimal.ONE;
+        BigDecimal item = BigDecimal.ONE;
+        for (int j = 2; j <= i; j++) {
+            e = e.add(item);
+            item = item.divide(BigDecimal.TWO, scale, RoundingMode.HALF_UP);
+        }
+        return e;
     }
 
     /*
-
+        (Divisible by 5 or 6) Find the first 10 numbers greater than Long.MAX_VALUE
+        that are divisible by 5 or 6.
      */
     public static void ch10_21() {
-
+        final int N = 10;
+        BigInteger current = BigInteger.valueOf(Long.MAX_VALUE);
+        BigInteger[] numbers = new BigInteger[N];
+        int index = 0;
+        BigInteger five = BigInteger.valueOf(5);
+        BigInteger six = BigInteger.valueOf(6);
+        while (index < N) {
+            if (current.remainder(five).equals(BigInteger.ZERO) || current.remainder(six).equals(BigInteger.ZERO)) {
+                numbers[index] = current;
+                index++;
+            }
+            current = current.add(BigInteger.ONE);
+        }
+        for (BigInteger n : numbers) {
+            System.out.println(n);
+        }
     }
 
     /*
