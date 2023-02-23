@@ -7,6 +7,11 @@ import exercises.ch10.ex12.Triangle2D;
 import exercises.ch10.ex13.MyRectangle2D;
 import exercises.ch10.ex14.MyDate;
 import exercises.ch10.ex2.BMI;
+import exercises.ch10.ex22.MyString1;
+import exercises.ch10.ex23.MyString2;
+import exercises.ch10.ex24.MyCharacter;
+import exercises.ch10.ex27.MyStringBuilder1;
+import exercises.ch10.ex28.MyStringBuilder2;
 import exercises.ch10.ex3.MyInteger;
 import exercises.ch10.ex4.MyPoint;
 import exercises.ch10.ex5.StackOfIntegers;
@@ -17,10 +22,9 @@ import exercises.ch9.ex7.Account;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 public class Chapter10 {
@@ -920,52 +924,190 @@ public class Chapter10 {
     }
 
     /*
-
+        (Implement the String class) The String class is provided in the Java library.
+        Provide your own implementation for the following methods (name the new
+        class MyString1):
+        public MyString1(char[] chars);
+        public char charAt(int index);
+        public int length();
+        public MyString1 substring(int begin, int end);
+        public MyString1 toLowerCase();
+        public boolean equals(MyString1 s);
+        public static MyString1 valueOf(int i);
      */
     public static void ch10_22() {
-
+        MyString1 s1 = new MyString1(new char[]{'H', 'e', 'l', 'l', 'o', '!'});
+        MyString1 s2 = new MyString1(new char[]{'H', 'e', 'l', 'l', 'o', '!'});
+        System.out.println(s1);
+        System.out.println(s1.charAt(5));
+        System.out.println(s1.toLowerCase());
+        System.out.println(s1.substring(1, 5));
+        System.out.println(MyString1.valueOf(123));
+        System.out.println(s1.equals(s2));
+        System.out.println(s1.equals(MyString1.valueOf(1)));
     }
 
     /*
-
+        (Implement the String class) The String class is provided in the Java library.
+        Provide your own implementation for the following methods (name the new
+        class MyString2):
+        public MyString2(String s);
+        public int compare(String s);
+        public MyString2 substring(int begin);
+        public MyString2 toUpperCase();
+        public char[] toChars();
+        public static MyString2 valueOf(boolean b);
      */
     public static void ch10_23() {
+        String s1 = "11";
+        System.out.println(s1.compareTo("11"));
+        System.out.println(s1.compareTo("12"));
+        System.out.println(s1.compareTo("01"));
+        System.out.println(s1.compareTo("11111"));
+        System.out.println(s1.compareTo("zz"));
+        System.out.println();
+        MyString2 ms2 = new MyString2(s1);
+        System.out.println(ms2.compare("11"));
+        System.out.println(ms2.compare("12"));
+        System.out.println(ms2.compare("01"));
+        System.out.println(ms2.compare("11111"));
+        System.out.println(ms2.compare("zz"));
 
+        MyString2 ms3 = new MyString2("Hello!");
+        System.out.println(ms3.substring(3));
+        System.out.println(ms3.toUpperCase());
+        System.out.println(ms3.toChars());
+        System.out.println(MyString2.valueOf(true));
     }
 
     /*
-
+        (Implement the Character class) The Character class is provided in the Java
+        library. Provide your own implementation for this class. Name the new class
+        MyCharacter.
      */
     public static void ch10_24() {
-
+        MyCharacter c = new MyCharacter('X');
+        System.out.println(c.equals('X'));
+        System.out.println(c.equals(new MyCharacter()));
+        System.out.println(c.compare(new MyCharacter('X')));
     }
 
     /*
-
+        (New string split method) The split method in the String class returns an
+        array of strings consisting of the substrings split by the delimiters. However, the
+        delimiters are not returned. Implement the following new method that returns
+        an array of strings consisting of the substrings split by the matching delimiters,
+        including the matching delimiters.
+        public static String[] split(String s, String regex)
+        For example, split("ab#12#453", "#") returns ab, #, 12, #, and 453 in
+        an array of String and split("a?b?gf#e", "[?#]") returns a, ?, b, ?, gf,
+        #, and e in an array of String.
      */
     public static void ch10_25() {
+        System.out.println(Arrays.toString(split("ab#12#453", "#")));
+        System.out.println(Arrays.toString(split("a?b?gf#e", "[?#]")));
+    }
 
+    public static String[] split(String s, String regex) {
+        String[] array = new String[s.length()];
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(s);
+        int stringIndex = 0;
+        int arrayIndex = 0;
+        while (matcher.find()) {
+            array[arrayIndex] = s.substring(stringIndex, matcher.start());
+            arrayIndex++;
+            array[arrayIndex] = s.substring(matcher.start(), matcher.end());
+            arrayIndex++;
+            stringIndex = matcher.end();
+        }
+        if (stringIndex < s.length()) {
+            array[arrayIndex] = s.substring(stringIndex);
+        }
+
+        return Arrays.stream(array).filter(Objects::nonNull).toArray(String[]::new);
     }
 
     /*
-
+        (Calculator) Revise Listing 7.9, Calculator.java, to accept an expression as a
+        string in which the operands and operator are separated by zero or more spaces.
+        For example, 3+4 and 3 + 4 are acceptable expressions. Here is a sample run:
      */
-    public static void ch10_26() {
+    public static void ch10_26(String[] input) {
+        // Check number of strings passed
+        if (input.length == 0) {
+            System.out.println("Usage: java Calculator operand1 operator operand2");
+            return;
+        }
+        String[] args = input[0].replaceAll("\s", "").split("");
 
+        // The result of the operation
+        int result = 0;
+
+        // Determine the operator
+        switch (args[1].charAt(0)) {
+            case '+':
+                result = Integer.parseInt(args[0]) + Integer.parseInt(args[2]);
+                break;
+            case '−':
+                result = Integer.parseInt(args[0]) - Integer.parseInt(args[2]);
+                break;
+            case '.':
+                result = Integer.parseInt(args[0]) * Integer.parseInt(args[2]);
+                break;
+            case '/':
+                result = Integer.parseInt(args[0]) / Integer.parseInt(args[2]);
+        }
+
+        // Display result
+        System.out.printf("%s %s %s = %s", args[0], args[1], args[2], result);
     }
 
     /*
-
+        (Implement the StringBuilder class) The StringBuilder class is provided
+        in the Java library. Provide your own implementation for the following methods
+        (name the new class MyStringBuilder1):
+        public MyStringBuilder1(String s);
+        public MyStringBuilder1 append(MyStringBuilder1 s);
+        public MyStringBuilder1 append(int i);
+        public int length();
+        public char charAt(int index);
+        public MyStringBuilder1 toLowerCase();
+        public MyStringBuilder1 substring(int begin, int end);
+        public String toString();
      */
     public static void ch10_27() {
-
+        MyStringBuilder1 s = new MyStringBuilder1("");
+        s = s.append(new MyStringBuilder1("Hello"));
+        s = s.append(123);
+        s = s.append(new MyStringBuilder1("!"));
+        System.out.println(s.length());
+        System.out.println(s.charAt(0));
+        System.out.println(s.toLowerCase());
+        System.out.println(s.substring(0, 5));
+        System.out.println(s);
     }
 
     /*
-
+        (Implement the StringBuilder class) The StringBuilder class is provided
+        in the Java library. Provide your own implementation for the following methods
+        (name the new class MyStringBuilder2):
+        public MyStringBuilder2();
+        public MyStringBuilder2(char[] chars);
+        public MyStringBuilder2(String s);
+        public MyStringBuilder2 insert(int offset, MyStringBuilder2 s);
+        public MyStringBuilder2 reverse();
+        public MyStringBuilder2 substring(int begin);
+        public MyStringBuilder2 toUpperCase();
      */
     public static void ch10_28() {
-
+        MyStringBuilder2 s = new MyStringBuilder2();
+        s = s.insert(0, new MyStringBuilder2("Hello"));
+        s = s.insert(3, new MyStringBuilder2(new char[]{'1', '2', '3'}));
+        System.out.println(s);
+        System.out.println(s.reverse());
+        System.out.println(s.substring(3));
+        System.out.println(s.toUpperCase());
     }
 
 }
