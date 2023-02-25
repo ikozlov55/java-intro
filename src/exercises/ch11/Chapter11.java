@@ -420,8 +420,8 @@ public class Chapter11 {
         Write a test program that prompts the user to enter 10 integers to a list and dis-
         plays the distinct integers in their input order and separated by exactly one space.
         Here is a sample run:
-        Enter 10 integers: 34 5 3 5 6 4 33 2 2 4
-        The distinct integers are 34 5 3 6 4 33 2
+            Enter 10 integers: 34 5 3 5 6 4 33 2 2 4
+            The distinct integers are 34 5 3 6 4 33 2
      */
     public static void ch11_13() {
         final int N = 10;
@@ -456,9 +456,9 @@ public class Chapter11 {
         {2, 3, 1, 5, 3, 4, 6}. Write a test program that prompts the user to enter two lists,
         each with five integers, and displays their union. The numbers are separated by
         exactly one space. Here is a sample run:
-        Enter five integers for list1: 3 5 45 4 3
-        Enter five integers for list2: 33 51 5 4 13
-        The combined list is 3 5 45 4 3 33 51 5 4 13
+            Enter five integers for list1: 3 5 45 4 3
+            Enter five integers for list2: 33 51 5 4 13
+            The combined list is 3 5 45 4 3 33 51 5 4 13
      */
     public static void ch11_14() {
         System.out.print("Enter five integers for list1: ");
@@ -484,37 +484,188 @@ public class Chapter11 {
     }
 
     /*
+        (Area of a convex polygon) A polygon is convex if it contains any line segments
+        that connects two points of the polygon. Write a program that prompts the user
+        to enter the number of points in a convex polygon, enter the points clockwise,
+        then displays the area of the polygon. For the formula for computing the area of
+        a polygon, see http://www.mathwords.com/a/area_convex_polygon.htm. Here is
+        a sample run of the program:
+            Enter the number of points: 7
+            Enter the coordinates of the points:
+            -12 0 -8.5 10 0 11.4 5.5 7.8 6 -5.5 0 -7 -3.5 -5.5
+            The total area is 244.57
+
+            Enter the number of points: 3
+            Enter the coordinates of the points:
+            2 5 5 1 -4 3
+            The total area is 15
 
      */
     public static void ch11_15() {
-
+        System.out.print("Enter the number of points: ");
+        final int N = scanner.nextInt();
+        System.out.println("Enter the coordinates of the points:");
+        ArrayList<ArrayList<Double>> points = new ArrayList<>();
+        for (int i = 0; i < N; i++) {
+            ArrayList<Double> point = new ArrayList<>();
+            point.add(scanner.nextDouble());
+            point.add(scanner.nextDouble());
+            points.add(point);
+        }
+        points.add(points.get(0));
+        Collections.reverse(points);
+        double a = 0, b = 0;
+        for (int i = 0; i < N; i++) {
+            a += points.get(i).get(0) * points.get(i + 1).get(1);
+            b += points.get(i).get(1) * points.get(i + 1).get(0);
+        }
+        double area = Math.abs(a - b) / 2;
+        System.out.printf("The total area is %.2f\n", area);
     }
 
     /*
-
+        (Addition quiz) Rewrite Listing 5.1, RepeatAdditionQuiz.java, to alert the user
+        if an answer is entered again. (Hint: use an array list to store answers.) Here is a
+        sample run of the program:
+            What is 5 + 9? 12
+            Wrong answer. Try again. What is 5 + 9? 34
+            Wrong answer. Try again. What is 5 + 9? 12
+            You already entered 12
+            Wrong answer. Try again. What is 5 + 9? 14
+            You got it!
      */
     public static void ch11_16() {
+        ArrayList<Integer> answers = new ArrayList<>();
+        int number1 = (int) (Math.random() * 10);
+        int number2 = (int) (Math.random() * 10);
 
+        System.out.printf("What is %d + %d? ", number1, number2);
+        int answer = scanner.nextInt();
+
+        while (number1 + number2 != answer) {
+            if (answers.contains(answer)) {
+                System.out.printf("You already entered %d\n", answer);
+            }
+            answers.add(answer);
+            System.out.printf("Wrong answer. Try again. What is %d + %d? ", number1, number2);
+            answer = scanner.nextInt();
+        }
+
+        System.out.println("You got it!");
     }
 
-    /*
 
+    /*
+        (Algebra: perfect square) Write a program that prompts the user to enter an inte-
+        ger m and find the smallest integer n such that m * n is a perfect square. (Hint:
+        Store all smallest factors of m into an array list. n is the product of the factors that
+        appear an odd number of times in the array list. For example, consider m = 90,
+        store the factors 2, 3, 3, and 5 in an array list. 2 and 5 appear an odd number of
+        times in the array list. Thus, n is 10.) Here is a sample run of the program:
+            Enter an integer m: 1500
+            The smallest number n for m * n to be a perfect square is 15
+            m * n is 22500
+            Enter an integer m: 63
+            The smallest number n for m * n to be a perfect square is 7
+            m * n is 441
      */
     public static void ch11_17() {
-
+        System.out.print("Enter an integer m: ");
+        int m = scanner.nextInt();
+        ArrayList<Integer> factors = new ArrayList<>();
+        int remainder = m;
+        while (remainder > 1) {
+            for (int i = 2; i <= remainder; i++) {
+                if (remainder % i == 0) {
+                    factors.add(i);
+                    remainder /= i;
+                    break;
+                }
+            }
+        }
+        ArrayList<Integer> nFactors = new ArrayList<>();
+        for (Integer i : factors) {
+            if (!nFactors.contains(i)) {
+                long count = factors.stream().filter(x -> x.equals(i)).count();
+                if (count % 2 != 0) {
+                    nFactors.add(i);
+                }
+            }
+        }
+        int n = nFactors.stream().reduce(1, (a, b) -> a * b);
+        System.out.println("The smallest number n for m * n to be a perfect square is " + n);
+        System.out.println("m * n is " + m * n);
     }
 
     /*
-
+        (ArrayList of Character) Write a method that returns an array list of Character
+        from a string using the following header:
+        public static ArrayList<Character> toCharacterArray(String s)
+        For example, toCharacterArray("abc") returns an array list that contains
+        characters 'a', 'b', and 'c'.
      */
     public static void ch11_18() {
-
+        ArrayList<Character> chars = toCharacterArray("abc");
+        System.out.println(chars);
     }
 
-    /*
+    public static ArrayList<Character> toCharacterArray(String s) {
+        ArrayList<Character> result = new ArrayList<>();
+        for (char c : s.toCharArray()) {
+            result.add(c);
+        }
+        return result;
+    }
 
+
+    /*
+        (Bin packing using first fit) The bin packing problem is to pack the objects of var-
+        ious weights into containers. Assume each container can hold a maximum of 10
+        pounds. The program uses an algorithm that places an object into the first bin in
+        which it would fit. Your program should prompt the user to enter the total number
+        of objects and the weight of each object. The program displays the total number
+        of containers needed to pack the objects and the contents of each container. Here
+        is a sample run of the program:
+        Does this program produce an optimal solution, that is, finding the minimum
+        number of containers to pack the objects?
+            Enter the number of objects: 6
+            Enter the weights of the objects: 7 5 2 3 5 8
+            Container 1 contains objects with weight 7 2
+            Container 2 contains objects with weight 5 3
+            Container 3 contains objects with weight 5
+            Container 4 contains objects with weight 8
      */
     public static void ch11_19() {
-
+        final int maxWeight = 10;
+        System.out.print("Enter the number of objects: ");
+        int n = scanner.nextInt();
+        System.out.print("Enter the weights of the objects: ");
+        ArrayList<Integer> weights = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            weights.add(scanner.nextInt());
+        }
+        ArrayList<ArrayList<Integer>> containers = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            boolean newContainerNeeded = true;
+            int objectWeight = weights.get(i);
+            for (ArrayList<Integer> container : containers) {
+                int containerWeight = container.stream().reduce(Integer::sum).get();
+                if (containerWeight + objectWeight <= maxWeight) {
+                    newContainerNeeded = false;
+                    container.add(objectWeight);
+                    break;
+                }
+            }
+            if (newContainerNeeded) {
+                ArrayList<Integer> container = new ArrayList<>();
+                container.add(objectWeight);
+                containers.add(container);
+            }
+        }
+        for (int i = 0; i < containers.size(); i++) {
+            System.out.printf("Container %d contains objects with weight", i + 1);
+            containers.get(i).forEach(x -> System.out.print(" " + x));
+            System.out.println();
+        }
     }
 }
