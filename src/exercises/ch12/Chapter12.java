@@ -9,10 +9,7 @@ import exercises.ch12.ex9.BinaryFormatException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Chapter12 {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -456,16 +453,58 @@ public class Chapter12 {
     }
 
     /*
+        (Process scores in a text file) Suppose a text file contains an unspecified
+        number of scores separated by spaces. Write a program that prompts the user to
+        enter the file, reads the scores from the file, and displays their total and average.
 
+        ./src/exercises/ch12/ex14/scores.txt
      */
     public static void ch12_14() {
+        System.out.print("Enter a path to scores.txt file: ");
+        String path = scanner.next();
+        File file = new File(path);
 
+        try (Scanner scanner = new Scanner(file).useLocale(Locale.US)) {
+            ArrayList<Double> scores = new ArrayList<>();
+            while (scanner.hasNext()) {
+                scores.add(scanner.nextDouble());
+            }
+            double total = scores.stream().reduce(0.0, Double::sum);
+            double average = total / scores.size();
+            System.out.printf("Total score: %.2f\n", total);
+            System.out.printf("Average score: %.2f\n", average);
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
-
+        (Write/read data) Write a program to create a file named Exercise12_15.txt if
+        it does not exist. Write 100 integers created randomly into the file using text
+        I/O. Integers are separated by spaces in the file. Read the data back from the
+        file and display the data in increasing order.
      */
     public static void ch12_15() {
+        final int N = 100;
+        File file = new File("./src/exercises/ch12/ex15/integers.txt");
+        try {
+            try (PrintWriter writer = new PrintWriter(file)) {
+                for (int i = 0; i < N; i++) {
+                    int number = (int) (Math.random() * 100 + 1);
+                    writer.print(number + " ");
+                }
+            }
+            try (Scanner scanner = new Scanner(file)) {
+                ArrayList<Integer> numbers = new ArrayList<>();
+                while (scanner.hasNext()) {
+                    numbers.add(scanner.nextInt());
+                }
+                Collections.sort(numbers);
+                numbers.forEach(x -> System.out.print(x + " "));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
