@@ -1,0 +1,1 @@
+cat tree book teapot bottle requirement object operation independence
