@@ -845,31 +845,135 @@ public class Chapter12 {
     }
 
     /*
-
+        (Process large dataset) A university posts its employees’ salaries at http://
+        liveexample.pearsoncmg.com/data/Salary.txt. Each line in the file consists of
+        a faculty member’s first name, last name, rank, and salary (see Programming
+        Exercise 12.24). Write a program to display the total salary for assistant profes-
+        sors, associate professors, full professors, and faculty, respectively, and display
+        the average salary for assistant professors, associate professors, full professors,
+        and faculty, respectively.
      */
     public static void ch12_25() {
+        final String path = "http://liveexample.pearsoncmg.com/data/Salary.txt";
+        ArrayList<Double>[] salaries = new ArrayList[]{new ArrayList<>(), new ArrayList<>(), new ArrayList<>()};
+        try {
+            URL url = new URL(path);
+            try (Scanner scanner = new Scanner(url.openStream())) {
+                while (scanner.hasNext()) {
+                    String[] parts = scanner.nextLine().split(" ");
+                    String rank = parts[2];
+                    double salary = Double.parseDouble(parts[3]);
+                    switch (rank) {
+                        case "assistant" -> salaries[0].add(salary);
+                        case "associate" -> salaries[1].add(salary);
+                        case "full" -> salaries[2].add(salary);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Assistant professor");
+        double total = salaries[0].stream().reduce(Double::sum).orElse(0.0);
+        System.out.printf("Total: %.2f\n", total);
+        System.out.printf("Average: %.2f\n", total / salaries[0].size());
+        System.out.println();
 
+        System.out.println("Associate professor");
+        total = salaries[1].stream().reduce(Double::sum).orElse(0.0);
+        System.out.printf("Total: %.2f\n", total);
+        System.out.printf("Average: %.2f\n", total / salaries[1].size());
+        System.out.println();
+
+        System.out.println("Full professor");
+        total = salaries[2].stream().reduce(Double::sum).orElse(0.0);
+        System.out.printf("Total: %.2f\n", total);
+        System.out.printf("Average: %.2f\n", total / salaries[2].size());
+        System.out.println();
     }
 
     /*
-
+        (Create a directory) Write a program that prompts the user to enter a directory
+        name and creates a directory using the File’s mkdirs method. The program
+        displays the message “Directory created successfully” if a directory is created
+        or “Directory already exists” if the directory already exists.
      */
     public static void ch12_26() {
-
+        System.out.print("Enter directory name: ");
+        String dirName = scanner.next();
+        File dir = new File(dirName);
+        if (dir.exists()) {
+            System.out.println("Directory already exists");
+            return;
+        }
+        if (dir.mkdirs()) {
+            System.out.println("Directory created successfully");
+        } else {
+            System.out.println("Something went wrong");
+        }
     }
 
     /*
-
+        (Replace words) Suppose you have a lot of files in a directory that contain
+        words Exercisei_j, where i and j are digits. Write a program that pads a 0
+        before i if i is a single digit and 0 before j if j is a single digit. For example, the
+        word Exercise2_1 in a file will be replaced by Exercise02_01. In Java, when
+        you pass the symbol * from the command line, it refers to all files in the direc-
+        tory (see Supplement III.V). Use the following command to run your program:
+        java Exercise12_27 *
      */
-    public static void ch12_27() {
-
+    public static void ch12_27(String[] args) {
+        File dir = new File("./src/exercises/ch12/ex27");
+        Pattern pattern = Pattern.compile("Exercise(\\d+)_(\\d+)");
+        try {
+            for (File file : dir.listFiles()) {
+                ArrayList<String> fileContent = new ArrayList<>();
+                try (Scanner scanner = new Scanner(file)) {
+                    while (scanner.hasNext()) {
+                        String line = scanner.nextLine();
+                        Matcher matcher = pattern.matcher(line);
+                        while (matcher.find()) {
+                            int n1 = Integer.parseInt(matcher.group(1));
+                            int n2 = Integer.parseInt(matcher.group(2));
+                            String replacement = String.format("Exercise%02d_%02d", n1, n2);
+                            line = line.replace(matcher.group(), replacement);
+                        }
+                        fileContent.add(line);
+                    }
+                }
+                try (PrintWriter writer = new PrintWriter(file)) {
+                    for (String line : fileContent) {
+                        writer.println(line);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
-
+        (Rename files) Suppose you have a lot of files in a directory named Exerci-
+        sei_j, where i and j are digits. Write a program that pads a 0 before i if i is a sin-
+        gle digit. For example, a file named Exercise2_1 in a directory will be renamed
+        to Exercise02_1. In Java, when you pass the symbol * from the command line,
+        it refers to all files in the directory (see Supplement III.V). Use the following
+        command to run your program:
+        java Exercise12_28 *
      */
-    public static void ch12_28() {
-
+    public static void ch12_28(String[] args) {
+        File dir = new File("./src/exercises/ch12/ex28");
+        File[] files = dir.listFiles();
+        if (files == null) return;
+        Pattern pattern = Pattern.compile("Exercise(\\d+)_(\\d+)");
+        for (File file : files) {
+            Matcher matcher = pattern.matcher(file.getName());
+            if (!matcher.find()) continue;
+            int n1 = Integer.parseInt(matcher.group(1));
+            int n2 = Integer.parseInt(matcher.group(2));
+            String newName = String.format("Exercise%02d_%02d", n1, n2);
+            file.renameTo(new File(dir, newName));
+        }
     }
 
     /*
