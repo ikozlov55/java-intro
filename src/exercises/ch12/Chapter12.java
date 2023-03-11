@@ -970,44 +970,269 @@ public class Chapter12 {
             Matcher matcher = pattern.matcher(file.getName());
             if (!matcher.find()) continue;
             int n1 = Integer.parseInt(matcher.group(1));
-            int n2 = Integer.parseInt(matcher.group(2));
-            String newName = String.format("Exercise%02d_%02d", n1, n2);
+            String n2 = matcher.group(2);
+            String newName = String.format("Exercise%02d_%s", n1, n2);
             file.renameTo(new File(dir, newName));
         }
     }
 
     /*
-
+        (Rename files) Suppose you have several files in a directory named Exerci-
+        sei_j, where i and j are digits. Write a program that pads a 0 before j if j is a sin-
+        gle digit. For example, a file named Exercise2_1 in a directory will be renamed
+        to Exercise2_01. In Java, when you pass the symbol * from the command line,
+        it refers to all files in the directory (see Supplement III.V). Use the following
+        command to run your program:
+        java Exercise12_29 *
      */
-    public static void ch12_29() {
-
+    public static void ch12_29(String[] args) {
+        File dir = new File("./src/exercises/ch12/ex28");
+        File[] files = dir.listFiles();
+        if (files == null) return;
+        Pattern pattern = Pattern.compile("Exercise(\\d+)_(\\d+)");
+        for (File file : files) {
+            Matcher matcher = pattern.matcher(file.getName());
+            if (!matcher.find()) continue;
+            String n1 = matcher.group(1);
+            int n2 = Integer.parseInt(matcher.group(2));
+            String newName = String.format("Exercise%s_%02d", n1, n2);
+            file.renameTo(new File(dir, newName));
+        }
     }
 
     /*
+        (Occurrences of each letter) Write a program that prompts the user to enter a
+        file name and displays the occurrences of each letter in the file. Letters are case
+        insensitive. Here is a sample run:
+        Enter a filename: Lincoln.txt
+        Number of As: 56
+        Number of Bs: 134
+        ...
+        Number of Zs: 9
 
+        ./src/exercises/ch12/ex22/file1.txt
      */
     public static void ch12_30() {
-
+        System.out.print("Enter a filename: ");
+        String fileName = scanner.next();
+        File file = new File(fileName);
+        int[] counts = new int['Z' - 'A' + 1];
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNext()) {
+                String line = scanner.nextLine();
+                for (char c : line.toCharArray()) {
+                    if (!Character.isLetter(c)) continue;
+                    c = Character.toUpperCase(c);
+                    counts[c - 'A']++;
+                }
+            }
+            for (int i = 0; i < counts.length; i++) {
+                System.out.printf("Number of %cs: %d\n", 'A' + i, counts[i]);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
+        (Baby name popularity ranking) The popularity ranking of baby names from
+        years 2001 to 2010 is downloaded from www.ssa.gov/oact/babynames and stored
+        in files named babynameranking2001.txt, babynameranking2002.txt, . . . ,
+        babynameranking2010.txt. You can download these files using the URL such
+        as http://liveexample.pearsoncmg.com/data/babynamesranking2001.txt. Each file
+        contains 1,000 lines. Each line contains a ranking, a boy’s name, number for the
+        boy’s name, a girl’s name, and number for the girl’s name. For example, the first
+        two lines in the file babynameranking2010.txt are as follows:
+        1    Jacob    21,875    Isabella   22,731
+        2    Ethan    17,866    Sophia     20,477
+        Therefore, the boy’s name Jacob and girl’s name Isabella are ranked #1 and the
+        boy’s name Ethan and girl’s name Sophia are ranked #2; 21,875 boys are named
+        Jacob, and 22,731 girls are named Isabella. Write a program that prompts the
+        user to enter the year, gender, followed by a name, and displays the ranking
+        of the name for the year. Your program should read the data directly from the
+        Web. Here are some sample runs:
+            Enter the year: 2010
+            Enter the gender: M
+            Enter the name: Javier
+            Javier is ranked #190 in year 2010
 
+            Enter the year: 2010
+            Enter the gender: F
+            Enter the name: ABC
+            The name ABC is not ranked in year 2010
      */
     public static void ch12_31() {
-
+        System.out.print("Enter the year: ");
+        int year = scanner.nextInt();
+        if (year < 2001 || year > 2010) {
+            System.out.println("Invalid year");
+            return;
+        }
+        System.out.print("Enter the gender:  ");
+        String gender = scanner.next();
+        if (!gender.equals("M") && !gender.equals("F")) {
+            System.out.println("Invalid gender");
+            return;
+        }
+        System.out.print("Enter the name: ");
+        String name = scanner.next();
+        String address = String.format("http://liveexample.pearsoncmg.com/data/babynamesranking%d.txt", year);
+        try {
+            URL url = new URL(address);
+            Scanner scanner = new Scanner(url.openStream());
+            boolean notFound = true;
+            while (scanner.hasNext() && notFound) {
+                String[] record = Arrays.stream(scanner.nextLine().split("\t"))
+                        .map(String::trim)
+                        .toArray(String[]::new);
+                int rank = Integer.parseInt(record[0]);
+                int genderIndex = gender.equals("M") ? 1 : 3;
+                String currentName = record[genderIndex];
+                if (currentName.equals(name)) {
+                    System.out.printf("%s is ranked #%d in year %d\n", name, rank, year);
+                    notFound = false;
+                }
+            }
+            if (notFound) {
+                System.out.printf("The name %s is not ranked in year %d\n", name, year);
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
-
+    (Ranking summary) Write a program that uses the files described in Program-
+    ming Exercise 12.31 and displays a ranking summary table for the first five
+    girl’s and boy’s names as follows:
+        Year Rank 1   Rank 2   Rank 3  Rank 4   Rank 5  Rank 1 Rank 2  Rank 3  Rank 4    Rank 5
+        2010 Isabella Sophia   Emma    Olivia   Ava     Jacob  Ethan   Michael Jayden    William
+        2009 Isabella Emma     Olivia  Sophia   Ava     Jacob  Ethan   Michael Alexander William
+        2008 Emma     Isabella Emily   Olivia   Ava     Jacob  Michael Ethan   Joshua    Daniel
+        2007 Emily    Isabella Emma    Ava      Madison Jacob  Michael Ethan   Joshua    Daniel
+        2006 Emily    Emma     Madison Isabella Ava     Jacob  Michael Joshua  Ethan     Matthew
+        2005 Emily    Emma     Madison Abigail  Olivia  Jacob  Michael Joshua  Matthew   Ethan
+        2004 Emily    Emma     Madison Olivia   Hannah  Jacob  Michael Joshua  Matthew   Ethan
+        2003 Emily    Emma     Madison Hannah   Olivia  Jacob  Michael Joshua  Matthew   Andrew
+        2002 Emily    Madison  Hannah  Emma     Alexis  Jacob  Michael Joshua  Matthew   Ethan
+        2001 Emily    Madison  Hannah  Ashley   Alexis  Jacob  Michael Matthew Joshua    Christopher
      */
     public static void ch12_32() {
-
+        int startYear = 2001;
+        int totalYears = 10;
+        int maxRank = 5;
+        String[][] data = new String[totalYears][maxRank * 2 + 1];
+        for (int i = 0; i < totalYears; i++) {
+            int year = startYear + i;
+            data[i][0] = String.valueOf(year);
+            String address = String.format("http://liveexample.pearsoncmg.com/data/babynamesranking%d.txt", year);
+            try {
+                URL url = new URL(address);
+                Scanner scanner = new Scanner(url.openStream());
+                for (int j = 1; j <= maxRank; j++) {
+                    String[] record = Arrays.stream(scanner.nextLine().split("\t"))
+                            .map(String::trim)
+                            .toArray(String[]::new);
+                    data[i][j] = record[3];
+                    data[i][j + maxRank] = record[1];
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        System.out.printf(
+                "%-5s%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n",
+                "Year",
+                "Rank 1", "Rank 2", "Rank 3", "Rank 4", "Rank 5",
+                "Rank 1", "Rank 2", "Rank 3", "Rank 4", "Rank 5"
+        );
+        for (int i = data.length - 1; i >= 0; i--) {
+            String[] record = data[i];
+            System.out.printf(
+                    "%-5s%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n",
+                    record[0],
+                    record[1], record[2], record[3], record[4], record[5],
+                    record[6], record[7], record[8], record[9], record[10]
+            );
+        }
     }
 
     /*
-
+        (Search Web) Modify Listing 12.18 WebCrawler.java to search for the word
+        (e.g., Computer Programming) starting from a URL (e.g., http://cs.armstrong
+        .edu/liang). Your program prompts the user to enter the word and the starting
+        URL and terminates once the word is found. Display the URL for the page that
+        contains the word.
      */
     public static void ch12_33() {
-
+        System.out.print("Enter a URL: ");
+        String url = scanner.nextLine();
+        System.out.print("Enter a word: ");
+        String word = scanner.next();
+        crawler(url, word);
     }
+
+    public static void crawler(String startingURL, String word) {
+        ArrayList<String> listOfPendingURLs = new ArrayList<>();
+        ArrayList<String> listOfTraversedURLs = new ArrayList<>();
+        listOfPendingURLs.add(startingURL);
+        while (!listOfPendingURLs.isEmpty() &&
+                listOfTraversedURLs.size() <= 100) {
+            String urlString = listOfPendingURLs.remove(0);
+            if (!listOfTraversedURLs.contains(urlString)) {
+                listOfTraversedURLs.add(urlString);
+                System.out.println("Crawl " + urlString);
+                if (isURLContainsWord(urlString, word)) {
+                    System.out.printf("The word \"%s\" found on page %s\n", word, urlString);
+                    return;
+                }
+                for (String s : getSubURLs(urlString)) {
+                    if (!listOfTraversedURLs.contains(s))
+                        listOfPendingURLs.add(s);
+                }
+            }
+        }
+    }
+
+    public static boolean isURLContainsWord(String urlString, String word) {
+        try {
+            URL url = new URL(urlString);
+            Scanner input = new Scanner(url.openStream());
+            while (input.hasNext()) {
+                String line = input.nextLine();
+                if (line.contains(word)) {
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return false;
+    }
+
+    public static ArrayList<String> getSubURLs(String urlString) {
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            URL url = new URL(urlString);
+            Scanner input = new Scanner(url.openStream());
+            int current = 0;
+            while (input.hasNext()) {
+                String line = input.nextLine();
+                current = line.indexOf("https:", current);
+                while (current > 0) {
+                    int endIndex = line.indexOf("\"", current);
+                    if (endIndex > 0) {
+                        list.add(line.substring(current, endIndex));
+                        current = line.indexOf("https:", endIndex);
+                    } else
+                        current = -1;
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        return list;
+    }
+
 }
