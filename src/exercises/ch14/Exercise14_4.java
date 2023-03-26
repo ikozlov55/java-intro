@@ -31,7 +31,6 @@ public class Exercise14_4 extends Application {
 
             label.setTextFill(color);
             hbox.getChildren().add(label);
-            //label.setFont(new Font("Times Roman"));
         }
         Scene scene = new Scene(hbox);
         stage.setScene(scene);

@@ -95,24 +95,37 @@ public class Chapter14 {
     }
 
     /*
-
+        (Paint a smiley face) Write a program that paints a smiley face, as shown in
+        Figure 14.46a.
      */
     public static void ch14_11() {
-
+        Exercise14_11.run();
     }
 
     /*
-
+        (Display a bar chart) Write a program that uses a bar chart to display the
+        percentages of the overall grade represented by projects, quizzes, midterm
+        exams, and the final exam, as shown in Figure 14.46b. Suppose projects take
+        20% and are displayed in red, quizzes take 10% and are displayed in blue,
+        midterm exams take 30% and are displayed in green, and the final exam takes
+        40% and is displayed in orange. Use the Rectangle class to display the bars.
+        Interested readers may explore the JavaFX BarChart class for further study
      */
     public static void ch14_12() {
-
+        Exercise14_12.run();
     }
 
     /*
-
+        (Display a pie chart) Write a program that uses a pie chart to display the per-
+        centages of the overall grade represented by projects, quizzes, midterm exams,
+        and the final exam, as shown in Figure 14.46c. Suppose projects take 20% and
+        are displayed in red, quizzes take 10% and are displayed in blue, midterm exams
+        take 30% and are displayed in green, and the final exam takes 40% and is dis-
+        played in orange. Use the Arc class to display the pies. Interested readers may
+        explore the JavaFX PieChart class for further study
      */
     public static void ch14_13() {
-
+        Exercise14_13.run();
     }
 
     /*
