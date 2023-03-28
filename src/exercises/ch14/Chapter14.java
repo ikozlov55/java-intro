@@ -129,23 +129,31 @@ public class Chapter14 {
     }
 
     /*
-
+        (Display a rectanguloid) Write a program that displays a rectanguloid, as
+        shown in Figure 14.47a. The cube should grow and shrink as the window grows
+        or shrinks.
      */
     public static void ch14_14() {
-
-    }    /*
-
-     */
-
-    public static void ch14_15() {
-
+        Exercise14_14.run();
     }
 
     /*
+        (Display a STOP sign) Write a program that displays a STOP sign, as shown
+        in Figure 14.47b. The octagon is in red and the sign is in white. (Hint: Place an
+        octagon and a text in a stack pane.)
+     */
 
+    public static void ch14_15() {
+        Exercise14_15.run();
+    }
+
+    /*
+        (Display a 3 * 3 grid) Write a program that displays a 3 * 3 grid, as shown in
+        Figure 14.47c. Use red color for vertical lines and blue for horizontals. The lines
+        are automatically resized when the window is resized.
      */
     public static void ch14_16() {
-
+        Exercise14_16.run();
     }
 
     /*
