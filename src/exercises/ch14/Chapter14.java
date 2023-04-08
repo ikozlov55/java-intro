@@ -157,38 +157,78 @@ public class Chapter14 {
     }
 
     /*
-
+        (Game: hangman) Write a program that displays a drawing for the popular hang-
+        man game, as shown in Figure 14.48a.
      */
     public static void ch14_17() {
-
+        Exercise14_17.run();
     }
 
     /*
-
+        (Plot the square function) Write a program that draws a diagram for the function
+        f(x) = x2 (see Figure 14.48b).
+        Hint: Add points to a polyline using the following code:
+        Polyline polyline = new Polyline();
+        ObservableList<Double> list = polyline.getPoints();
+        double scaleFactor = 0.0125;
+        for (int x = –100; x <= 100; x++) {
+        list.add(x + 200.0);
+        list.add(scaleFactor * x * x);
+        }
      */
     public static void ch14_18() {
-
+        Exercise14_18.run();
     }
 
     /*
-
+        (Plot the sine and cosine functions) Write a program that plots the sine function
+        in red and cosine in blue, as shown in Figure 14.48c.
+        Hint: The Unicode for p is \u03c0. To display -2p, use Text(x, y, "–2\
+        u03c0"). For a trigonometric function like sin(x), x is in radians. Use the
+        following loop to add the points to a polyline:
+        Polyline polyline = new Polyline();
+        ObservableList<Double> list = polyline.getPoints();
+        double scaleFactor = 50;
+        for (int x = −170; x <= 170; x++) {
+            list.add(x + 200.0);
+            list.add(100 – scaleFactor * Math.sin((x / 100.0) * 2 *Math.PI));
+        }
+        Note that x in the loop is a point in the X-Axis and x does not correspond to
+        angles in degrees. The entire expression (x / 100.0) * 2 * Math.PI rep-
+        resents an angle in radians.
+        When x is -100, Math.sin((x / 100.0) * 2 * Math.PI) is 0
+        When x is -75, Math.sin((x / 100.0) * 2 * Math.PI) is 1
+        When x is -50, Math.sin((x / 100.0) * 2 * Math.PI) is 0
+        When x is -25, Math.sin((x / 100.0) * 2 * Math.PI) is -1
+        When x is 0, Math.sin((x / 100.0) * 2 * Math.PI) is 0
+        When x is 25, Math.sin((x / 100.0) * 2 * Math.PI) is 1
+        When x is 50, Math.sin((x / 100.0) * 2 * Math.PI) is 0
+        When x is 75, Math.sin((x / 100.0) * 2 * Math.PI) is -1
+        When x is 100, Math.sin((x / 100.0) * 2 * Math.PI) is 0
      */
     public static void ch14_19() {
-
+        Exercise14_19.run();
     }
 
     /*
-
+        (Draw an arrow line) Write a static method that draws an arrow line from a
+        starting point to an ending point in a pane using the following method header:
+        public static void drawArrowLine(double startX, double startY,
+        double endX, double endY, Pane pane)
+        Write a test program that randomly draws an arrow line, as shown in Figure 14.49a.
      */
     public static void ch14_20() {
-
+        Exercise14_20.run();
     }
 
     /*
-
+        (Two circles and their distance) Write a program that draws two circles with
+        radius 15 pixels, centered at random locations, with a line connecting the two
+        circles. The distance between the two centers is displayed on the line, as shown
+        in Figure 14.49b
      */
     public static void ch14_21() {
-
+        Exercise14_21.run();
     }
 
     /*
