@@ -2,6 +2,7 @@ package exercises.ch14;
 
 public class Chapter14 {
 
+
     /*
         (Display images) Write a program that displays four images in a grid pane, as
         shown in Figure 14.43a.
@@ -232,59 +233,83 @@ public class Chapter14 {
     }
 
     /*
-
+        (Connect two circles) Write a program that draws two filled circles with radius
+        15 pixels, centered at random locations, with a line connecting the two circles.
+        The line should not cross inside the circles, as shown in Figure 14.49c.
      */
     public static void ch14_22() {
-
+        Exercise14_22.run();
     }
 
     /*
-
+        (Geometry: two rectangles) Write a program that prompts the user to enter the
+        center coordinates, width, and height of two rectangles from the command line.
+        The program displays the rectangles and a text indicating whether the two are
+        overlapping, whether one is contained in the other, or whether they don’t over-
+        lap, as shown in Figure 14.50. See Programming Exercise 10.13 for checking the
+        relationship between two rectangles.
      */
     public static void ch14_23() {
-
+        Exercise14_23.run();
     }
 
     /*
-
+        (Geometry: Inside a polygon?) Write a program that prompts the user to enter
+        the coordinates of five points from the command line. The first four points form a
+        polygon, and the program displays the polygon and a text that indicates whether
+        the fifth point is inside the polygon, as shown in Figure 14.51a. (Hint: Use the
+        Node’s contains method to test whether a point is inside a node.)
      */
     public static void ch14_24() {
-
+        Exercise14_24.run();
     }
 
     /*
-
+        (Random points on a circle) Modify Programming Exercise 4.6 to create five
+        random points on a circle, form a polygon by connecting the points clockwise,
+        and display the circle and the polygon, as shown in Figure 14.51b.
      */
     public static void ch14_25() {
-
+        Exercise14_25.run();
     }
 
     /*
-
+        (Use the ClockPane class) Write a program that displays two clocks. The hour,
+        minute, and second values are 4, 20, 45 for the first clock, and 22, 46, 15 for the
+        second clock, as shown in Figure 14.51c.
      */
     public static void ch14_26() {
-
+        Exercise14_26.run();
     }
 
     /*
-
+        (Draw a detailed clock) Modify the ClockPane class in Section 14.12 to draw
+        the clock with more details on the hours and minutes, as shown in Figure
+        14.52a.
      */
     public static void ch14_27() {
-
+        Exercise14_27.run();
     }
 
     /*
-
+        (Random time) Modify the ClockPane class with three new Boolean properties
+        —hourHandVisible,minuteHandVisible,and secondHandVisible
+        and their associated accessor and mutator methods.
+        You can use the set methods to make a hand visible or invisible. Write a test
+        program that displays only the hour and minute hands. The hour and minute
+        values are randomly generated. The hour is between 0 and 11, and the minute is
+        either 0 or 30, as shown in Figure 14.52b.
      */
     public static void ch14_28() {
-
+        Exercise14_28.run();
     }
 
     /*
-
+        (Game: bean machine) Write a program that displays a bean machine introduced
+        in Programming Exercise 7.37, as shown in Figure 14.52c.
      */
     public static void ch14_29() {
-
+        Exercise14_29.run();
     }
 
 }

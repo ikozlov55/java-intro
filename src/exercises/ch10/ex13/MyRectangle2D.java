@@ -62,7 +62,10 @@ public class MyRectangle2D {
     }
 
     public boolean contains(double x, double y) {
-        return (Math.abs(x) <= width / 2 && Math.abs(y) <= height / 2);
+        return (x >= this.x - width / 2 &&
+                x <= this.x + width / 2 &&
+                y >= this.y - height / 2 &&
+                y <= this.y + height / 2);
     }
 
     public boolean contains(MyRectangle2D r) {
