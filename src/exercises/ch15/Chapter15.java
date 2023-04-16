@@ -35,36 +35,57 @@ public class Chapter15 {
         multiplication, and division, as shown in Figure 15.27a.
      */
     public static void ch15_4() {
+        Exercise15_4.run();
     }
 
     /*
-
+        (Create an investment-value calculator) Write a program that calculates the
+        future value of an investment at a given interest rate for a specified number of
+        years. The formula for the calculation is
+        futureValue = investmentAmount * (1 + monthlyInterestRate)years*12
+        Use text fields for the investment amount, number of years, and annual interest
+        rate. Display the future amount in a text field when the user clicks the Calculate
+        button, as shown in Figure 15.27b.
      */
     public static void ch15_5() {
+        Exercise15_5.run();
     }
 
     /*
-
+        (Alternate two messages) Write a program to display the text Java is fun
+        and Java is powerful alternately with a mouse click.
      */
     public static void ch15_6() {
+        Exercise15_6.run();
     }
 
     /*
-
+        (Change color using a mouse) Write a program that displays the color of a
+        circle as black when the mouse button is pressed, and as white when the mouse
+        button is released.
      */
     public static void ch15_7() {
+        Exercise15_7.run();
     }
 
     /*
-
+        (Display the mouse position) Write two programs, such that one displays the
+        mouse position when the mouse button is clicked (see Figure 15.28a), and the
+        other displays the mouse position when the mouse button is pressed and ceases
+        to display it when the mouse button is released.
      */
     public static void ch15_8() {
+        Exercise15_8.run();
     }
 
     /*
-
+        (Draw lines using the arrow keys) Write a program that draws line segments
+        using the arrow keys. The line starts from (100, 100) in the pane and draws
+        toward east, north, west, or south when the right-arrow key, up-arrow key,
+        left-arrow key, or down-arrow key is pressed, as shown in Figure 15.28b.
      */
     public static void ch15_9() {
+        Exercise15_9.run();
     }
 
     /*
