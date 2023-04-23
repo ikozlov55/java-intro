@@ -89,15 +89,20 @@ public class Chapter15 {
     }
 
     /*
-
+        (Enter and display a string) Write a program that receives a string from the
+        keyboard and displays it on a pane. The Enter key signals the end of a string.
+        Whenever a new string is entered, it is displayed on the pane.
      */
     public static void ch15_10() {
+        Exercise15_10.run();
     }
 
     /*
-
+        (Move a circle using keys) Write a program that moves a circle up, down, left,
+        or right using the arrow keys.
      */
     public static void ch15_11() {
+        Exercise15_11.run();
     }
 
     /*
