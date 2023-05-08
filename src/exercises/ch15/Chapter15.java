@@ -106,15 +106,24 @@ public class Chapter15 {
     }
 
     /*
-
+        (Geometry: inside a circle?) Write a program that draws a fixed circle centered
+        at (100, 60) with radius 50. Whenever the mouse is moved, display a message
+        indicating whether the mouse point is inside the circle at the mouse point or
+        outside of it, as shown in Figure 15.29a.
      */
     public static void ch15_12() {
+        Exercise15_12.run();
     }
 
     /*
-
+        (Geometry: inside a rectangle?) Write a program that draws a fixed rectangle cen-
+        tered at (100, 60) with width 100 and height 40. Whenever the mouse is moved,
+        display a message indicating whether the mouse point is inside the rectangle at the
+        mouse point or outside of it, as shown in Figure 15.29b. To detect whether a point
+        is inside a polygon, use the contains method defined in the Node class.
      */
     public static void ch15_13() {
+        Exercise15_13.run();
     }
 
     /*
