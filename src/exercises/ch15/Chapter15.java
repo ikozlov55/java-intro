@@ -153,30 +153,48 @@ public class Chapter15 {
 
      */
     public static void ch15_16() {
+        Exercise15_16.run();
     }
 
     /*
-
+        (Geometry: find the bounding rectangle) Write a program that enables the user
+        to add and remove points in a two-dimensional plane dynamically, as shown
+        in Figure 15.31a. A minimum bounding rectangle is updated as the points are
+        added and removed. Assume the radius of each point is 10 pixels.
      */
     public static void ch15_17() {
+        Exercise15_17.run();
     }
 
     /*
-
+        (Move a rectangle using mouse) Write a program that displays a rectangle.
+        You can point the mouse inside the rectangle and drag (i.e., move with mouse
+        pressed) the rectangle wherever the mouse goes. The mouse point becomes the
+        center of the rectangle.
      */
     public static void ch15_18() {
+        Exercise15_18.run();
     }
 
     /*
-
+        (Game: eye–hand coordination) Write a program that displays a circle of
+        radius 10 pixels filled with a random color at a random location on a pane, as
+        shown in Figure 15.31b. When you click the circle, it disappears and a new
+        random-color circle is displayed at another random location. After 20 circles
+        are clicked, display the time spent in the pane, as shown in Figure 15.31c.
      */
     public static void ch15_19() {
+        Exercise15_19.run();
     }
 
     /*
-
+        (Geometry: display angles) Write a program that enables the user to drag the
+        vertices of a triangle and displays the angles dynamically as the triangle shape
+        changes, as shown in Figure 15.32a. The formula to compute angles is given in
+        Listing 4.1.
      */
     public static void ch15_20() {
+        Exercise15_20.run();
     }
 
     /*
