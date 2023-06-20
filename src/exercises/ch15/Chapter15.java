@@ -198,27 +198,39 @@ public class Chapter15 {
     }
 
     /*
-
+        (Drag points) Draw a circle with three random points on the circle. Connect
+        the points to form a triangle. Display the angles in the triangle. Use the mouse
+        to drag a point along the perimeter of the circle. As you drag it, the triangle and
+        angles are redisplayed dynamically, as shown in Figure 15.32b. For computing
+        angles in a triangle, see Listing 4.1
      */
     public static void ch15_21() {
+        Exercise15_21.run();
     }
 
     /*
-
+        (Auto resize cylinder) Rewrite Programming Exercise 14.10 so the cylinder’s
+        width and height are automatically resized when the window is resized.
      */
     public static void ch15_22() {
+        Exercise15_22.run();
     }
 
     /*
-
+        (Auto resize stop sign) Rewrite Programming Exercise 14.15 so the stop sign’s
+        width and height are automatically resized when the window is resized.
      */
     public static void ch15_23() {
+        Exercise15_23.run();
     }
 
     /*
-
+        (Animation: pendulum swing) Write a program that animates a pendulum
+        swing, as shown in Figure 15.33. Press/release the mouse to pause/resume the
+        animation.
      */
     public static void ch15_24() {
+        Exercise15_24.run();
     }
 
     /*
