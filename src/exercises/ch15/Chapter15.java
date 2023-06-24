@@ -234,21 +234,31 @@ public class Chapter15 {
     }
 
     /*
-
+        (Animation: ball on curve) Write a program that animates a ball moving along
+        a sine curve, as shown in Figure 15.34. When the ball gets to the right border,
+        it starts over from the left. Enable the user to resume/pause the animation with
+        a click on the left/right mouse button.
      */
     public static void ch15_25() {
+        Exercise15_25.run();
     }
 
     /*
-
+        (Change opacity) Rewrite Programming Exercise 15.24 so the ball’s opacity is
+        changed as it swings.
      */
     public static void ch15_26() {
+        Exercise15_26.run();
     }
 
     /*
-
+        (Control a moving text) Write a program that displays a moving text, as shown
+        in Figures 15.35a and b. The text moves from left to right circularly. When it
+        disappears in the right, it reappears from the left. The text freezes when the
+        mouse is pressed, and moves again when the button is released.
      */
     public static void ch15_27() {
+        Exercise15_27.run();
     }
 
     /*
