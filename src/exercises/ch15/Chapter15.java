@@ -262,15 +262,25 @@ public class Chapter15 {
     }
 
     /*
-
+        (Display a running fan) Write a program that displays a running fan, as shown
+        in Figure 15.35c. Use the Pause, Resume, and Reverse buttons to pause,
+        resume, and reverse fan running.
      */
     public static void ch15_28() {
+        Exercise15_28.run();
     }
 
     /*
-
+        (Racing car) Write a program that simulates car racing, as shown in
+        Figure 15.36a. The car moves from left to right. When it hits the right end, it
+        restarts from the left and continues the same process. You can use a timer to
+        control animation. Redraw the car with new base coordinates (x, y), as shown in
+        Figure 15.36b. Also let the user pause/resume the animation with a button
+        press/release and increase/decrease the car speed by pressing the up and down
+        arrow keys.
      */
     public static void ch15_29() {
+        Exercise15_29.run();
     }
 
     /*
