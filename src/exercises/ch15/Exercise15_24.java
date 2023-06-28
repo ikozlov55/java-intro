@@ -19,7 +19,7 @@ public class Exercise15_24 extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        PendulumPane root = new PendulumPane();
+        PendulumSwingPane root = new PendulumSwingPane();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setWidth(400);
@@ -29,7 +29,7 @@ public class Exercise15_24 extends Application {
     }
 }
 
-class PendulumPane extends Pane {
+class PendulumSwingPane extends Pane {
     private void paint() {
         double rx = getWidth() / 3;
         double ry = rx / 2;

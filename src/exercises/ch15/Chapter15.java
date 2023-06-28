@@ -284,15 +284,26 @@ public class Chapter15 {
     }
 
     /*
-
+        (Slide show) Twenty-five slides are stored as image files (slide0.jpg, slide1.
+        jpg, . . . , slide24.jpg) in the image directory downloadable along with the
+        source code in the book. The size of each image is 800 * 600. Write a program
+        that automatically displays the slides repeatedly. Each slide is shown for two
+        seconds. The slides are displayed in order. When the last slide finishes, the
+        first slide is redisplayed, and so on. Click to pause if the animation is currently
+        playing. Click to resume if the animation is currently paused.
      */
     public static void ch15_30() {
+        Exercise15_30.run();
     }
 
     /*
-
+        (Geometry: pendulum) Write a program that animates a pendulum swinging,
+        as shown in Figure 15.37. Press the up arrow key to increase the speed, and the
+        down arrow key to decrease it. Press the S key to stop animation of and the R
+        key to resume it.
      */
     public static void ch15_31() {
+        Exercise15_31.run();
     }
 
     /*
