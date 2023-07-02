@@ -307,33 +307,56 @@ public class Chapter15 {
     }
 
     /*
-
+        (Control a clock) Modify Listing 14.21, ClockPane.java, to add the animation
+        into this class and add two methods start() and stop() to start and stop the
+        clock, respectively. Write a program that lets the user control the clock with the
+        Start and Stop buttons, as shown in Figure 15.38a.
      */
     public static void ch15_32() {
+        Exercise15_32.run();
     }
 
     /*
-
+        (Game: bean-machine animation) Write a program that animates the bean
+        machine introduced in Programming Exercise 7.37. The animation terminates
+        after 10 balls are dropped, as shown in Figures 15.38b and c
      */
     public static void ch15_33() {
+        Exercise15_33.run();
     }
 
     /*
-
+        (Simulation: self-avoiding random walk) A self-avoiding walk in a lattice
+        is a path from one point to another that does not visit the same point twice.
+        Self-avoiding walks have applications in physics, chemistry, and mathematics.
+        They can be used to model chain-like entities such as solvents and polymers.
+        Write a program that displays a random path that starts from the center and
+        ends at a point on the boundary, as shown in Figure 15.39a, or ends at a dead-
+        end point (i.e., surrounded by four points that have already been visited), as
+        shown in Figure 15.39b. Assume the size of the lattice is 16 by 16.
      */
     public static void ch15_34() {
+        Exercise15_34.run();
     }
 
     /*
-
+        (Animation: self-avoiding random walk) Revise the preceding exercise to dis-
+        play the walk step by step in an animation, as shown in Figures 15.39c and d
      */
     public static void ch15_35() {
+        Exercise15_35.run();
     }
 
     /*
-
+        (Simulation: self-avoiding random walk) Write a simulation program to show
+        that the chance of getting dead-end paths increases as the grid size increases.
+        Your program simulates lattices with size from 10 to 80 with increments of 5.
+        For each lattice size, simulate a self-avoiding random walk 10,000 times
+        and display the probability of the dead-end paths, as shown in the following
+        sample output:
      */
     public static void ch15_36() {
+        Exercise15_36.run();
     }
 
 
