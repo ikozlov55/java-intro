@@ -4,7 +4,10 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -33,14 +36,13 @@ public class Exercise16_10 extends Application {
             try {
                 File file = new File(textField.getText());
                 Scanner scanner = new Scanner(file);
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 while (scanner.hasNext()) {
-                    buffer.append(scanner.nextLine() + "\n");
+                    buffer.append(scanner.nextLine()).append("\n");
                 }
                 textArea.setText(buffer.toString());
             } catch (FileNotFoundException ex) {
                 textArea.setText("File not found!");
-                return;
             }
 
         });

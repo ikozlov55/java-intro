@@ -97,24 +97,38 @@ public class Chapter16 {
     }
 
     /*
-
+        (Text viewer) Write a program that displays a text file in a text area, as shown
+        in Figure 16.40a. The user enters a file name in a text field and clicks the View
+        button; the file is then displayed in a text area.
      */
     public static void ch16_10() {
         Exercise16_10.run();
     }
 
     /*
-
+        (Create a histogram for occurrences of letters) Write a program that reads a
+        file and displays a histogram to show the occurrences of each letter in the file,
+        as shown in Figure 16.40b. The file name is entered from a text field. Pressing
+        the Enter key on the text field causes the program to start to read, process the
+        file, and display the histogram. The histogram is displayed in the center of the
+        window. Define a class named Histogram that extends Pane. The class con-
+        tains the property counts that is an array of 26 elements. counts[0] stores the
+        number of A, counts[1] the number of B, and so on. The class also contains a
+        setter method for setting a new counts and displaying the histogram for the new
+        counts.
      */
     public static void ch16_11() {
-
+        //>> ./src/exercises/ch16/Exercise16_11.java
+        Exercise16_11.run();
     }
 
     /*
-
+        (Demonstrate TextArea properties) Write a program that demonstrates the
+        properties of a text area. The program uses a check box to indicate whether the
+        text is wrapped onto next line, as shown in Figure 16.41a.
      */
     public static void ch16_12() {
-
+        Exercise16_12.run();
     }
 
     /*
