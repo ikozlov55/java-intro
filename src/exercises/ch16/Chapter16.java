@@ -75,23 +75,32 @@ public class Chapter16 {
     }
 
     /*
-
+        (Geometry: two circles intersect?) Write a program that enables the user to spec-
+        ify the location and size of the circles, and displays whether the two circles
+        intersect, as shown in Figure 16.39a. Enable the user to point the mouse inside a
+        circle and drag it. As the circle is being dragged, the circle’s center coordinates
+        in the text fields are updated.
      */
     public static void ch16_8() {
+        Exercise16_08.run();
+    }
 
-    }    /*
-
+    /*
+        (Geometry: two rectangles intersect?) Write a program that enables the user to
+        specify the location and size of the rectangles and displays whether the two rect-
+        angles intersect, as shown in Figure 16.39b. Enable the user to point the mouse
+        inside a rectangle and drag it. As the rectangle is being dragged, the rectangle’s
+        center coordinates in the text fields are updated.
      */
-
     public static void ch16_9() {
-
+        Exercise16_09.run();
     }
 
     /*
 
      */
     public static void ch16_10() {
-
+        Exercise16_10.run();
     }
 
     /*
