@@ -132,24 +132,35 @@ public class Chapter16 {
     }
 
     /*
-
+        (Compare loans with various interest rates) Rewrite Programming Exercise
+        5.21 to create a GUI, as shown in Figure 16.41b. Your program should let the
+        user enter the loan amount and loan period in the number of years from text
+        fields, and it should display the monthly and total payments for each interest
+        rate starting from 5% to 8%, with increments of one-eighth, in a text area.
      */
     public static void ch16_13() {
-
+        Exercise16_13.run();
     }
 
     /*
-
+        (Select a font) Write a program that can dynamically change the font of a text in
+        a label displayed on a stack pane. The text can be displayed in bold and italic at
+        the same time. You can select the font name or font size from combo boxes, as
+        shown in Figure 16.42a. The available font names can be obtained using Font
+        .getFontNames(). The combo box for the font size is initialized with numbers
+        from 1 to 100.
      */
     public static void ch16_14() {
-
+        Exercise16_14.run();
     }
 
     /*
-
+        (Demonstrate Label properties) Write a program to let the user dynamically
+        set the properties contentDisplay and graphicTextGap, as shown in
+        Figure 16.42b.
      */
     public static void ch16_15() {
-
+        Exercise16_15.run();
     }
 
     /*
