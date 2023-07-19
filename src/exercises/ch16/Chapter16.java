@@ -164,17 +164,22 @@ public class Chapter16 {
     }
 
     /*
-
+        (Use ComboBox and ListView) Write a program that demonstrates selecting
+        items in a list. The program uses a combo box to specify a selection mode, as
+        shown in Figure 16.43a. When you select items, they are displayed in a label
+        below the list.
      */
     public static void ch16_16() {
-
+        Exercise16_16.run();
     }
 
     /*
-
+        (Use ScrollBar and Slider) Write a program that uses scroll bars or sliders
+        to select the color for a text, as shown in Figure 16.43b. Four horizontal scroll
+        bars are used for selecting the colors: red, green, blue, and opacity percentages.
      */
     public static void ch16_17() {
-
+        Exercise16_17.run();
     }
 
     /*
