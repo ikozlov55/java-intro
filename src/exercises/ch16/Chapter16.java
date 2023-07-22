@@ -183,38 +183,54 @@ public class Chapter16 {
     }
 
     /*
-
+        (Simulation: a running fan) Rewrite Programming Exercise 15.28 to add a slider
+        to control the speed of the fan, as shown in Figure 16.43c.
      */
     public static void ch16_18() {
-
+        Exercise16_18.run();
     }
 
     /*
-
+        (Control a group of fans) Write a program that displays three fans in a group,
+        with control buttons to start and stop all of them, as shown in Figure 16.44.
      */
     public static void ch16_19() {
-
+        Exercise16_19.run();
     }
 
     /*
-
+        (Count-up stopwatch) Write a program that simulates a stopwatch, as shown
+        in Figure 16.45a. When the user clicks the Start button, the button’s label is
+        changed to Pause, as shown in Figure 16.45b. When the user clicks the Pause
+        button, the button’s label is changed to Resume, as shown in Figure 16.45c. The
+        Clear button resets the count to 0 and resets the button’s label to Start.
      */
     public static void ch16_20() {
-
+        Exercise16_20.run();
     }
 
     /*
-
+        (Count-down stopwatch) Write a program that allows the user to enter time
+        in seconds in the text field and press the Enter key to count down the sec-
+        onds, as shown in Figure 16.45d. The remaining seconds are redisplayed
+        every second. When the seconds are expired, the program starts to play music
+        continuously.
      */
     public static void ch16_21() {
-
+        Exercise16_21.run();
     }
 
     /*
-
+        (Play, loop, and stop a sound clip) Write a program that meets the following
+        requirements:
+        ■ Get an audio file from the class directory using AudioClip.
+        ■ Place three buttons labeled Play, Loop, and Stop, as shown in Figure 16.46a.
+        ■ If you click the Play button, the audio file is played once. If you click the Loop
+        button, the audio file keeps playing repeatedly. If you click the Stop button,
+        the playing stops.
      */
     public static void ch16_22() {
-
+        Exercise16_22.run();
     }
 
     /*
