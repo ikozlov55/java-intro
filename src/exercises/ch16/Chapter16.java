@@ -234,24 +234,38 @@ public class Chapter16 {
     }
 
     /*
-
+        (Create an image animator with audio) Create animation in Figure 16.46b to
+        meet the following requirements:
+        ■ Allow the user to specify the animation speed in a text field.
+        ■ Get the number of images and image’s file-name prefix from the user. For
+        example, if the user enters n for the number of images and L for the image
+        prefix, then the files are L1.gif, L2.gif, and so on, to Ln.gif. Assume the
+        images are stored in the image directory, a subdirectory of the program’s class
+        directory. The animation displays the images one after the other.
+        ■ Allow the user to specify an audio file URL. The audio is played while the
+        animation runs.
      */
     public static void ch16_23() {
-
+        Exercise16_23.run();
     }
 
     /*
-
+        (Revise Listing 16.14 MediaDemo.java) Add a slider to enable the user to set the
+        current time for the video and a label to display the current time and the total
+        time for the video. As shown in Figure 16.47a, the total time is 5 minutes and 3
+        seconds and the current time is 3 minutes and 58 seconds. As the video plays, the
+        slider value and current time are continuously updated.
      */
     public static void ch16_24() {
-
+        Exercise16_24.run();
     }
 
     /*
-
+        (Racing cars) Write a program that simulates four cars racing, as shown in
+        Figure 16.47b. You can set the speed for each car, with a maximum of 100.
      */
     public static void ch16_25() {
-
+        Exercise16_25.run();
     }
 
     /*
