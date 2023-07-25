@@ -269,17 +269,26 @@ public class Chapter16 {
     }
 
     /*
-
+        (Simulation: raise flag and play anthem) Write a program that displays a flag
+        rising up, as shown in Figure 15.15. As the national flag rises, play the national
+        anthem. (You may use a flag image and anthem audio file from Listing 16.15.)
      */
     public static void ch16_26() {
-
+        Exercise16_26.run();
     }
 
     /*
-
+        (Display country flag and flag description) Listing 16.8, ComboBoxDemo.
+        java, gives a program that lets the user view a country’s flag image and descrip-
+        tion by selecting the country from a combo box. The description is a string
+        coded in the program. Rewrite the program to read the text description from
+        a file. Suppose the descriptions are stored in the files description0.txt, . . . ,
+        and description8.txt under the text directory for the nine countries Canada,
+        China, Denmark, France, Germany, India, Norway, the United Kingdom, and
+        the United States, in this order.
      */
     public static void ch16_27() {
-
+        Exercise16_27.run();
     }
 
     /*

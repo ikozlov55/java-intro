@@ -60,12 +60,13 @@ public class Exercise16_24 extends Application {
             mediaPlayer.pause();
             playButton.setText(">");
         });
-        slTime.setOnMouseReleased(e -> {
+        slTime.setOnMouseDragged(e -> {
             mediaPlayer.seek(Duration.seconds(slTime.getValue()));
-            if (mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED) {
-                mediaPlayer.play();
-                playButton.setText("||");
-            }
+        });
+        slTime.setOnMouseReleased(e -> {
+            if (mediaPlayer.getStatus() != MediaPlayer.Status.PAUSED) return;
+            mediaPlayer.play();
+            playButton.setText("||");
         });
 
         HBox hBox = new HBox(10);
@@ -96,7 +97,6 @@ public class Exercise16_24 extends Application {
 class MediaTimeLabel extends Label {
     private Duration total = new Duration(0);
     private Duration current = new Duration(0);
-
 
     public void setCurrent(Duration current) {
         this.current = current;
