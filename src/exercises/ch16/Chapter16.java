@@ -292,31 +292,51 @@ public class Chapter16 {
     }
 
     /*
-
+        (Slide show) Programming Exercise 15.30 developed a slide show using images.
+        Rewrite that program to develop a slide show using text files. Suppose that
+        10 text files named slide0.txt, slide1.txt, . . . , slide9.txt are stored in the text
+        directory. Each slide displays the text from one file. Each slide is shown for one
+        second, and the slides are displayed in order. When the last slide finishes, the
+        first slide is redisplayed, and so on. Use a text area to display the slide.
      */
     public static void ch16_28() {
-
+        Exercise16_28.run();
     }
 
     /*
-
+        (Display a calendar) Write a program that displays the calendar for the current
+        month. You can use the Prior and Next buttons to show the calendar of the
+        previous or next month. Display the dates in the current month in black and
+        display the dates in the previous month and next month in gray, as shown in
+        Figure 16.48
      */
     public static void ch16_29() {
-
+        Exercise16_29.run();
     }
 
     /*
-
+        (Pattern recognition: consecutive four equal numbers) Write a GUI program
+        for Programming Exercise 8.19, as shown in Figures 16.49a–b. Let the user
+        enter the numbers in the text fields in a grid of 6 rows and 7 columns. The user
+        can click the Solve button to highlight a sequence of four equal numbers, if it
+        exists. Initially, the values in the text fields are randomly filled with numbers
+        from 0 to 9.
      */
     public static void ch16_30() {
-
+        Exercise16_30.run();
     }
 
     /*
-
+        (Game: connect four) Programming Exercise 8.20 enables two players to play
+        the connect-four game on the console. Rewrite a GUI version for the program,
+        as shown in Figure 16.49c. The program enables two players to place red and
+        yellow discs in turn. To place a disk, the player needs to click an available cell.
+        An available cell is unoccupied and its downward neighbor is occupied. The
+        program flashes the four winning cells if a player wins, and reports no winners
+        if all cells are occupied with no winners.
      */
     public static void ch16_31() {
-
+        Exercise16_31.run();
     }
 
 }
