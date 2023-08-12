@@ -1,6 +1,7 @@
 package exercises.ch17;
 
 import exercises.ch17.ex6.Loan;
+import exercises.ch17.ex9.Exercise17_09;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ public class Chapter17 {
         Exercise17_06.dat.
      */
     public static void ch17_6() {
-        File file = new File("src/exercises/ch17/data/Exercise17_05.dat");
+        File file = new File("src/exercises/ch17/data/Exercise17_06.dat");
         try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(file))) {
             for (int i = 1; i <= 5; i++) {
                 Loan loan = new Loan(5, i, 100_000);
@@ -151,36 +152,67 @@ public class Chapter17 {
             System.out.println(e.getMessage());
         }
 
+
+    }
+
+    /*
+        (Restore objects from a file) Suppose a file named Exercise17_06.dat has
+        been created using the ObjectOutputStream from the preceding program-
+        ming exercises. The file contains Loan objects. The Loan class in Listing 10.2
+        does not implement Serializable. Rewrite the Loan class to implement
+        Serializable. Write a program that reads the Loan objects from the file and
+        displays the total loan amount. Suppose that you don’t know how many Loan
+        objects are there in the file, use EOFException to end the loop.
+     */
+    public static void ch17_7() {
+        File file = new File("src/exercises/ch17/data/Exercise17_06.dat");
+        ArrayList<Loan> loans = new ArrayList<>();
         try (ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file))) {
             while (true) {
                 Loan loan = (Loan) stream.readObject();
-                System.out.println(loan);
+                loans.add(loan);
             }
         } catch (EOFException ignored) {
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
+        double totalLoan = loans.stream().map(Loan::getLoanAmount).reduce(0.0, Double::sum);
+        System.out.printf("Total loan amount is %.2f", totalLoan);
     }
 
     /*
-
-     */
-    public static void ch17_7() {
-
-    }
-
-    /*
-
+        (Update count) Suppose that you wish to track how many times a program has
+        been executed. You can store an int to count the file. Increase the count by 1
+        each time this program is executed. Let the program be Exercise17_08.txt and
+        store the count in Exercise17_08.dat.
      */
     public static void ch17_8() {
-
+        File counterFile = new File("src/exercises/ch17/data/Exercise17_08.dat");
+        int count;
+        try (DataInputStream stream = new DataInputStream(new FileInputStream(counterFile))) {
+            count = stream.readInt();
+        } catch (FileNotFoundException e) {
+            count = 0;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(count);
+        count++;
+        try (DataOutputStream stream = new DataOutputStream(new FileOutputStream(counterFile))) {
+            stream.writeInt(count);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
-
+        (Address book) Write a program that stores, retrieves, adds, and updates addresses as
+        shown in Figure 17.20. Use a fixed-length string for storing each attribute in the address.
+        Use random-access file for reading and writing an address. Assume the sizes of the
+        name, street, city, state, and zip are 32, 32, 20, 2, and 5 bytes, respectively.
      */
     public static void ch17_9() {
-
+        Exercise17_09.run();
     }
 
     /*
