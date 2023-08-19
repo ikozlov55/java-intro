@@ -1,5 +1,7 @@
 package exercises.ch17;
 
+import exercises.ch17.ex11.Exercise17_11;
+import exercises.ch17.ex13.Exercise17_13;
 import exercises.ch17.ex6.Loan;
 import exercises.ch17.ex9.Exercise17_09;
 
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Chapter17 {
     /*
@@ -216,31 +219,76 @@ public class Chapter17 {
     }
 
     /*
-
+        (Split files) Suppose you want to back up a huge file (e.g., a 10-GB AVI file) to a
+        CD-R. You can achieve it by splitting the file into smaller pieces and backing up
+        these pieces separately. Write a utility program that splits a large file into smaller
+        ones using the following command:
+        java Exercise17_10 SourceFile numberOfPieces
+        The command creates the files SourceFile.1, SourceFile.2, . . . , SourceFile.n,
+        where n is numberOfPieces and the output files are about the same size
      */
-    public static void ch17_10() {
-
+    public static void ch17_10(String[] args) {
+        if (args.length != 2) {
+            System.out.println("Invalid input");
+            System.exit(1);
+        }
+        File file = new File(args[0]);
+        String fileName = file.getName().split("\\.")[0];
+        try (FileInputStream input = new FileInputStream(file)) {
+            int n = Integer.parseInt(args[1]);
+            int chunkSize = input.available() / n;
+            for (int i = 1; i <= n; i++) {
+                String filePath = String.format("src/exercises/ch17/data/%s.%d", fileName, i);
+                byte[] chunk = new byte[i == n ? input.available() : chunkSize];
+                input.read(chunk);
+                try (FileOutputStream output = new FileOutputStream(filePath);) {
+                    output.write(chunk);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
-
+        (Split files GUI) Rewrite Exercise 17.10 with a GUI, as shown in Figure 17.21a.
      */
     public static void ch17_11() {
-
+        Exercise17_11.run();
     }
 
     /*
-
+        (Combine files) Write a utility program that combines the files together into a
+        new file using the following command:
+        java Exercise17_12 SourceFile1 . . . SourceFilen TargetFile
+        The command combines SourceFile1, . . . , and SourceFilen into TargetFile.
      */
-    public static void ch17_12() {
-
+    public static void ch17_12(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Invalid input");
+            System.exit(1);
+        }
+        File targetFile = new File(args[args.length - 1]);
+        File[] sourceFiles = IntStream.range(0, args.length - 1)
+                .mapToObj(i -> new File(args[i]))
+                .toArray(File[]::new);
+        try (FileOutputStream output = new FileOutputStream(targetFile)) {
+            for (File sourceFile : sourceFiles) {
+                FileInputStream input = new FileInputStream(sourceFile);
+                byte[] chunk = input.readAllBytes();
+                output.write(chunk);
+                input.close();
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
-
+        (Combine files GUI) Rewrite Exercise 17.12 with a GUI, as shown in Figure 17.21b.
      */
     public static void ch17_13() {
-
+        Exercise17_13.run();
     }
 
     /*
