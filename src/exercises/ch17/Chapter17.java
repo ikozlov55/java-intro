@@ -292,24 +292,80 @@ public class Chapter17 {
     }
 
     /*
-
+        (Encrypt files) Encode the file by adding 5 to every byte in the file. Write a pro-
+        gram that prompts the user to enter an input file name and an output file name and
+        saves the encrypted version of the input file to the output file.
      */
     public static void ch17_14() {
-
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Enter input file name:");
+            File inputFile = new File(scanner.nextLine());
+            System.out.println("Enter output file name:");
+            File outputFile = new File(scanner.nextLine());
+            FileInputStream inputStream = new FileInputStream(inputFile);
+            FileOutputStream outputStream = new FileOutputStream(outputFile);
+            while (inputStream.available() > 0) {
+                int b = inputStream.read();
+                b += 5;
+                outputStream.write(b);
+            }
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
-
+        (Decrypt files) Suppose a file is encrypted using the scheme in Programming
+        Exercise 17.14. Write a program to decode an encrypted file. Your program
+        should prompt the user to enter an input file name for the encrypted file and an
+        output file name for the unencrypted version of the input file.
      */
     public static void ch17_15() {
-
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Enter input file name:");
+            File inputFile = new File(scanner.nextLine());
+            System.out.println("Enter output file name:");
+            File outputFile = new File(scanner.nextLine());
+            FileInputStream inputStream = new FileInputStream(inputFile);
+            FileOutputStream outputStream = new FileOutputStream(outputFile);
+            while (inputStream.available() > 0) {
+                int b = inputStream.read();
+                b -= 5;
+                outputStream.write(b);
+            }
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
+        (Frequency of characters) Write a program that prompts the user to enter the
+        name of an ASCII text file and displays the frequency of the characters in the file.
 
+        src/exercises/ch17/Chapter17.java
      */
     public static void ch17_16() {
-
+        int[] frequencies = new int[128];
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Enter input file name:");
+            File inputFile = new File(scanner.nextLine());
+            FileInputStream inputStream = new FileInputStream(inputFile);
+            while (inputStream.available() > 0) {
+                char c = (char) inputStream.read();
+                if (c > 127) continue;
+                frequencies[c]++;
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        for (int i = 0; i < frequencies.length; i++) {
+            System.out.printf("%c: %d\n", (char) i, frequencies[i]);
+        }
     }
 
     /*
