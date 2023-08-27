@@ -3,6 +3,8 @@ package exercises.ch17;
 import exercises.ch17.ex11.Exercise17_11;
 import exercises.ch17.ex13.Exercise17_13;
 import exercises.ch17.ex17.BitOutputStream;
+import exercises.ch17.ex20.Exercise17_20;
+import exercises.ch17.ex21.Exercise17_21;
 import exercises.ch17.ex6.Loan;
 import exercises.ch17.ex9.Exercise17_09;
 
@@ -485,16 +487,24 @@ public class Chapter17 {
     }
 
     /*
-
+        (Binary editor) Write a GUI application that lets the user to enter a file name in
+        the text field and press the Enter key to display its binary representation in a text
+        area. The user can also modify the binary code and save it back to the file, as
+        shown in Figure 17.23a.
      */
     public static void ch17_20() {
-
+        Exercise17_20.run();
     }
 
     /*
+        (Hex editor) Write a GUI application that lets the user to enter a file name in the
+        text field and press the Enter key to display its hex representation in a text area.
+        The user can also modify the hex code and save it back to the file, as shown in
+        Figure 17.23b.
 
+        src/exercises/ch17/data/grapes.gif
      */
     public static void ch17_21() {
-
+        Exercise17_21.run();
     }
 }
