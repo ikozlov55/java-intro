@@ -2,6 +2,7 @@ package exercises.ch17;
 
 import exercises.ch17.ex11.Exercise17_11;
 import exercises.ch17.ex13.Exercise17_13;
+import exercises.ch17.ex17.BitOutputStream;
 import exercises.ch17.ex6.Loan;
 import exercises.ch17.ex9.Exercise17_09;
 
@@ -369,24 +370,118 @@ public class Chapter17 {
     }
 
     /*
-
+        (BitOutputStream) Implement a class named BitOutputStream, as shown
+        in Figure 17.22, for writing bits to an output stream. The writeBit(char bit)
+        method stores the bit in a byte variable. When you create a BitOutputStream,
+        the byte is empty. After invoking writeBit('1'), the byte becomes 00000001.
+        After invoking writeBit("0101"), the byte becomes 00010101. The first
+        three bits are not filled yet. When a byte is full, it is sent to the output stream. Now
+        the byte is reset to empty. You must close the stream by invoking the close()
+        method. If the byte is neither empty nor full, the close() method first fills the
+        zeros to make a full 8 bits in the byte and then outputs the byte and closes the
+        stream. For a hint, see Programming Exercise 5.44. Write a test program that
+        sends the bits 010000100100001001101 to the file named Exercise17_17.dat.
      */
     public static void ch17_17() {
-
+        File file = new File("src/exercises/ch17/data/Exercise17_17.dat");
+        try (BitOutputStream stream = new BitOutputStream(file);) {
+            for (char c : "010000100100001001101".toCharArray()) {
+                stream.writeBit(c);
+            }
+        }
+        try (FileInputStream stream = new FileInputStream(file)) {
+            while (stream.available() > 0) {
+                System.out.println(stream.read());
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
+        (View bits) Write the following method that displays the bit representation for the
+        last byte in an integer:
+        public static String getBits(int value)
+        For a hint, see Programming Exercise 5.44. Write a program that prompts the user
+        to enter a file name, reads bytes from the file, and displays each byte’s binary
+        representation.
 
+        src/exercises/ch17/data/Exercise17_17.dat
      */
     public static void ch17_18() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter file name:");
+        String fileName = scanner.nextLine();
+        File file = new File(fileName);
+        try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(file))) {
+            while (input.available() > 0) {
+                int b = input.read();
+                getBits(b);
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+    public static void getBits(int value) {
+        for (int i = 7; i >= 0; i--) {
+            System.out.print((value >> i) & 1);
+        }
+        System.out.println();
     }
 
     /*
+        (View hex) Write a program that prompts the user to enter a file name, reads bytes
+        from the file, and displays each byte’s hex representation. (Hint: You can first con-
+        vert the byte value into an 8-bit string, then convert the bit string into a two-digit hex
+        string.)
 
+        src/exercises/ch17/data/Exercise17_17.dat
      */
     public static void ch17_19() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter file name:");
+        String fileName = scanner.nextLine();
+        File file = new File(fileName);
+        try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(file))) {
+            while (input.available() > 0) {
+                int b = input.read();
+                String binaryString = getBinaryString(b);
+                System.out.println(binaryString);
+                StringBuilder builder = new StringBuilder();
+                builder.append(getHexDigit(binaryString.substring(0, 4)));
+                builder.append(getHexDigit(binaryString.substring(4, 8)));
+                String hexString = builder.toString();
+                System.out.println(hexString);
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+    public static char getHexDigit(String binaryString) {
+        int value = 0;
+        int bitValue = 8;
+        for (char c : binaryString.toCharArray()) {
+            if (c == '1') {
+                value += bitValue;
+            }
+            bitValue /= 2;
+        }
+        System.out.println(value);
+        if (value <= 9) {
+            return (char) (value + '0');
+        } else {
+            return (char) (value - 10 + 'A');
+        }
+    }
+
+    public static String getBinaryString(int value) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 7; i >= 0; i--) {
+            builder.append((value >> i) & 1);
+        }
+        return builder.toString();
     }
 
     /*
