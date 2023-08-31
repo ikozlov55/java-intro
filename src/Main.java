@@ -1,8 +1,8 @@
-import exercises.ch17.Chapter17;
+import exercises.ch18.Chapter18;
 
 public class Main {
 
     public static void main(String[] args) {
-        Chapter17.ch17_21();
+        Chapter18.ch18_5();
     }
 }
