@@ -1,5 +1,8 @@
 package exercises.ch18;
 
+import exercises.ch18.ex19.Exercise18_19;
+import exercises.ch18.ex20.Exercise18_20;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Locale;
@@ -371,39 +374,126 @@ public class Chapter18 {
     }
 
     /*
-
+        (Find the number of uppercase letters in an array) Write a recursive method
+        to return the number of uppercase letters in an array of characters. You need to
+        define the following two methods. The second one is a recursive helper method.
+        public static int count(char[] chars)
+        public static int count(char[] chars, int high)
+        Write a test program that prompts the user to enter a list of characters in one line
+        and displays the number of uppercase letters in the list.
      */
     public static void ch18_16() {
+        System.out.print("Enter a list of characters: ");
+        char[] chars = scanner.nextLine().toCharArray();
+        System.out.printf("Number of uppercase letters in list %s is %d\n", Arrays.toString(chars), count(chars));
+    }
+
+    public static int count(char[] chars) {
+        return count(chars, chars.length - 1);
+    }
+
+    public static int count(char[] chars, int high) {
+        if (high == -1) {
+            return 0;
+        }
+        char c = chars[high];
+        int curr = Character.isLetter(c) && Character.isUpperCase(c) ? 1 : 0;
+        return curr + count(chars, high - 1);
     }
 
     /*
-
+        (Occurrences of a specified character in an array) Write a recursive method that
+        finds the number of occurrences of a specified character in an array. You need to
+        define the following two methods. The second one is a recursive helper method.
+        public static int count(char[] chars, char ch)
+        public static int count(char[] chars, char ch, int high)
+        Write a test program that prompts the user to enter a list of characters in one line,
+        and a character, and displays the number of occurrences of the character in the list.
      */
     public static void ch18_17() {
+        System.out.print("Enter a list of characters: ");
+        char[] chars = scanner.nextLine().toCharArray();
+        System.out.print("Enter a character: ");
+        char ch = scanner.next().charAt(0);
+        System.out.printf("Number of occurrences of %c in list %s is %d\n", ch, Arrays.toString(chars), count(chars, ch));
+    }
+
+    public static int count(char[] chars, char ch) {
+        return count(chars, ch, chars.length - 1);
+    }
+
+    public static int count(char[] chars, char ch, int high) {
+        if (high == -1) {
+            return 0;
+        }
+        return (chars[high] == ch ? 1 : 0) + count(chars, ch, high - 1);
     }
 
     /*
-
+        (Tower of Hanoi) Modify Listing 18.8, TowerOfHanoi.java, so the program finds
+        the number of moves needed to move n disks from tower A to tower B. (Hint:
+        Use a static variable and increment it every time the method is called.)
      */
     public static void ch18_18() {
+        System.out.print("Enter number of disks: ");
+        int n = scanner.nextInt();
+        System.out.println("The moves are:");
+        moveDisks(n, 'A', 'B', 'C');
+        System.out.printf("Total moves: %d\n", diskMoves);
+    }
+
+    private static int diskMoves = 0;
+
+    public static void moveDisks(int n, char fromTower, char toTower, char auxTower) {
+        diskMoves++;
+        if (n == 1) {
+            System.out.printf("Move disk %d from %c to %c\n", n, fromTower, toTower);
+        } else {
+            moveDisks(n - 1, fromTower, auxTower, toTower);
+            System.out.printf("Move disk %d from %c to %c\n", n, fromTower, toTower);
+            moveDisks(n - 1, auxTower, toTower, fromTower);
+        }
     }
 
     /*
-
+        (Sierpinski triangle) Revise Listing 18.9 to develop a program that lets the
+        user use the +/- buttons, primary/secondary mouse buttons, and UP/
+        DOWN arrow keys to increase or decrease the current order by 1, as shown
+        in Figure 18.12a. The initial order is 0. If the current order is 0, the Decrease
+        button is ignored.
      */
     public static void ch18_19() {
+        Exercise18_19.run();
     }
 
     /*
-
+        (Display circles) Write a Java program that displays ovals, as shown in
+        Figure 18.12b. The circles are centered in the pane. The gap between two adja-
+        cent circles is 10 pixels, and the gap between the border of the pane and the
+        largest circle is also 10.
      */
     public static void ch18_20() {
+        Exercise18_20.run();
     }
 
     /*
-
+        (Decimal to binary) Write a recursive method that converts a decimal number
+        into a binary number as a string. The method header is
+        public static String dec2Bin(int value)
+        Write a test program that prompts the user to enter a decimal number and displays
+        its binary equivalent.
      */
     public static void ch18_21() {
+        System.out.print("Enter a decimal number: ");
+        int value = scanner.nextInt();
+        System.out.printf("Binary value of %d is %s\n", value, dec2Bin(value));
+    }
+
+    public static String dec2Bin(int value) {
+        if (value == 0) {
+            return "0";
+        }
+        return dec2Bin(value / 2) + value % 2;
     }
 
     /*
