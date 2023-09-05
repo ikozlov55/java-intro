@@ -497,22 +497,87 @@ public class Chapter18 {
     }
 
     /*
-
+        (Decimal to hex) Write a recursive method that converts a decimal number into
+        a hex number as a string. The method header is
+        public static String dec2Hex(int value)
+        Write a test program that prompts the user to enter a decimal number and displays
+        its hex equivalent.
      */
     public static void ch18_22() {
+        System.out.print("Enter a decimal number: ");
+        int value = scanner.nextInt();
+        System.out.printf("Hex value of %d is %s\n", value, dec2Hex(value));
+    }
+
+    public static String dec2Hex(int value) {
+        if (value == 0) {
+            return "";
+        }
+        int remainder = value % 16;
+        char c = (char) (remainder > 9 ? 'A' + remainder - 10 : '0' + remainder);
+        return dec2Hex(value / 16) + c;
     }
 
     /*
-
+        (Binary to decimal) Write a recursive method that parses a binary number as a
+        string into a decimal integer. The method header is
+        public static int bin2Dec(String binaryString)
+        Write a test program that prompts the user to enter a binary string and displays
+        its decimal equivalent.
      */
     public static void ch18_23() {
+        System.out.print("Enter a binary number: ");
+        String value = scanner.next();
+        System.out.printf("Decimal value of %s is %d\n", value, bin2Dec(value));
     }
+
+    public static int bin2Dec(String binaryString) {
+        return bin2DecHelper(binaryString, binaryString.length() - 1, 1);
+    }
+
+    public static int bin2DecHelper(String binaryString, int index, int order) {
+        if (index < 0) {
+            return 0;
+        }
+        int value = Character.getNumericValue(binaryString.charAt(index));
+        return value * order + bin2DecHelper(binaryString, index - 1, order * 2);
+    }
+
 
     /*
-
+        (Hex to decimal) Write a recursive method that parses a hex number as a string
+        into a decimal integer. The method header is
+        public static int hex2Dec(String hexString)
+        Write a test program that prompts the user to enter a hex string and displays its
+        decimal equivalent.
      */
     public static void ch18_24() {
+        System.out.print("Enter a hex number: ");
+        String value = scanner.next();
+        System.out.printf("Decimal value of %s is %d\n", value, hex2Dec(value));
     }
+
+    public static int hex2Dec(String hexString) {
+        return hex2DecHelper(hexString, hexString.length() - 1, 1);
+    }
+
+    public static int hex2DecHelper(String hexString, int index, int order) {
+        if (index < 0) {
+            return 0;
+        }
+        char c = hexString.charAt(index);
+        int value = 0;
+        if (c >= '0' && c <= '9') {
+            value = c - '0';
+        } else if (c >= 'A' && c <= 'F') {
+            value = c - 'A' + 10;
+        } else {
+            System.out.println("Invalid input!");
+            System.exit(1);
+        }
+        return hex2DecHelper(hexString, index - 1, order * 16) + value * order;
+    }
+
 
     /*
 
