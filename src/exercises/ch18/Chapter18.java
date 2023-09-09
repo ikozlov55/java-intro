@@ -2,6 +2,7 @@ package exercises.ch18;
 
 import exercises.ch18.ex19.Exercise18_19;
 import exercises.ch18.ex20.Exercise18_20;
+import exercises.ch18.ex26.Exercise18_26;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -580,15 +581,57 @@ public class Chapter18 {
 
 
     /*
-
+        (String permutation) Write a recursive method to print all the permutations of a
+        string. For example, for the string abc, the permutation is
+        abc
+        acb
+        bac
+        bca
+        cab
+        cba
+        (Hint: Define the following two methods. The second is a helper method.)
+        public static void displayPermutation(String s)
+        public static void displayPermutation(String s1, String s2)
+        The first method simply invokes displayPermutation(" ", s). The second
+        method uses a loop to move a character from s2 to s1 and recursively invokes it
+        with new s1 and s2. The base case is that s2 is empty and prints s1 to the console.
+        Write a test program that prompts the user to enter a string and displays all its
+        permutations.
      */
     public static void ch18_25() {
+        System.out.print("Enter a string: ");
+        String input = scanner.next();
+        displayPermutation(input);
+    }
+
+    public static void displayPermutation(String s) {
+        displayPermutation("", s);
+    }
+
+    public static void displayPermutation(String s1, String s2) {
+        if (s2.isEmpty()) {
+            System.out.println(s1);
+        }
+        for (int i = 0; i < s2.length(); i++) {
+            displayPermutation(s1 + s2.charAt(i), s2.substring(0, i) + s2.substring(i + 1));
+        }
     }
 
     /*
-
+        (Create a maze) Write a program that will find a path in a maze, as shown in
+        Figure 18.13a. The maze is represented by a 8 * 8 board. The path must meet
+        the following conditions:
+        ■ The path is between the upper-left corner cell and the lower-right corner cell
+        in the maze.
+        ■ The program enables the user to place or remove a mark on a cell. A path
+        consists of adjacent unmarked cells. Two cells are said to be adjacent if they
+        are horizontal or vertical neighbors.
+        ■ The path does not contain cells that form a square. The path in Figure 18.13b,
+        for example, does not meet this condition. (The condition makes a path easy
+        to identify on the board.)
      */
     public static void ch18_26() {
+        Exercise18_26.run();
     }
 
     /*
