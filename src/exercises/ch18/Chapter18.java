@@ -3,11 +3,11 @@ package exercises.ch18;
 import exercises.ch18.ex19.Exercise18_19;
 import exercises.ch18.ex20.Exercise18_20;
 import exercises.ch18.ex26.Exercise18_26;
+import exercises.ch18.ex27.Exercise18_27;
 
+import java.io.File;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Chapter18 {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -638,18 +638,65 @@ public class Chapter18 {
 
      */
     public static void ch18_27() {
+        Exercise18_27.run();
     }
 
     /*
-
+        (Nonrecursive directory size) Rewrite Listing 18.7, DirectorySize.java, without
+        using recursion.
      */
     public static void ch18_28() {
+        ArrayList<File> files = new ArrayList<>();
+        System.out.print("Enter a directory or a file: ");
+        files.add(new File(scanner.nextLine()));
+        long size = 0;
+
+        while (!files.isEmpty()) {
+            ArrayList<File> next = new ArrayList<>();
+            for (File file : files) {
+                if (file.isFile()) {
+                    System.out.println(file);
+                    size += file.length();
+                }
+                if (file.isDirectory()) {
+                    next.addAll(List.of(file.listFiles()));
+                }
+            }
+            files = next;
+        }
+        System.out.printf("%d bytes\n", size);
     }
 
-    /*
 
+    /*
+        (Number of files in a directory) Write a program that prompts the user to enter a
+        directory and displays the number of the files in the directory.
      */
     public static void ch18_29() {
+        System.out.print("Enter a directory: ");
+        File dir = new File(scanner.nextLine());
+        if (!dir.isDirectory()) {
+            System.out.println("Invalid input!");
+            return;
+        }
+
+        System.out.printf("Number of files in %s is %d\n", dir.getName(), countFiles(dir));
+    }
+
+    public static int countFiles(File dir) {
+        int count = 0;
+        File[] listFiles = dir.listFiles();
+        if (listFiles == null) {
+            return count;
+        }
+        for (File file : listFiles) {
+            if (file.isFile()) {
+                count++;
+            } else if (file.isDirectory()) {
+                count += countFiles(file);
+            }
+        }
+        return count;
     }
 
     /*
