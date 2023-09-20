@@ -4,8 +4,13 @@ import exercises.ch18.ex19.Exercise18_19;
 import exercises.ch18.ex20.Exercise18_20;
 import exercises.ch18.ex26.Exercise18_26;
 import exercises.ch18.ex27.Exercise18_27;
+import exercises.ch18.ex32.Exercise18_32;
+import exercises.ch18.ex33.Exercise18_33;
+import exercises.ch18.ex34.Exercise18_34;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -700,33 +705,125 @@ public class Chapter18 {
     }
 
     /*
-
+        (Find words) Write a program that finds all occurrences of a word in all the files
+        under a directory, recursively. Pass the parameters from the command line as
+        follows:
+        java Exercise18_30 dirName word
      */
-    public static void ch18_30() {
+    public static void ch18_30(String[] args) {
+        if (args.length != 2) {
+            System.out.println("Invalid input!");
+        }
+        String word = args[1];
+        File dir = new File(args[0]);
+        System.out.printf("The word '%s' occurs %d times\n", word, countWords(dir, word));
+    }
+
+    public static int countWords(File file, String word) {
+        int count = 0;
+        if (file.isFile()) {
+            try (Scanner input = new Scanner(file)) {
+                while (input.hasNext()) {
+                    String nextWord = input.next().toLowerCase();
+                    if (nextWord.equals(word.toLowerCase())) {
+                        count++;
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                return 0;
+            }
+        } else {
+            File[] listFiles = file.listFiles();
+            if (listFiles == null) {
+                return 0;
+            }
+            for (File f : listFiles) {
+                count += countWords(f, word);
+            }
+        }
+        return count;
     }
 
     /*
-
+        (Replace words) Write a program that replaces all occurrences of a word with a
+        new word in all the files under a directory, recursively. Pass the parameters from
+        the command line as follows:
+        java Exercise18_31 dirName oldWord newWord
      */
-    public static void ch18_31() {
+    public static void ch18_31(String[] args) {
+        if (args.length != 3) {
+            System.out.println("Invalid input!");
+        }
+        File file = new File(args[0]);
+        String oldWord = args[1];
+        String newWord = args[2];
+        replaceWords(file, oldWord, newWord);
+    }
+
+    public static void replaceWords(File file, String oldWord, String newWord) {
+        if (file.isFile()) {
+            ArrayList<String> fileContent = new ArrayList<>();
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNext()) {
+                    fileContent.add(scanner.nextLine().replace(oldWord, newWord));
+                }
+            } catch (FileNotFoundException ex) {
+                return;
+            }
+            try (PrintWriter writer = new PrintWriter(file)) {
+                fileContent.forEach(writer::println);
+            } catch (FileNotFoundException ex) {
+                return;
+            }
+        } else {
+            File[] listFiles = file.listFiles();
+            if (listFiles == null) {
+                return;
+            }
+            for (File f : listFiles) {
+                replaceWords(f, oldWord, newWord);
+            }
+        }
     }
 
     /*
-
+        (Game: Knight’s Tour) The Knight’s Tour is an ancient puzzle. The objective is
+        to move a knight, starting from any square on a chessboard, to every other square
+        once, as shown in Figure 18.15a. Note the knight makes only L-shaped moves
+        (two spaces in one direction and one space in a perpendicular direction). As
+        shown in Figure 18.15b, the knight can move to eight squares. Write a program
+        that displays the moves for the knight, as shown in Figure 18.15c. When you
+        click a cell, the knight is placed at the cell. This cell will be the starting point for
+        the knight. Click the Solve button to display the path for a solution.
+        (Hint: A brute-force approach for this problem is to move the knight from one
+        square to another available square arbitrarily. Using such an approach, your
+        program will take a long time to finish. A better approach is to employ some
+        heuristics. A knight has two, three, four, six, or eight possible moves, depending
+        on its location. Intuitively, you should attempt to move the knight to the least
+        accessible squares first and leave those more accessible squares open, so there
+        will be a better chance of success at the end of the search.)
      */
     public static void ch18_32() {
+        Exercise18_32.run();
     }
 
     /*
-
+        (Game: Knight’s Tour animation) Write a program for the Knight’s Tour problem.
+        Your program should let the user move a knight to any starting square and click the
+        Solve button to animate a knight moving along the path, as shown in Figure 18.16
      */
     public static void ch18_33() {
+        Exercise18_33.run();
     }
 
     /*
-
+        (Game: Eight Queens) The Eight Queens problem is to find a solution to place
+        a queen in each row on a chessboard such that no two queens can attack each
+        other. Write a program to solve the Eight Queens problem using recursion and
+        display the result as shown in Figure 18.17.
      */
     public static void ch18_34() {
+        Exercise18_34.run();
     }
 
     /*
