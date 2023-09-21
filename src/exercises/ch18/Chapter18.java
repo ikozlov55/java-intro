@@ -7,6 +7,9 @@ import exercises.ch18.ex27.Exercise18_27;
 import exercises.ch18.ex32.Exercise18_32;
 import exercises.ch18.ex33.Exercise18_33;
 import exercises.ch18.ex34.Exercise18_34;
+import exercises.ch18.ex35.Exercise18_35;
+import exercises.ch18.ex36.Exercise18_36;
+import exercises.ch18.ex37.Exercise18_37;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -827,21 +830,38 @@ public class Chapter18 {
     }
 
     /*
-
+        (H-tree fractal) An H-tree (introduced at the beginning of this chapter in Fig ure
+        18.1) is a fractal defined as follows:
+        1. Begin with a letter H. The three lines of H are of the same length, as shown
+        in Figure 18.1a.
+        2. The letter H (in its sans-serif form, H) has four endpoints. Draw an H centered
+        at each of the four endpoints to an H-tree of order 1, as shown in Figure 18.1b.
+        These Hs are half the size of the H that contains the four endpoints.
+        3. Repeat Step 2 to create an H-tree of order 2, 3, . . . , and so on, as shown in
+        Figures 18.1c and d.
+        Write a program that draws an H-tree, as shown in Figure 18.1.
      */
     public static void ch18_35() {
+        Exercise18_35.run();
     }
 
     /*
-
+        (Sierpinski triangle) Write a program that lets the user to enter the order and
+        display the filled Sierpinski triangles as shown in Figure 18.18.
      */
     public static void ch18_36() {
+        Exercise18_36.run();
     }
 
     /*
-
+        (Hilbert curve) The Hilbert curve, first described by German mathematician
+        David Hilbert in 1891, is a space-filling curve that visits every point in a square
+        grid with a size of 2 * 2, 4 * 4, 8 * 8, 16 * 16, or any other power of 2.
+        Write a program that displays a Hilbert curve for the specified order, as shown
+        in Figure 18.19.
      */
     public static void ch18_37() {
+        Exercise18_37.run();
     }
 
     /*
