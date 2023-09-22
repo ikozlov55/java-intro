@@ -10,6 +10,8 @@ import exercises.ch18.ex34.Exercise18_34;
 import exercises.ch18.ex35.Exercise18_35;
 import exercises.ch18.ex36.Exercise18_36;
 import exercises.ch18.ex37.Exercise18_37;
+import exercises.ch18.ex38.Exercise18_38;
+import exercises.ch18.ex39.Exercise18_39;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -865,16 +867,19 @@ public class Chapter18 {
     }
 
     /*
-
+        (Recursive tree) Write a program to display a recursive tree as shown in
+        Figure 18.20.
      */
     public static void ch18_38() {
+        Exercise18_38.run();
     }
 
     /*
-
+        (Drag the tree) Revise Programming Exercise 18.38 to move the tree to where
+        the mouse is dragged
      */
     public static void ch18_39() {
+        Exercise18_39.run();
     }
-
 
 }
