@@ -1,12 +1,13 @@
 package exercises.ch20;
 
 import exercises.ch20.ex2.Exercise20_02;
+import exercises.ch20.ex5.Exercise20_05;
+import javafx.geometry.Point2D;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Chapter20 {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -48,31 +49,94 @@ public class Chapter20 {
     }
 
     /*
-
+        (Guessing the capitals) Rewrite Programming Exercise 8.37 to store the pairs
+        of states and capitals so that the questions are displayed randomly.
      */
     public static void ch20_3() {
-
+        ArrayList<String[]> questions = new ArrayList<>(
+                Arrays.asList(
+                        new String[]{"Alabama", "Montgomery"},
+                        new String[]{"Alaska", "Juneau"},
+                        new String[]{"Arizona", "Phoenix"}
+                )
+        );
+        int count = 0;
+        while (!questions.isEmpty()) {
+            int index = (int) (Math.random() * questions.size());
+            String[] question = questions.remove(index);
+            System.out.printf("What is the capital of %s? ", question[0]);
+            String answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase(question[1])) {
+                count++;
+            }
+        }
+        System.out.printf("The correct count is %d\n", count);
     }
 
     /*
-
+        (Sort points in a plane) Write a program that meets the following require-
+        ments. Randomly create 100 points using Point2D and apply the Arrays.
+        sort(list, Comparator) method to sort the points in increasing order of
+        their y-coordinates and then in increasing order of their x-coordinates. Display
+        the x- and y-coordinates of the first five points.
      */
     public static void ch20_4() {
-
+        int count = 100;
+        Point2D[] points = new Point2D[count];
+        for (int i = 0; i < count; i++) {
+            double x = (int) (Math.random() * 100 + 1);
+            double y = (int) (Math.random() * 100 + 1);
+            points[i] = new Point2D(x, y);
+        }
+        Comparator<Point2D> comparator = Comparator.comparing(Point2D::getY).thenComparing(Point2D::getX);
+        Arrays.sort(points, comparator);
+        for (int i = 0; i < 5; i++) {
+            System.out.println(points[i]);
+        }
     }
 
     /*
-
+        (Combine colliding bouncing balls) The example in Section 20.8 displays
+        multiple bouncing balls. Extend the example to detect collisions. Once two
+        balls collide, remove the later ball that was added to the pane and add its radius
+        to the other ball, as shown in Figure 20.17b. Use the Suspend button to suspend
+        the animation, and the Resume button to resume the animation. Add a mouse-
+        pressed handler that removes a ball when the mouse is pressed on the ball.
      */
     public static void ch20_5() {
-
+        Exercise20_05.run();
     }
 
     /*
-
+        (Use iterators on linked lists) Write a test program that stores 5 million integers
+        in a linked list and test the time to traverse the list using an iterator vs. using
+        the get(index) method.
      */
     public static void ch20_6() {
+        int count = 5_000_000;
+        LinkedList<Integer> list = new LinkedList<>();
+        for (int i = 0; i < count; i++) {
+            list.add(i);
+        }
+        AtomicInteger x = new AtomicInteger();
+        testTime(() -> {
+            for (int number : list) {
+                x.set(number);
+            }
+        });
+        testTime(() -> {
+            for (int i = 0; i < count; i++) {
+                x.set(list.get(i));
+            }
+        });
+    }
 
+    private static void testTime(Runnable action) {
+        long startTime = System.currentTimeMillis();
+        action.run();
+        long endTime = System.currentTimeMillis();
+        double testTime = (endTime - startTime) / 1000.0;
+        System.out.printf("Action took %.2f seconds\n", testTime);
     }
 
     /*
