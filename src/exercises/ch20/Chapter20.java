@@ -2,6 +2,8 @@ package exercises.ch20;
 
 import exercises.ch20.ex2.Exercise20_02;
 import exercises.ch20.ex5.Exercise20_05;
+import exercises.ch20.ex7.Exercise20_07;
+import exercises.ch20.ex9.Exercise20_09;
 import javafx.geometry.Point2D;
 
 import java.io.File;
@@ -140,31 +142,91 @@ public class Chapter20 {
     }
 
     /*
-
+        (Game: hangman) Programming Exercise 7.35 presents a console version of
+        the popular hangman game. Write a GUI program that lets a user play the
+        game. The user guesses a word by entering one letter at a time, as shown in Fig-
+        ure 20.18. If the user misses seven times, a hanging man swings. Once a word
+        is finished, the user can press the Enter key to continue to guess another word.
      */
     public static void ch20_7() {
-
+        Exercise20_07.run();
     }
 
     /*
-
+        (Game: lottery) Revise Programming Exercise 3.15 to add an additional $2,000
+        award if two digits from the user input are in the lottery number. (Hint: Sort
+        the three digits in the lottery number and three digits in the user input into two
+        lists, and use the Collection’s containsAll method to check whether the
+        two digits in the user input are in the lottery number.)
      */
     public static void ch20_8() {
+        Random generator = new Random();
+        List<Integer> lotteryNumbers = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            lotteryNumbers.add(generator.nextInt(10));
+        }
+        System.out.println(lotteryNumbers);
+        System.out.print("Enter your lottery pick (three digits): ");
+        String input = scanner.next();
+        List<Integer> guessNumbers = Arrays.stream(input.split("")).map(Integer::parseInt).toList();
 
+        System.out.printf("The lottery number is %s\n", String.join("", lotteryNumbers
+                .stream().map(n -> Integer.toString(n))
+                .toList()));
+        if (lotteryNumbers.equals(guessNumbers)) {
+            System.out.println("Exact match: you win $10,000");
+            return;
+        }
+        int digitsMatch = 0;
+        for (int n : lotteryNumbers) {
+            if (guessNumbers.contains(n)) digitsMatch++;
+        }
+        switch (digitsMatch) {
+            case 1 -> System.out.println("Match one digit: you win $1,000");
+            case 2 -> System.out.println("Match two digits: you win $2,000");
+            case 3 -> System.out.println("Match all digits: you win $3,000");
+            default -> System.out.println("Sorry, no match");
+        }
     }
 
-    /*
 
+    /*
+        (Remove the largest ball first) Modify Listing 20.10, MultipleBallApp
+        .java to assign a random radius between 2 and 20 when a ball is created.
+        When the - button is clicked, one of largest balls is removed.
      */
     public static void ch20_9() {
-
+        Exercise20_09.run();
     }
 
     /*
-
+        (Perform set operations on priority queues) Write a program that creates
+        two priority queues, {"George", "Jim", "John", "Blake", "Kevin", "Michael"}
+        and {"George", "Katie", "Kevin", "Michelle", "Ryan"}
+        and displays their union, difference, and intersection.
      */
     public static void ch20_10() {
+        List<String> list1 = List.of("George", "Jim", "John", "Blake", "Kevin", "Michael");
+        List<String> list2 = List.of("George", "Katie", "Kevin", "Michelle", "Ryan");
+        PriorityQueue<String> queue1 = new PriorityQueue<>(list1);
+        PriorityQueue<String> queue2 = new PriorityQueue<>(list2);
+        PriorityQueue<String> union = new PriorityQueue<>(queue1);
+        union.addAll(queue2);
+        PriorityQueue<String> difference = new PriorityQueue<>(queue1);
+        difference.removeAll(queue2);
+        PriorityQueue<String> intersection = new PriorityQueue<>(queue1);
+        intersection.retainAll(queue2);
 
+        System.out.println("Queue 1:");
+        System.out.println(queue1);
+        System.out.println("Queue 2:");
+        System.out.println(queue2);
+        System.out.println("Union:");
+        System.out.println(union);
+        System.out.println("Difference:");
+        System.out.println(difference);
+        System.out.println("Intersection:");
+        System.out.println(intersection);
     }
 
     /*
