@@ -1,5 +1,7 @@
 package exercises.ch20;
 
+import exercises.ch20.ex12.MyPriorityQueue;
+import exercises.ch20.ex13.Exercise20_13;
 import exercises.ch20.ex2.Exercise20_02;
 import exercises.ch20.ex5.Exercise20_05;
 import exercises.ch20.ex7.Exercise20_07;
@@ -7,6 +9,7 @@ import exercises.ch20.ex9.Exercise20_09;
 import javafx.geometry.Point2D;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -230,24 +233,86 @@ public class Chapter20 {
     }
 
     /*
-
+        (Match grouping symbols) A Java program contains various pairs of grouping
+        symbols, such as:
+            ■ Parentheses: ( and )
+            ■ Braces: { and }
+            ■ Brackets: [ and ]
+        Note the grouping symbols cannot overlap. For example, (a{b)} is illegal.
+        Write a program to check whether a Java source-code file has correct pairs of
+        grouping symbols. Pass the source-code file name as a command-line argument.
      */
-    public static void ch20_11() {
+    public static void ch20_11(String[] args) {
+        if (args.length != 1) {
+            System.out.println("Invalid input!");
+        }
+        File file = new File(args[0]);
+        Deque<String> stack = new ArrayDeque<>();
+        List<String> openGroupSymbols = List.of("(", "{", "[");
+        List<String> closeGroupSymbols = List.of(")", "}", "]");
+        boolean isCorrect = true;
+        try (FileReader reader = new FileReader(file)) {
+            int c;
+            while ((c = reader.read()) > 0) {
+                String symbol = Character.toString(c);
+                System.out.print(symbol);
+                if (openGroupSymbols.contains(symbol)) {
+                    stack.push(symbol);
+                    continue;
+                }
+                if (!closeGroupSymbols.contains(symbol)) {
+                    continue;
+                }
+                if (stack.isEmpty()) {
+                    isCorrect = false;
+                    break;
+                }
+                for (int i = 0; i < openGroupSymbols.size(); i++) {
+                    String open = openGroupSymbols.get(i);
+                    String close = closeGroupSymbols.get(i);
+                    if (symbol.equals(close) && !stack.peek().equals(open)) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+                stack.pop();
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Pairs of grouping symbols: " + (isCorrect ? "CORRECT" : "INCORRECT"));
 
     }
 
     /*
-
+        (Clone PriorityQueue) Define MyPriorityQueue class that extends
+        PriorityQueue to implement the Cloneable interface and implement the
+        clone() method to clone a priority queue.
      */
     public static void ch20_12() {
-
+        MyPriorityQueue<String> queue1 = new MyPriorityQueue<>(List.of("zzz", "xxx", "abc"));
+        MyPriorityQueue<String> queue2 = (MyPriorityQueue<String>) queue1.clone();
+        System.out.println(queue2);
     }
 
     /*
-
+        (Game: the 24-point card game) The 24-point card game is to pick any four
+        cards from 52 cards, as shown in Figure 20.19. Note the Jokers are excluded.
+        Each card represents a number. An Ace, King, Queen, and Jack represent
+        1, 13, 12, and 11, respectively. You can click the Shuffle button to get four
+        new cards. Enter an expression that uses the four numbers from the four
+        selected cards. Each number must be used once and only once. You can use
+        the operators (addition, subtraction, multiplication, and division) and paren-
+        theses in the expression. The expression must evaluate to 24. After entering
+        the expression, click the Verify button to check whether the numbers in the
+        expression are currently selected and whether the result of the expression is
+        correct. Display the verification in a label before the Shuffle button. Assume
+        that images are stored in files named 1.png, 2.png, . . . , 52.png, in the order
+        of spades, hearts, diamonds, and clubs. Thus, the first 13 images are for
+        spades 1, 2, 3, . . . , and 13.
      */
     public static void ch20_13() {
-
+        Exercise20_13.run();
     }
 
     /*
