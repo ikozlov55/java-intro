@@ -2,6 +2,7 @@ package exercises.ch20;
 
 import exercises.ch20.ex12.MyPriorityQueue;
 import exercises.ch20.ex13.Exercise20_13;
+import exercises.ch20.ex15.Exercise20_15;
 import exercises.ch20.ex2.Exercise20_02;
 import exercises.ch20.ex5.Exercise20_05;
 import exercises.ch20.ex7.Exercise20_07;
@@ -316,17 +317,61 @@ public class Chapter20 {
     }
 
     /*
-
+        (Postfix notation) Postfix notation is a way of writing expressions without using
+        parentheses. For example, the expression (1 + 2) * 3 would be written as
+        1 2 + 3 *. A postfix expression is evaluated using a stack. Scan a postfix
+        expression from left to right. A variable or constant is pushed into the stack.
+        When an operator is encountered, apply the operator with the top two oper-
+        ands in the stack and replace the two operands with the result. The following
+        diagram shows how to evaluate 1 2 + 3 *:
+        Write a program to evaluate postfix expressions. Pass the expression as a
+        command-line argument in one string.
      */
-    public static void ch20_14() {
+    public static void ch20_14(String[] args) {
+        if (args.length != 1) {
+            System.out.println("Invalid input");
+            System.exit(1);
+        }
+        String input = args[0];
+        Stack<Double> stack = new Stack<>();
+        for (String token : input.split(" ")) {
+            try {
+                double number = Double.parseDouble(token);
+                stack.push(number);
+                continue;
+            } catch (NumberFormatException ignore) {
+            }
+            process(token.charAt(0), stack);
+        }
+        double result = stack.pop();
+        System.out.printf("%s = %.2f\n", input, result);
+    }
 
+    private static void process(char op, Stack<Double> stack) {
+        double n2 = stack.pop();
+        double n1 = stack.pop();
+        double result;
+        switch (op) {
+            case '+' -> result = n1 + n2;
+            case '-' -> result = n1 - n2;
+            case '*' -> result = n1 * n2;
+            case '/' -> result = n1 / n2;
+            default -> {
+                return;
+            }
+        }
+        stack.push(result);
     }
 
     /*
-
+        (Game: the 24-point card game) Improve Programming Exercise 20.13
+        to enable the computer to display the expression if one exists, as shown in
+        Figure 20.20. Otherwise, report that the expression does not exist. Place the
+        label for verification result at the bottom of the UI. The expression must use all
+        four cards and evaluated to 24.
      */
     public static void ch20_15() {
-
+        Exercise20_15.run();
     }
 
     /*

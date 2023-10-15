@@ -1,4 +1,4 @@
-package exercises.ch20.ex13;
+package exercises.ch20.ex15;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -12,15 +12,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.*;
 
-public class Exercise20_13 extends Application {
+public class Exercise20_15 extends Application {
     private final Label statusLabel = new Label("");
     private final Button shuffleButton = new Button("Shuffle");
-    private final TextField expressionField = new TextField();
     private final Button verifyButton = new Button("Verify");
+    private final Button findSolutionButton = new Button("Find Solution");
+    private final TextField expressionField = new TextField();
+    private final TextField solutionField = new TextField();
+
     private final HBox cardsBox = new HBox();
     private final ArrayList<Integer> numbers = new ArrayList<>();
     private final List<Character> allowedOperators = List.of('(', ')', '+', '-', '*', '/');
@@ -33,30 +37,32 @@ public class Exercise20_13 extends Application {
     public void start(Stage stage) throws Exception {
         shuffleButton.setOnAction(e -> shuffle());
         verifyButton.setOnAction(e -> verify());
+        findSolutionButton.setOnAction(e -> solutionField.setText(getSolution().orElse("No solution")));
         shuffle();
-        stage.setScene(new Scene(makeRootPane(), 500, 250));
+        stage.setScene(new Scene(makeRootPane()));
         stage.setTitle(getClass().getSimpleName());
         stage.setResizable(false);
         stage.show();
     }
 
     private Pane makeRootPane() {
-        statusLabel.setMaxWidth(200);
-        statusLabel.setWrapText(true);
         BorderPane root = new BorderPane();
-        HBox topBox = new HBox(5, statusLabel, shuffleButton);
-        topBox.setAlignment(Pos.BASELINE_RIGHT);
-        topBox.setPadding(new Insets(5));
+        HBox topControls = new HBox(5, findSolutionButton, solutionField, shuffleButton);
+        topControls.setAlignment(Pos.BASELINE_RIGHT);
+        topControls.setPadding(new Insets(5));
 
-        HBox bottomBox = new HBox(5, new Label("Enter an expression:"), expressionField, verifyButton);
-        bottomBox.setPadding(new Insets(5));
-        bottomBox.setAlignment(Pos.BASELINE_CENTER);
+        HBox bottomControls = new HBox(5, new Label("Enter an expression:"), expressionField, verifyButton);
+        bottomControls.setPadding(new Insets(5));
+        bottomControls.setAlignment(Pos.BASELINE_CENTER);
 
         cardsBox.setSpacing(5);
         cardsBox.setPadding(new Insets(5));
         cardsBox.setAlignment(Pos.CENTER);
 
-        root.setTop(topBox);
+        VBox bottomBox = new VBox(5, bottomControls, statusLabel);
+        bottomBox.setPadding(new Insets(5));
+
+        root.setTop(topControls);
         root.setCenter(cardsBox);
         root.setBottom(bottomBox);
         return root;
@@ -64,6 +70,7 @@ public class Exercise20_13 extends Application {
 
     private void shuffle() {
         statusLabel.setText("");
+        solutionField.clear();
         cardsBox.getChildren().clear();
         numbers.clear();
         Random generator = new Random();
@@ -88,6 +95,55 @@ public class Exercise20_13 extends Application {
         }
     }
 
+    private Optional<String> getSolution() {
+        ArrayList<ArrayList<Integer>> permutations = new ArrayList<>();
+        getPermutations(numbers, new ArrayList<>(), permutations);
+        for (ArrayList<Integer> p : permutations) {
+            Optional<String> solution = getSolutionHelper("", p);
+            if (solution.isPresent()) {
+                return solution;
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<String> getSolutionHelper(String expression, ArrayList<Integer> numbers) {
+        if (numbers.isEmpty()) {
+            System.out.println(expression);
+            List<String> tokens = tokenize(expression);
+            if (tokens == null || !expressionNumbersMatch(tokens)) return Optional.empty();
+            if (evaluateExpression(tokens) == 24) {
+                return Optional.of(expression);
+            }
+            for (int i = 0; i < tokens.size() - 3; i+=2) {
+                for (int j = 4; j < tokens.size()+2; j+=2) {
+                    ArrayList<String> nextTokens = new ArrayList<>(tokens);
+                    nextTokens.add(i, "(");
+                    nextTokens.add(j, ")");
+
+                    System.out.println(String.join("", nextTokens));
+                    if (evaluateExpression(nextTokens) == 24) {
+                        return Optional.of(String.join("", nextTokens));
+                    }
+                }
+            }
+            return Optional.empty();
+        }
+        for (char op : List.of('+', '-', '*', '/')) {
+            ArrayList<Integer> nextNumbers = new ArrayList<>(numbers);
+            String nextExpression = expression;
+            nextExpression += Integer.toString(nextNumbers.remove(0));
+            if (!nextNumbers.isEmpty()) {
+                nextExpression += Character.toString(op);
+            }
+            Optional<String> result = getSolutionHelper(nextExpression, nextNumbers);
+            if (result.isPresent()) {
+                return result;
+            }
+        }
+        return Optional.empty();
+    }
+
     private void verify() {
         String expression = expressionField.getText();
         if (expression.isEmpty()) return;
@@ -102,7 +158,7 @@ public class Exercise20_13 extends Application {
             statusLabel.setText("The numbers in the expression don't match the numbers in the set");
             return;
         }
-        int result = evaluateExpression(tokens);
+        double result = evaluateExpression(tokens);
         statusLabel.setText(result == 24 ? "Correct" : "Incorrect result");
     }
 
@@ -152,12 +208,12 @@ public class Exercise20_13 extends Application {
         return true;
     }
 
-    private int evaluateExpression(List<String> tokens) {
+    private double evaluateExpression(List<String> tokens) {
         Stack<Character> operators = new Stack<>();
-        Stack<Integer> operands = new Stack<>();
+        Stack<Double> operands = new Stack<>();
         for (String token : tokens) {
             if (isNumber(token)) {
-                operands.push(Integer.parseInt(token));
+                operands.push(Double.parseDouble(token));
                 continue;
             }
             char op = token.charAt(0);
@@ -193,10 +249,10 @@ public class Exercise20_13 extends Application {
         return operands.pop();
     }
 
-    private void process(char op, Stack<Integer> operands) {
-        int n2 = operands.pop();
-        int n1 = operands.pop();
-        int result;
+    private void process(char op, Stack<Double> operands) {
+        double n2 = operands.pop();
+        double n1 = operands.pop();
+        double result;
         switch (op) {
             case '+' -> result = n1 + n2;
             case '-' -> result = n1 - n2;
@@ -207,6 +263,22 @@ public class Exercise20_13 extends Application {
             }
         }
         operands.push(result);
+    }
+
+    private void getPermutations(
+            ArrayList<Integer> numbers,
+            ArrayList<Integer> currentNumbers,
+            ArrayList<ArrayList<Integer>> permutations) {
+        if (numbers.isEmpty()) {
+            permutations.add(currentNumbers);
+        } else {
+            for (int i = 0; i < numbers.size(); i++) {
+                ArrayList<Integer> numbersCopy = new ArrayList<>(numbers);
+                ArrayList<Integer> currentNumbersCopy = new ArrayList<>(currentNumbers);
+                currentNumbersCopy.add(numbersCopy.remove(i));
+                getPermutations(numbersCopy, currentNumbersCopy, permutations);
+            }
+        }
     }
 
 }
