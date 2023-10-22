@@ -3,6 +3,7 @@ package exercises.ch20;
 import exercises.ch20.ex12.MyPriorityQueue;
 import exercises.ch20.ex13.Exercise20_13;
 import exercises.ch20.ex15.Exercise20_15;
+import exercises.ch20.ex17.Exercise20_17;
 import exercises.ch20.ex2.Exercise20_02;
 import exercises.ch20.ex5.Exercise20_05;
 import exercises.ch20.ex7.Exercise20_07;
@@ -375,24 +376,109 @@ public class Chapter20 {
     }
 
     /*
-
+        (Convert infix to postfix) Write a method that converts an infix expression into
+        a postfix expression using the following header:
+        public static String infixToPostfix(String expression)
+        For example, the method should convert the infix expression (1 + 2) * 3
+        to 1 2 + 3 * and 2 * (1 + 3) to 2 1 3 + *. Write a program that accepts
+        an expression in one argument from the command line and displays its corre-
+        sponding postfix expression.
      */
-    public static void ch20_16() {
+    public static void ch20_16(String[] args) {
+        if (args.length != 1) {
+            System.out.println("Invalid input!");
+            System.exit(1);
+        }
+        System.out.println(infixToPostfix(args[0]));
+    }
 
+    public static String infixToPostfix(String expression) {
+        StringBuilder result = new StringBuilder();
+        StringBuilder inputBuilder = new StringBuilder();
+        for (char c : expression.toCharArray()) {
+            if (c == '(') {
+                inputBuilder.append(c).append(" ");
+            } else if (c == ')') {
+                inputBuilder.append(" ").append(c);
+            } else {
+                inputBuilder.append(c);
+            }
+        }
+        String input = inputBuilder.toString();
+        Stack<String> operators = new Stack<>();
+        for (String token : input.split(" ")) {
+            try {
+                int operand = Integer.parseInt(token);
+                result.append(" ").append(operand);
+                continue;
+            } catch (NumberFormatException ignore) {
+            }
+            if (List.of("*", "/").contains(token)) {
+                operators.push(token);
+            } else if (List.of("+", "-").contains(token)) {
+                while (!operators.isEmpty() && !List.of("(", ")").contains(operators.peek())) {
+                    result.append(" ").append(operators.pop());
+                }
+                operators.push(token);
+            } else if (token.equals("(")) {
+                operators.push(token);
+            } else if (token.equals(")")) {
+                while (true) {
+                    String operator = operators.pop();
+                    if (operator.equals("(")) break;
+                    result.append(" ").append(operator);
+                }
+            }
+        }
+
+        while (!operators.isEmpty()) {
+            result.append(" ").append(operators.pop());
+        }
+
+        return result.toString().strip();
     }
 
     /*
-
+        (Game: the 24-point card game) This exercise is a variation of the 24-point
+        card game described in Programming Exercise 20.13. Write a program to
+        check whether there is a 24-point solution for the four specified numbers. The
+        program lets the user enter four values, each between 1 and 13, as shown in
+        Figure 20.21. The user can then click the Solve button to display the solution or
+        display “No solution” if none exists:
      */
     public static void ch20_17() {
-
+        Exercise20_17.run();
     }
 
     /*
-
+        (Directory size) Listing 18.7, DirectorySize.java, gives a recursive method for
+        finding a directory size. Rewrite this method without using recursion. Your
+        program should use a queue to store the subdirectories under a directory. The
+        algorithm can be described as follows:
      */
     public static void ch20_18() {
+        System.out.print("Enter a directory or a file: ");
+        String directory = scanner.nextLine();
+        System.out.println(getSize(new File(directory)) + " bytes");
+    }
 
+    public static long getSize(File file) {
+        Queue<File> queue = new ArrayDeque<>();
+        queue.add(file);
+        long size = 0;
+
+        while (!queue.isEmpty()) {
+            File next = queue.poll();
+            if (next.isFile()) {
+                size += next.length();
+            } else {
+                File[] files = next.listFiles();
+                for (int i = 0; files != null && i < files.length; i++) {
+                    queue.add(files[i]);
+                }
+            }
+        }
+        return size;
     }
 
     /*
