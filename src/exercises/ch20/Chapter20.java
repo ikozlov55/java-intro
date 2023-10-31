@@ -4,6 +4,7 @@ import exercises.ch20.ex12.MyPriorityQueue;
 import exercises.ch20.ex13.Exercise20_13;
 import exercises.ch20.ex15.Exercise20_15;
 import exercises.ch20.ex17.Exercise20_17;
+import exercises.ch20.ex19.Exercise20_19;
 import exercises.ch20.ex2.Exercise20_02;
 import exercises.ch20.ex5.Exercise20_05;
 import exercises.ch20.ex7.Exercise20_07;
@@ -482,11 +483,18 @@ public class Chapter20 {
     }
 
     /*
-
+        (Game: solution ratio for 24-point card game) When you pick four cards from
+        a deck of 52 cards for the 24-point card game introduced in Programming
+        Exercise 20.13, the four cards may not have a 24-point solution. What is the
+        number of all possible picks of four cards from 52 cards? Among all possible
+        picks, how many of them have 24-point solutions? What is the success ratio—
+        that is, (number of picks with solutions)/(number of all possible picks of four
+        cards)? Write a program to find these answers
      */
     public static void ch20_19() {
-
+        Exercise20_19.run();
     }
+
 
     /*
 
