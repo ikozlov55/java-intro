@@ -497,31 +497,196 @@ public class Chapter20 {
 
 
     /*
-
+        (Directory size) Rewrite Programming Exercise 18.28 using a stack instead of
+        a queue.
      */
     public static void ch20_20() {
+        Stack<File> stack = new Stack<>();
+        System.out.print("Enter a directory or a file: ");
+        stack.push(new File(scanner.nextLine()));
+        long size = 0;
 
+        while (!stack.isEmpty()) {
+            File file = stack.pop();
+            if (file.isFile()) {
+                System.out.println(file);
+                size += file.length();
+            }
+            if (file.isDirectory()) {
+                for (File f : file.listFiles()) {
+                    stack.push(f);
+                }
+            }
+        }
+        System.out.printf("%d bytes\n", size);
     }
 
     /*
-
+        (Use Comparator) Write the following generic method using selection sort
+        and a comparator:
+        public static <E> void selectionSort(E[] list, Comparator<? super E> comparator)
+        Write a test program that prompts the user to enter six strings, invokes the sort
+        method to sort the six strings by their last character, and displays the sorted strings.
+        Use Scanner’s next() method to read a string.
      */
     public static void ch20_21() {
-
+        String[] strings = new String[6];
+        System.out.println("Enter six strings: ");
+        for (int i = 0; i < strings.length; i++) {
+            strings[i] = scanner.next();
+        }
+        selectionSort(strings, (string1, string2) -> {
+            String s1 = (String) string1;
+            String s2 = (String) string2;
+            return s1.charAt(s1.length() - 1) - s2.charAt(s2.length() - 1);
+        });
+        Arrays.asList(strings).forEach(System.out::println);
     }
 
-    /*
+    public static <E> void selectionSort(E[] list, Comparator<? super E> comparator) {
+        for (int i = 0; i < list.length - 1; i++) {
+            E max = list[i];
+            int maxIndex = i;
+            for (int j = i + 1; j < list.length; j++) {
+                if (comparator.compare(max, list[j]) > 0) {
+                    max = list[j];
+                    maxIndex = j;
+                }
+            }
+            if (maxIndex != i) {
+                list[maxIndex] = list[i];
+                list[i] = max;
+            }
+        }
+    }
 
+
+    /*
+        (Nonrecursive Tower of Hanoi) Implement the moveDisks method in
+        Listing 18.8 using a stack instead of using recursion.
      */
     public static void ch20_22() {
+        System.out.print("Enter number of disks: ");
+        int n = scanner.nextInt();
+        System.out.println("The moves are:");
+        moveDisks(n, 'A', 'B', 'C');
+    }
 
+    public static void moveDisks(int n, char fromTower, char toTower, char auxTower) {
+        Stack<Character[]> stack = new Stack<>();
+        stack.push(new Character[]{'0', (char) n, fromTower, toTower, auxTower});
+        while (!stack.isEmpty()) {
+            Character[] move = stack.pop();
+            boolean isLast = move[0] == '1';
+            n = (int) move[1];
+            fromTower = move[2];
+            toTower = move[3];
+            auxTower = move[4];
+            if (isLast || n == 1) {
+                System.out.printf("Move disk %d from %c to %c\n", n, fromTower, toTower);
+            } else {
+                stack.push(new Character[]{'0', (char) (n - 1), auxTower, toTower, fromTower});
+                stack.push(new Character[]{'1', (char) n, fromTower, toTower, auxTower});
+                stack.push(new Character[]{'0', (char) (n - 1), fromTower, auxTower, toTower});
+            }
+        }
     }
 
     /*
-
+        (Evaluate expression) Modify Listing 20.12, EvaluateExpression.java, to add
+        operators ^ for exponent and % for remainder. For example, 3 ^ 2 is 9 and 3
+        % 2 is 1. The ^ operator has the highest precedence and the % operator has the
+        same precedence as the * and / operators. Your program should prompt the
+        user to enter an expression. Here is a sample run of the program:
+            Enter an expression: (5 * 2 ^ 3 + 2 * 3 % 2) * 4
+            (5 * 2 ^ 3 + 2 * 3 % 2) * 4 = 160
      */
     public static void ch20_23() {
+        System.out.print("Enter an expression: ");
+        String expression = scanner.nextLine();
+        System.out.printf("%s = %.2f", expression, evaluateExpression(expression));
+    }
 
+    public static double evaluateExpression(String expression) {
+        Stack<Double> operandStack = new Stack<>();
+        Stack<Character> operatorStack = new Stack<>();
+        expression = insertBlanks(expression);
+        String[] tokens = expression.split(" ");
+
+        // Phase 1: Scan tokens
+        for (String token : tokens) {
+            char c = token.charAt(0);
+            if (c == '^') {
+                operatorStack.push(c);
+            } else if (c == '+' || c == '−') {
+                // Process all +, −, *, /, %, ^ in the top of the operator stack
+                while (!operatorStack.isEmpty() &&
+                        List.of('+', '-', '*', '/', '%', '^').contains(operatorStack.peek())) {
+                    processAnOperator(operandStack, operatorStack);
+                }
+                // Push the + or − operator into the operator stack
+                operatorStack.push(c);
+            } else if (c == '*' || c == '/' || c == '%') {
+                // Process all *, /, % in the top of the operator stack
+                while (!operatorStack.isEmpty() &&
+                        List.of('*', '/', '%', '^').contains(operatorStack.peek())) {
+                    processAnOperator(operandStack, operatorStack);
+                }
+                // Push the * or / or % operator into the operator stack
+                operatorStack.push(c);
+            } else if (c == '(') {
+                operatorStack.push('('); // Push '(' to stack
+            } else if (c == ')') {
+                // Process all the operators in the stack until seeing '('
+                while (operatorStack.peek() != '(') {
+                    processAnOperator(operandStack, operatorStack);
+                }
+                operatorStack.pop(); // Pop the '(' symbol from the stack
+            } else { // An operand scanned
+                // Push an operand to the stack
+                operandStack.push(Double.valueOf(token));
+            }
+        }
+
+        // Phase 2: Process all the remaining operators in the stack
+        while (!operatorStack.isEmpty()) {
+            processAnOperator(operandStack, operatorStack);
+        }
+
+        // Return the result
+        return operandStack.pop();
+    }
+
+    public static void processAnOperator(Stack<Double> operandStack, Stack<Character> operatorStack) {
+        char op = operatorStack.pop();
+        double op1 = operandStack.pop();
+        double op2 = operandStack.pop();
+        switch (op) {
+            case '+' -> operandStack.push(op2 + op1);
+            case '-' -> operandStack.push(op2 - op1);
+            case '*' -> operandStack.push(op2 * op1);
+            case '/' -> operandStack.push(op2 / op1);
+            case '%' -> operandStack.push(op2 % op1);
+            case '^' -> operandStack.push(Math.pow(op2, op1));
+        }
+    }
+
+    public static String insertBlanks(String s) {
+        StringBuilder result = new StringBuilder();
+        s = s.replaceAll(" ", "");
+        List<Character> operators = List.of('(', ')', '+', '-', '*', '/', '%', '^');
+        for (int i = 0; i < s.length(); i++) {
+            if (operators.contains(s.charAt(i))) {
+                if (i > 0 && !operators.contains(s.charAt(i - 1))) {
+                    result.append(" ");
+                }
+                result.append(s.charAt(i)).append(" ");
+            } else {
+                result.append(s.charAt(i));
+            }
+        }
+
+        return result.toString();
     }
 
 }
