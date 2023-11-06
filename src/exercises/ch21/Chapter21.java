@@ -166,21 +166,99 @@ public class Chapter21 {
     }
 
     /*
-
+        (Count the occurrences of numbers entered) Write a program that reads an
+        unspecified number of integers and finds the one that has the most occur-
+        rences. The input ends when the input is 0. For example, if you entered 2
+        3 40 3 5 4 -3 3 3 2 0, the number 3 occurred most often. If not one but
+        several numbers have the most occurrences, all of them should be reported.
+        For example, since 9 and 3 appear twice in the list 9 30 3 9 3 2 4, both occur-
+        rences should be reported.
      */
     public static void ch21_6() {
+        Map<Integer, Integer> numbers = new HashMap<>();
+        System.out.print("Enter numbers: ");
+        int input = -1;
+        while (input != 0) {
+            input = scanner.nextInt();
+            if (numbers.containsKey(input)) {
+                numbers.put(input, numbers.get(input) + 1);
+            } else {
+                numbers.put(input, 1);
+            }
+        }
+        Integer maxKey = null;
+        for (Map.Entry<Integer, Integer> entry : numbers.entrySet()) {
+            if (maxKey == null || entry.getValue() > numbers.get(maxKey)) {
+                maxKey = entry.getKey();
+            }
+        }
+        ArrayList<Integer> maxKeys = new ArrayList<>();
+        maxKeys.add(maxKey);
+        for (Map.Entry<Integer, Integer> entry : numbers.entrySet()) {
+            if (Objects.equals(entry.getValue(), numbers.get(maxKey)) && !Objects.equals(entry.getKey(), maxKey)) {
+                maxKeys.add(entry.getKey());
+            }
+        }
+        System.out.printf("Numbers: %s have the most occurrences\n", maxKeys);
     }
 
     /*
-
+        (Revise Listing 21.9, CountOccurrenceOfWords.java) Rewrite Listing 21.9 to
+        display the words in ascending order of occurrence counts.
      */
     public static void ch21_7() {
+        String text = "Good morning. Have a good class. Have a good visit. Have fun!";
+        Map<String, Integer> map = new TreeMap<>();
+        String[] words = text.split("[\\s+\\p{P}]");
+
+        for (String word : words) {
+            String key = word.toLowerCase();
+            if (key.isEmpty()) continue;
+
+            if (!map.containsKey(key)) {
+                map.put(key, 1);
+            } else {
+                int value = map.get(key);
+                value++;
+                map.put(key, value);
+            }
+        }
+
+        List<Map.Entry<String, Integer>> sortedEntries = map.entrySet()
+                .stream()
+                .sorted(Comparator.comparingInt(Map.Entry::getValue))
+                .toList();
+        sortedEntries.forEach(e -> System.out.printf("%-10s %d\n", e.getKey(), e.getValue()));
     }
 
     /*
-
+        (Count the occurrences of words in a text file) Rewrite Listing 21.9 to read
+        the text from a text file. The text file is passed as a command-line argument.
+        Words are delimited by whitespace characters, punctuation marks (,;.:?),
+        quotation marks ('"), and parentheses. Count words in case-insensitive fash-
+        ion (e.g., consider Good and good to be the same word). The words must
+        start with a letter. Display the output in alphabetical order of words, with each
+        word preceded by its occurrence count
      */
-    public static void ch21_8() {
+    public static void ch21_8(String[] args) {
+        if (args.length != 1) {
+            System.out.println("Usage: java Exercise21_08 file.txt");
+            System.exit(1);
+        }
+        Map<String, Integer> map = new TreeMap<>();
+        try (Scanner input = new Scanner(new File(args[0]))) {
+            while (input.hasNext()) {
+                for (String word : input.nextLine().split("[\\s+\\p{P}=]")) {
+                    if (word.isEmpty() ) continue;
+                    word = word.toLowerCase();
+
+                    map.put(word, map.computeIfAbsent(word, k -> 0) + 1);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        map.forEach((k, v) -> System.out.printf("%-12s %d\n", k, v));
     }
 
     /*
