@@ -1,5 +1,6 @@
 package exercises.ch21;
 
+import exercises.ch21.ex11.Exercise21_11;
 import exercises.ch21.ex5.SyntaxHighlighter;
 
 import java.io.File;
@@ -249,9 +250,8 @@ public class Chapter21 {
         try (Scanner input = new Scanner(new File(args[0]))) {
             while (input.hasNext()) {
                 for (String word : input.nextLine().split("[\\s+\\p{P}=]")) {
-                    if (word.isEmpty() ) continue;
+                    if (word.isEmpty()) continue;
                     word = word.toLowerCase();
-
                     map.put(word, map.computeIfAbsent(word, k -> 0) + 1);
                 }
             }
@@ -262,22 +262,98 @@ public class Chapter21 {
     }
 
     /*
-
+        (Guess the capitals using maps) Rewrite Programming Exercise 8.37 to store
+        pairs of each state and its capital in a map. Your program should prompt the
+        user to enter a state and should display the capital for the state.
      */
     public static void ch21_9() {
+        Map<String, String> questions = Map.of(
+                "Alabama", "Montgomery",
+                "Alaska", "Juneau",
+                "Arizona", "Phoenix"
+        );
+        int count = 0;
+        for (Map.Entry<String, String> question : questions.entrySet()) {
+            System.out.printf("What is the capital of %s? ", question.getKey());
+            String answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase(question.getValue())) {
+                count++;
+            }
+        }
+        System.out.printf("The correct count is %d\n", count);
     }
 
     /*
-
+        (Count the occurrences of each keyword) Rewrite Listing 21.7, CountKeywords.java
+        to read in a Java source-code file and count the occurrence of each keyword in the
+        file, but don’t count the keyword if it is in a comment or in a string literal.
      */
     public static void ch21_10() {
+        Set<String> keywords = new HashSet<>(List.of("abstract", "assert", "boolean",
+                "break", "byte", "case", "catch", "char", "class", "const",
+                "continue", "default", "do", "double", "else", "enum",
+                "extends", "for", "final", "finally", "float", "goto",
+                "if", "implements", "import", "instanceof", "int",
+                "interface", "long", "native", "new", "package", "private",
+                "protected", "public", "return", "short", "static",
+                "strictfp", "super", "switch", "synchronized", "this",
+                "throw", "throws", "transient", "try", "void", "volatile",
+                "while", "true", "false", "null"));
+        int count = 0;
+        System.out.print("Enter file: ");
+        File file = new File(scanner.nextLine());
+        boolean inComment = false;
+        boolean inString = false;
+
+        try (Scanner input = new Scanner(file)) {
+            while (input.hasNext()) {
+                String line = input.nextLine();
+                if (line.startsWith("//")) continue;
+                if (line.contains("//")) {
+                    line = line.split("//")[0];
+                }
+                for (String word : line.split(" ")) {
+                    if (!inString && word.chars().filter(x -> x == '"').count() == 1) {
+                        inString = true;
+                        continue;
+                    }
+                    if (inString && word.chars().filter(x -> x == '"').count() == 1) {
+                        inString = false;
+                        continue;
+                    }
+                    if (!inComment && word.contains("/*") && !word.contains("*/")) {
+                        inComment = true;
+                        continue;
+                    }
+                    if (inComment && word.contains("*/")) {
+                        inComment = false;
+                        continue;
+                    }
+                    if (!inString && !inComment && keywords.contains(word)) {
+                        System.out.println(word);
+                        count++;
+                    }
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.printf("%s contains %d keywords\n", file.getName(), count);
     }
 
     /*
-
+        (Baby name popularity ranking) Use the data files from Programming Exercise 12.31
+        to write a program that enables the user to select a year, gender, and enter a name
+        to display the ranking of the name for the selected year and gender, as shown in
+        Figure 21.9. To achieve the best efficiency, create two arrays for boy’s names and
+        girl’s names, respectively. Each array has 10 elements for 10 years. Each element
+        is a map that stores a name and its ranking in a pair with the name as the key.
      */
     public static void ch21_11() {
+        Exercise21_11.run();
     }
+
 
     /*
 
