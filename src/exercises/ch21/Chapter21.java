@@ -5,6 +5,8 @@ import exercises.ch21.ex5.SyntaxHighlighter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 public class Chapter21 {
@@ -356,27 +358,185 @@ public class Chapter21 {
 
 
     /*
-
+        (Name for both genders) Write a program that prompts the user to enter one of the
+        filenames described in Programming Exercise 12.31 and displays the names that
+        are used for both genders in the file. Use sets to store names and find common
+        names in two sets. Here is a sample run:
+        Enter a file name for baby name ranking: babynamesranking2001.txt
+        69 names used for both genders
+        They are Tyler Ryan Christian ...
      */
     public static void ch21_12() {
+        System.out.print("Enter a file name for baby name ranking: ");
+        String filename = scanner.next();
+        Set<String> boysNames = new HashSet<>();
+        Set<String> girlsNames = new HashSet<>();
+
+        try {
+            String address = String.format("http://liveexample.pearsoncmg.com/data/%s", filename);
+            URL url = new URL(address);
+            Scanner scanner = new Scanner(url.openStream());
+            while (scanner.hasNext()) {
+                String[] record = Arrays.stream(scanner.nextLine().split("\t")).
+                        map(String::trim)
+                        .toArray(String[]::new);
+                boysNames.add(record[1]);
+                girlsNames.add(record[3]);
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Set<String> commonNames = new HashSet<>(boysNames);
+        commonNames.retainAll(girlsNames);
+        System.out.printf("%d names used for both genders\n", commonNames.size());
+        System.out.print("They are");
+        commonNames.forEach(x -> System.out.print(" " + x));
     }
 
     /*
-
+        (Baby name popularity ranking) Revise Programming Exercise 21.11 to prompt
+        the user to enter year, gender, and name and display the ranking for the name.
+        Prompt the user to enter another inquiry or exit the program. Here is a sample run:
+            Enter the year: 2010
+            Enter the gender: M
+            Enter the name: Javier
+            Boy name Javier is ranked #190 in year 2010
+            Enter another inquiry? Y
+            Enter the year: 2001
+            Enter the gender: F
+            Enter the name: Emily
+            Girl name Emily is ranked #1 in year 2001
+            Enter another inquiry? N
      */
     public static void ch21_13() {
+        Map<String, Integer>[] boysNames = (Map<String, Integer>[]) new Map[10];
+        Map<String, Integer>[] girlsNames = (Map<String, Integer>[]) new Map[10];
+        int yearFrom = 2001;
+        int yearTo = 2010;
+        try {
+            for (int year = yearFrom; year <= yearTo; year++) {
+                boysNames[year - yearFrom] = new HashMap<>();
+                girlsNames[year - yearFrom] = new HashMap<>();
+                String address = String.format("http://liveexample.pearsoncmg.com/data/babynamesranking%d.txt", year);
+                URL url = new URL(address);
+                Scanner scanner = new Scanner(url.openStream());
+                while (scanner.hasNext()) {
+                    String[] record = Arrays.stream(scanner.nextLine().split("\t")).
+                            map(String::trim)
+                            .toArray(String[]::new);
+                    int rank = Integer.parseInt(record[0]);
+                    boysNames[year - yearFrom].put(record[1], rank);
+                    girlsNames[year - yearFrom].put(record[3], rank);
+                }
+
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        boolean next = true;
+        while (next) {
+            System.out.print("Enter the year: ");
+            int year = scanner.nextInt();
+            System.out.print("Enter the gender: ");
+            String gender = scanner.next();
+            System.out.print("Enter the name: ");
+            String name = scanner.next();
+
+            Map<String, Integer> map = (gender.equals("M") ? boysNames : girlsNames)[year - yearFrom];
+            Integer rank = map.get(name);
+            if (rank == null) {
+                System.out.println("No data found");
+            } else {
+                System.out.printf("%s name %s is ranked #%d in year %d\n",
+                        gender.equals("M") ? "Boy" : "Girl", name, rank, year);
+            }
+            System.out.print("Enter another inquiry? ");
+            next = scanner.next().equals("Y");
+        }
+
     }
 
     /*
-
+        (Web crawler) Rewrite Listing 12.18, WebCrawler.java, to improve the perfor-
+        mance by using appropriate new data structures for listOfPendingURLs and
+        listofTraversedURLs.
      */
     public static void ch21_14() {
+        System.out.print("Enter a URL: ");
+        String url = scanner.nextLine();
+        crawler(url); // Traverse the Web from the a starting url
+    }
+
+    public static void crawler(String startingURL) {
+        Set<String> listOfPendingURLs = new HashSet<>();
+        Set<String> listOfTraversedURLs = new HashSet<>();
+        listOfPendingURLs.add(startingURL);
+
+        while (!listOfPendingURLs.isEmpty() && listOfTraversedURLs.size() <= 100) {
+            Set<String> subUrls = new HashSet<>();
+            for (String urlString : listOfPendingURLs) {
+                if (!listOfTraversedURLs.contains(urlString)) {
+                    listOfTraversedURLs.add(urlString);
+                    System.out.println("Crawl " + urlString);
+                    subUrls.addAll(getSubURLs(urlString));
+                }
+            }
+            subUrls.removeAll(listOfTraversedURLs);
+            listOfPendingURLs = new HashSet<>(subUrls);
+        }
+        System.out.println("END");
+    }
+
+    public static Set<String> getSubURLs(String urlString) {
+        Set<String> list = new HashSet<>();
+
+        try {
+            URL url = new URL(urlString);
+            Scanner input = new Scanner(url.openStream());
+            int current = 0;
+            while (input.hasNext()) {
+                String line = input.nextLine();
+                current = line.indexOf("https:", current);
+                while (current > 0) {
+                    int endIndex = line.indexOf("\"", current);
+                    if (endIndex > 0) { // Ensure that a correct URL is found
+                        list.add(line.substring(current, endIndex));
+                        current = line.indexOf("https:", endIndex);
+                    } else {
+                        current = -1;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return list;
     }
 
     /*
-
+        (Addition quiz) Rewrite Programming Exercise 11.16 to store the answers in a set
+        rather than a list.
      */
     public static void ch21_15() {
+        Set<Integer> answers = new HashSet<>();
+        int number1 = (int) (Math.random() * 10);
+        int number2 = (int) (Math.random() * 10);
+
+        System.out.printf("What is %d + %d? ", number1, number2);
+        int answer = scanner.nextInt();
+
+        while (number1 + number2 != answer) {
+            if (answers.contains(answer)) {
+                System.out.printf("You already entered %d\n", answer);
+            }
+            answers.add(answer);
+            System.out.printf("Wrong answer. Try again. What is %d + %d? ", number1, number2);
+            answer = scanner.nextInt();
+        }
+
+        System.out.println("You got it!");
     }
 
 }
