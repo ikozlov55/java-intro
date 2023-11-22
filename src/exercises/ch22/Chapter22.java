@@ -1,5 +1,9 @@
 package exercises.ch22;
 
+import exercises.ch22.ex07.ClosestPair;
+import exercises.ch22.ex07.Pair;
+import javafx.geometry.Point2D;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -289,10 +293,41 @@ public class Chapter22 {
     }
 
     /*
-
-     */
+        (Closest pair of points) Section 22.8 introduced an algorithm for finding the
+        closest pair of points using a divide-and-conquer approach. Implement the
+        algorithm to meet the following requirements:
+        ■ Define a class named Pair with the data fields p1 and p2 to represent
+        two points and a method named getDistance() that returns the distance
+        between the two points.
+        ■ Implement the following methods:
+        // Return the distance of the closest pair of points
+        public static Pair getClosestPair(double[][] points)
+        // Return the distance of the closest pair of points
+        public static Pair getClosestPair(Point2D[] points)
+        // Return the distance of the closest pair of points
+        // in pointsOrderedOnX[low..high]. This is a recursive
+        // method. pointsOrderedOnX and pointsOrderedOnY are
+        // not changed in the subsequent recursive calls.
+        public static Pair distance(Point2D[] pointsOrderedOnX,int low, int high, Point2D[] pointsOrderedOnY)
+        // Compute the distance between two points p1 and p2
+        public static double distance(Point2D p1, Point2D p2)
+        // Compute the distance between points (x1, y1) and (x2, y2)
+        public static double distance(double x1, double y1, double x2, double y2)
+    */
     public static void ch22_7() {
-
+        Point2D[] points = new Point2D[]{
+                new Point2D(0, 0),
+                new Point2D(2, 7),
+                new Point2D(3, 2),
+                new Point2D(2, 5),
+                new Point2D(2, 0),
+                new Point2D(5, 5),
+                new Point2D(3, 8),
+        };
+        Pair closestPair = ClosestPair.getClosestPair(points);
+        System.out.printf("Closest pair found using Divide-and-Conquer algorithm is: %s\n", closestPair);
+        Pair closestPairBruteForce = ClosestPair.getClosestPairBruteForce(points);
+        System.out.printf("Closest pair found using brute force algorithm is: %s\n", closestPairBruteForce);
     }
 
     /*
