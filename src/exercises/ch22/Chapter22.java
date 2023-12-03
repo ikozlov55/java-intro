@@ -2,8 +2,10 @@ package exercises.ch22;
 
 import exercises.ch22.ex07.ClosestPair;
 import exercises.ch22.ex07.Pair;
+import exercises.ch22.ex08.PrimeNumbersWriter;
 import javafx.geometry.Point2D;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -331,23 +333,109 @@ public class Chapter22 {
     }
 
     /*
-
+        (All prime numbers up to 10,000,000,000) Write a program that finds
+        all prime numbers up to 10,000,000,000. There are approximately
+        455,052,511 such prime numbers. Your program should meet the following
+        requirements:
+        ■ Your program should store the prime numbers in a binary data file, named
+        PrimeNumbers.dat. When a new prime number is found, the number is
+        appended to the file.
+        ■ To find whether a new number is prime, your program should load the
+        prime numbers from the file to an array of the long type of size 10000.
+        If no number in the array is a divisor for the new number, continue to read
+        the next 10000 prime numbers from the data file, until a divisor is found
+        or all numbers in the file are read. If no divisor is found, the new number
+        is prime.
+        ■ Since this program takes a long time to finish, you should run it as a batch
+        job from a UNIX machine. If the machine is shut down and rebooted, your
+        program should resume by using the prime numbers stored in the binary data
+        file rather than start over from scratch.
      */
     public static void ch22_8() {
-
+        File dataFile = new File("src/exercises/ch22/PrimeNumbers.dat");
+        PrimeNumbersWriter primeNumbersWriter = new PrimeNumbersWriter(dataFile);
+        primeNumbersWriter.start();
     }
 
-    /*
 
+    /*
+        (Geometry: gift-wrapping algorithm for finding a convex hull) Section 22.10.1
+        introduced the gift-wrapping algorithm for finding a convex hull for a set of
+        points. Implement the algorithm using the following method:
+        public static ArrayList<Point2D> getConvexHull(double[][] s)
+        Point2D was introduced in Section 9.6.3.
+        Write a test program that prompts the user to enter the set size and the points, and
+        displays the points that form a convex hull. Note that when you debug the code,
+        you will discover that the algorithm overlooked two cases (1) when t1 = t0
+        and (2) when there is a point that is on the same line from t0 to t1. When either
+        case happens, replace t1 by point p if the distance from t0 to p is greater than
+        the distance from t0 to t1. Here is a sample run:
+            How many points are in the set? 6
+            Enter 6 points: 1 2.4 2.5 2 1.5 34.5 5.5 6 6 2.4 5.5 9
+            The convex hull is
+            (2.5, 2.0) (6.0, 2.4) (5.5, 9.0) (1.5, 34.5) (1.0, 2.4)
      */
     public static void ch22_9() {
+        System.out.print("How many points are in the set? ");
+        int n = scanner.nextInt();
+        double[][] s = new double[n][2];
+        System.out.printf("Enter %d points: ", n);
+        for (int i = 0; i < n; i++) {
+            s[i] = new double[]{scanner.nextDouble(), scanner.nextDouble()};
+        }
 
+        ArrayList<Point2D> convexHull = getConvexHull(s);
+        System.out.println("The convex hull is");
+        for (Point2D p : convexHull) {
+            System.out.printf(Locale.US, "(%.1f, %.1f) ", p.getX(), p.getY());
+        }
+    }
+
+    public static ArrayList<Point2D> getConvexHull(double[][] s) {
+        ArrayList<Point2D> H = new ArrayList<>();
+        ArrayList<Point2D> S = Arrays.stream(s)
+                .map(p -> new Point2D(p[0], p[1]))
+                .collect(Collectors.toCollection(ArrayList::new));
+        Point2D h0 = S.stream().max(Comparator.comparing(Point2D::getY).thenComparing(Point2D::getX)).get();
+        H.add(h0);
+        Point2D t0 = h0;
+        while (true) {
+            Point2D t1 = S.get(0);
+            for (Point2D p : S) {
+                double d = d(t0, t1, p);
+                if (d < 0) {
+                    t1 = p;
+                } else if ((d == 0 || t1.equals(t0)) && t0.distance(p) > t0.distance(t1)) {
+                    t1 = p;
+                }
+            }
+            if (t1.equals(h0)) {
+                return H;
+            } else {
+                H.add(t1);
+                t0 = t1;
+            }
+        }
+    }
+
+    private static double d(Point2D p0, Point2D p1, Point2D p2) {
+        return (p1.getX() - p0.getX()) * (p2.getY() - p0.getY()) - (p2.getX() - p0.getX()) * (p1.getY() - p0.getY());
     }
 
     /*
-
+        (Number of prime numbers) Programming Exercise 22.8 stores the prime numbers
+        in a file named PrimeNumbers.dat. Write a program that finds the num-
+        ber of prime numbers that are less than or equal to 10, 100, 1,000, 10,000,
+        100,000, 1,000,000, 10,000,000, 100,000,000, 1,000,000,000, and
+        10,000,000,000. Your program should read the data from PrimeNumbers.dat.
      */
     public static void ch22_10() {
+        File dataFile = new File("src/exercises/ch22/PrimeNumbers.dat");
+        PrimeNumbersWriter primeNumbersWriter = new PrimeNumbersWriter(dataFile);
+        for (long n = 10; n <= 10_000; n *= 10) {
+            long primes = primeNumbersWriter.getNumberOfPrimes(n);
+            System.out.printf("Number of primes less than or equal to %d is %d\n", n, primes);
+        }
 
     }
 
