@@ -384,14 +384,14 @@ public class Chapter22 {
             s[i] = new double[]{scanner.nextDouble(), scanner.nextDouble()};
         }
 
-        ArrayList<Point2D> convexHull = getConvexHull(s);
+        ArrayList<Point2D> convexHull = getConvexHullGiftWrapping(s);
         System.out.println("The convex hull is");
         for (Point2D p : convexHull) {
             System.out.printf(Locale.US, "(%.1f, %.1f) ", p.getX(), p.getY());
         }
     }
 
-    public static ArrayList<Point2D> getConvexHull(double[][] s) {
+    public static ArrayList<Point2D> getConvexHullGiftWrapping(double[][] s) {
         ArrayList<Point2D> H = new ArrayList<>();
         ArrayList<Point2D> S = Arrays.stream(s)
                 .map(p -> new Point2D(p[0], p[1]))
@@ -440,10 +440,125 @@ public class Chapter22 {
     }
 
     /*
+        (Geometry: Graham’s algorithm for finding a convex hull) Section 22.10.2
+        introduced Graham’s algorithm for finding a convex hull for a set of points.
+        Assume Java’s coordinate system is used for the points. Implement the algo-
+        rithm using the following method:
+        public static ArrayList<MyPoint> getConvexHull(double[][] s)
+        Write a test program that prompts the user to enter the set size and the points,
+        and displays the points that form a convex hull. Here is a sample run:
+        How many points are in the set? 6
+        Enter six points: 1 2.4 2.5 2 1.5 34.5 5.5 6 6 2.4 5.5 9
+        The convex hull is
+        (2.5, 2.0) (6.0, 2.4) (5.5, 9.0) (1.5, 34.5) (1.0, 2.4)
+
 
      */
     public static void ch22_11() {
+        System.out.print("How many points are in the set? ");
+        int n = scanner.nextInt();
+        double[][] s = new double[n][2];
+        System.out.printf("Enter %d points: ", n);
+        for (int i = 0; i < n; i++) {
+            s[i] = new double[]{scanner.nextDouble(), scanner.nextDouble()};
+        }
 
+        ArrayList<MyPoint> convexHull = getConvexHullGrahams(s);
+        System.out.println("The convex hull is");
+        convexHull.forEach(p -> System.out.print(p + " "));
+    }
+
+    public static ArrayList<MyPoint> getConvexHullGrahams(double[][] s) {
+        ArrayList<MyPoint> S = Arrays.stream(s)
+                .map(p -> new MyPoint(p[0], p[1]))
+                .collect(Collectors.toCollection(ArrayList::new));
+        MyPoint p0 = S.stream().max(Comparator.comparing(MyPoint::getY).thenComparing(MyPoint::getX)).get();
+        S.remove(p0);
+        S.forEach(p -> p.setRightMostLowestPoint(p0));
+        S.sort(Comparator.reverseOrder());
+        S.add(0, p0);
+        ArrayList<MyPoint> pointsToRemove = new ArrayList<>();
+        for (int i = 1; i < S.size() - 1; i++) {
+            MyPoint p1 = S.get(i);
+            MyPoint p2 = S.get(i + 1);
+            if (p1.compareTo(p2) == 0) {
+                pointsToRemove.add(p0.distance(p1) < p0.distance(p2) ? p1 : p2);
+            }
+        }
+        S.removeAll(pointsToRemove);
+        System.out.println(S);
+
+        Stack<MyPoint> H = new Stack<>();
+        H.push(S.get(0));
+        H.push(S.get(1));
+        H.push(S.get(2));
+
+        int i = 3;
+        while (i < S.size()) {
+            MyPoint t1 = H.pop();
+            MyPoint t2 = H.peek();
+            MyPoint p = S.get(i);
+            t1.setRightMostLowestPoint(t2);
+            if (t1.compareTo(p) > 0) {
+                H.push(t1);
+                H.push(p);
+                i++;
+            }
+        }
+
+        return new ArrayList<>(H);
+    }
+
+    private static class MyPoint implements Comparable<MyPoint> {
+        double x, y;
+        MyPoint rightMostLowestPoint;
+
+        MyPoint(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        public void setRightMostLowestPoint(MyPoint p) {
+            rightMostLowestPoint = p;
+        }
+
+
+        @Override
+        public int compareTo(MyPoint o) {
+            // Implement it to compare this point with point o
+            // angularly along the x-axis with rightMostLowestPoint
+            // as the center, as shown in Figure 22.10b. By implementing
+            // the Comparable interface, you can use the Array.sort
+            // method to sort the points to simplify coding.
+            MyPoint p0 = rightMostLowestPoint;
+            MyPoint p1 = this;
+            double d = (p1.getX() - p0.getX()) * (o.getY() - p0.getY()) - (o.getX() - p0.getX()) * (p1.getY() - p0.getY());
+            if (d < 0) {
+                return 1;
+            } else if (d > 0) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+
+        public double distance(MyPoint p) {
+            return Math.sqrt(Math.pow(p.getX() - x, 2) + Math.pow(p.getY() - x, 2));
+        }
+
+
+        @Override
+        public String toString() {
+            return String.format("(%.1f, %.1f)", x, y);
+        }
     }
 
     /*
