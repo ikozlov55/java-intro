@@ -3,6 +3,7 @@ package exercises.ch22;
 import exercises.ch22.ex07.ClosestPair;
 import exercises.ch22.ex07.Pair;
 import exercises.ch22.ex08.PrimeNumbersWriter;
+import exercises.ch22.ex13.Exercise22_13;
 import javafx.geometry.Point2D;
 
 import java.io.File;
@@ -562,17 +563,26 @@ public class Chapter22 {
     }
 
     /*
-
+        (Last 100 prime numbers) Programming Exercise 22.8 stores the prime numbers
+        in a file named PrimeNumbers.dat. Write an efficient program that reads the
+        last 100 numbers in the file. (Hint: Don’t read all numbers from the file. Skip
+        all numbers before the last 100 numbers in the file.)
      */
     public static void ch22_12() {
-
+        File dataFile = new File("src/exercises/ch22/PrimeNumbers.dat");
+        PrimeNumbersWriter primeNumbersWriter = new PrimeNumbersWriter(dataFile);
+        long[] lastHundred = primeNumbersWriter.getLatestNumbers(100);
+        System.out.println(Arrays.toString(lastHundred));
     }
 
     /*
-
+        (Geometry: convex hull animation) Programming Exercise 22.11 finds a convex
+        hull for a set of points entered from the console. Write a program that enables
+        the user to add or remove points by clicking the left or right mouse button and
+        displays a convex hull, as shown in Figure 22.8c
      */
     public static void ch22_13() {
-
+        Exercise22_13.run();
     }
 
     /*

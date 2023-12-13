@@ -62,6 +62,20 @@ public class PrimeNumbersWriter {
         return result;
     }
 
+    public long[] getLatestNumbers(int num) {
+        long[] result = new long[num];
+        try (RandomAccessFile file = new RandomAccessFile(dataFile, "r")) {
+            file.seek(file.length() - num * 8L);
+            for (int i = 0; i < num; i++) {
+                result[i] = file.readLong();
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
     private long[] readBatch(RandomAccessFile file) {
         long[] batch = new long[batchSize];
         try {
