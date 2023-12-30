@@ -4,12 +4,15 @@ import exercises.ch22.ex07.ClosestPair;
 import exercises.ch22.ex07.Pair;
 import exercises.ch22.ex08.PrimeNumbersWriter;
 import exercises.ch22.ex13.Exercise22_13;
+import exercises.ch22.ex14.PrimeNumbersCalculator;
 import javafx.geometry.Point2D;
 
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static exercises.utils.Utils.testTime;
 
 public class Chapter22 {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -237,8 +240,8 @@ public class Chapter22 {
         for (int i = 0; i < fibIndexes.size() - 1; i++) {
             long m = fibValues.get(fibIndexes.get(i + 1));
             long n = fibValues.get(fibIndexes.get(i));
-            gcdResults.add(executionTime(() -> gcd(m, n)));
-            gcdEuclidResults.add(executionTime(() -> gcdEuclid(m, n)));
+            gcdResults.add(testTime(() -> gcd(m, n)));
+            gcdEuclidResults.add(testTime(() -> gcdEuclid(m, n)));
         }
 
         String fibsHeader = String.join("", fibIndexes.stream().map(x -> String.format("%8d", x)).toList());
@@ -250,12 +253,6 @@ public class Chapter22 {
         System.out.printf("%-25s│%s\n", "Listing 22.3 GCDEuclid", gcdEuclidRow);
     }
 
-    private static double executionTime(Runnable action) {
-        long startTime = System.currentTimeMillis();
-        action.run();
-        long endTime = System.currentTimeMillis();
-        return (endTime - startTime) / 1000.0;
-    }
 
     public static long gcd(long m, long n) {
         long gcd = 1;
@@ -586,10 +583,32 @@ public class Chapter22 {
     }
 
     /*
-
+        (Execution time for prime numbers) Write a program that obtains the execution
+        time for finding all the prime numbers less than 8,000,000, 10,000,000,
+        12,000,000, 14,000,000, 16,000,000, and 18,000,000 using the algorithms in
+        Listings 22.5–22.7.
      */
     public static void ch22_14() {
+        ArrayList<Double> t1 = new ArrayList<>();
+        ArrayList<Double> t2 = new ArrayList<>();
+        ArrayList<Double> t3 = new ArrayList<>();
+        StringBuilder header = new StringBuilder();
+        for (int i = 8; i <= 18; i += 2) {
+            int n = i * 1000000;
+            header.append(String.format("%10d", n));
+            t1.add(testTime(() -> PrimeNumbersCalculator.getPrimes(n)));
+            t2.add(testTime(() -> PrimeNumbersCalculator.getPrimesEfficient(n)));
+            t3.add(testTime(() -> PrimeNumbersCalculator.getPrimesSieveOfEratosthenes(n)));
+        }
 
+        System.out.printf("%s│%s\n", " ".repeat(15), header);
+        System.out.printf("%s┼%s\n", "─".repeat(15), "─".repeat(header.length() * 10));
+        String row1 = String.join("", t1.stream().map(x -> String.format("%10.2f", x)).toList());
+        System.out.printf("%-15s│%s\n", "Listing 22.5", row1);
+        String row2 = String.join("", t2.stream().map(x -> String.format("%10.2f", x)).toList());
+        System.out.printf("%-15s│%s\n", "Listing 22.6", row2);
+        String row3 = String.join("", t3.stream().map(x -> String.format("%10.2f", x)).toList());
+        System.out.printf("%-15s│%s\n", "Listing 22.7", row3);
     }
 
     /*
