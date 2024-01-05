@@ -5,6 +5,8 @@ import exercises.ch22.ex07.Pair;
 import exercises.ch22.ex08.PrimeNumbersWriter;
 import exercises.ch22.ex13.Exercise22_13;
 import exercises.ch22.ex14.PrimeNumbersCalculator;
+import exercises.ch22.ex15.Exercise22_15;
+import exercises.ch22.ex16.Exercise22_16;
 import javafx.geometry.Point2D;
 
 import java.io.File;
@@ -612,17 +614,37 @@ public class Chapter22 {
     }
 
     /*
-
+        (Geometry: noncrossed polygon) Write a program that enables the user to add
+        or remove points by clicking the left or right mouse button and displays a non-
+        crossed polygon that links all the points, as shown in Figure 22.17a. A polygon
+        is crossed if two or more sides intersect, as shown in Figure 22.17b. Use the
+        following algorithm to construct a polygon from a set of points:
+        Step 1: Given a set of points S, select the rightmost lowest
+        point p0 in the set S.
+        Step 2: Sort the points in S angularly along the x-axis with p0
+        as the center. If there is a tie and two points have the same
+        angle, the one that is closer to p0 is considered greater. The
+        points in S are now sorted as p0, p1, p2, ..., pn−1.
+        Step 3: The sorted points form a noncrossed polygon.
      */
     public static void ch22_15() {
-
+        Exercise22_15.run();
     }
 
     /*
-
+        (Linear search animation) Write a program that animates the linear search
+        algorithm. Create an array that consists of 20 distinct numbers from 1 to 20
+        in a random order. The array elements are displayed in a histogram, as shown
+        in Figure 22.18. You need to enter a search key in the text field. Clicking the
+        Step button causes the program to perform one comparison in the algorithm and
+        repaints the histogram with a bar indicating the search position. This button
+        also freezes the text field to prevent its value from being changed. When the
+        algorithm is finished, display the status in the label at the top of the border pane
+        to inform the user. Clicking the Reset button creates a new random array for a
+        new start. This button also makes the text field editable.
      */
     public static void ch22_16() {
-
+        Exercise22_16.run();
     }
 
     /*
