@@ -29,7 +29,8 @@ public class ClosestPair {
         Point2D[] pointsOrderedOnY = Arrays.stream(points)
                 .sorted(Comparator.comparing(Point2D::getY))
                 .toArray(Point2D[]::new);
-        return distance(pointsOrderedOnX, 0, points.length, pointsOrderedOnY);
+
+        return distance(pointsOrderedOnX, 0, points.length - 1, pointsOrderedOnY);
     }
 
     public static Pair getClosestPairBruteForce(Point2D[] points) {
@@ -56,14 +57,15 @@ public class ClosestPair {
      * not changed in the subsequent recursive calls.
      */
     public static Pair distance(Point2D[] pointsOrderedOnX, int low, int high, Point2D[] pointsOrderedOnY) {
-        int n = high - low;
+        int n = high - low + 1;
         if (n <= 3) {
-            return getClosestPairBruteForce(Arrays.copyOfRange(pointsOrderedOnX, low, high));
+            return getClosestPairBruteForce(Arrays.copyOfRange(pointsOrderedOnX, low, high + 1));
         }
-        int midIndex = n % 2 == 0 ? n / 2 : n / 2 + 1;
+        int midIndex = n / 2 + low - 1;
         Point2D mid = pointsOrderedOnX[midIndex];
+        System.out.printf("low: %d, high: %d, n: %d, midIndex: %d\n", low, high, n, midIndex);
         Pair p1 = distance(pointsOrderedOnX, low, midIndex, pointsOrderedOnY);
-        Pair p2 = distance(pointsOrderedOnX, midIndex, high, pointsOrderedOnY);
+        Pair p2 = distance(pointsOrderedOnX, midIndex + 1, high, pointsOrderedOnY);
         double d1 = p1.getDistance();
         double d2 = p2.getDistance();
         double d = Math.min(d1, d2);
@@ -107,19 +109,6 @@ public class ClosestPair {
         } else {
             return Stream.of(p1, p2, p3).min(Comparator.comparing(Pair::getDistance)).get();
         }
-    }
-
-    private static Pair getClosestPairTrivial(Point2D[] points) {
-        return switch (points.length) {
-            case 2 -> new Pair(points[0], points[1]);
-            case 3 -> Stream.of(
-                            new Pair(points[0], points[1]),
-                            new Pair(points[0], points[2]),
-                            new Pair(points[1], points[2])
-                    )
-                    .min(Comparator.comparing(Pair::getDistance)).get();
-            default -> new Pair(new Point2D(0, 0), new Point2D(0, 0));
-        };
     }
 
 

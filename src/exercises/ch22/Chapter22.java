@@ -7,6 +7,8 @@ import exercises.ch22.ex13.Exercise22_13;
 import exercises.ch22.ex14.PrimeNumbersCalculator;
 import exercises.ch22.ex15.Exercise22_15;
 import exercises.ch22.ex16.Exercise22_16;
+import exercises.ch22.ex17.Exercise22_17;
+import exercises.ch22.ex18.Exercise22_18;
 import javafx.geometry.Point2D;
 
 import java.io.File;
@@ -648,17 +650,28 @@ public class Chapter22 {
     }
 
     /*
-
+        (Closest-pair animation) Write a program that enables the user to add/remove
+        points by clicking the left/right mouse button and displays a line that connects
+        the pair of nearest points, as shown in Figure 22.4.
      */
     public static void ch22_17() {
-
+        Exercise22_17.run();
     }
 
     /*
-
+        (Binary search animation) Write a program that animates the binary search algo-
+        rithm. Create an array with numbers from 1 to 20 in this order. The array ele-
+        ments are displayed in a histogram, as shown in Figure 22.19. You need to enter
+        a search key in the text field. Clicking the Step button causes the program to
+        perform one comparison in the algorithm. Use a light-gray color to paint the bars
+        for the numbers in the current search range, and use a black color to paint the bar
+        indicating the middle number in the search range. The Step button also freezes the
+        text field to prevent its value from being changed. When the algorithm is finished,
+        display the status in a label at the top of a border pane. Clicking the Reset button
+        enables a new search to start. This button also makes the text field editable.
      */
     public static void ch22_18() {
-
+        Exercise22_18.run();
     }
 
     /*
