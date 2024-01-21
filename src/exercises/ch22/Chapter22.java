@@ -9,6 +9,8 @@ import exercises.ch22.ex15.Exercise22_15;
 import exercises.ch22.ex16.Exercise22_16;
 import exercises.ch22.ex17.Exercise22_17;
 import exercises.ch22.ex18.Exercise22_18;
+import exercises.ch22.ex19.Exercise22_19;
+import exercises.ch22.ex21.Exercise22_21;
 import javafx.geometry.Point2D;
 
 import java.io.File;
@@ -675,24 +677,61 @@ public class Chapter22 {
     }
 
     /*
-
+        (Largest block) The problem for finding a largest block is described in
+        Programming Exercise 8.35. Design a dynamic programming algorithm for solv-
+        ing this problem in O(n2) time. Write a test program that displays a 10- by-10
+        square matrix, as shown in Figure 22.20a. Each element in the matrix is 0 or 1,
+        randomly generated with a click of the Refresh button. Display each number cen-
+        tered in a text field. Use a text field for each entry. Allow the user to change the
+        entry value. Click the Find Largest Block button to find a largest square submatrix
+        that consists of 1s. Highlight the numbers in the block, as shown in Figure 22.20b
      */
     public static void ch22_19() {
-
+        Exercise22_19.run();
     }
 
     /*
-
+        (Game: multiple Sudoku solutions) The complete solution for the Sudoku
+        problem is given in Supplement VI.A. A Sudoku problem may have multiple
+        solutions. Modify Sudoku.java in Supplement VI.A to display the total number
+        of solutions. Display two solutions if multiple solutions exist.
      */
     public static void ch22_20() {
-
+        int[][] grid = {
+                {5, 3, 0, 0, 7, 0, 0, 0, 0},
+                {6, 0, 0, 1, 9, 5, 0, 0, 0},
+                {0, 9, 8, 0, 0, 0, 0, 6, 0},
+                {8, 0, 0, 0, 6, 0, 0, 0, 3},
+                {4, 0, 0, 8, 0, 3, 0, 0, 1},
+                {7, 0, 0, 0, 2, 0, 0, 0, 6},
+                {0, 6, 0, 0, 0, 0, 2, 8, 0},
+                {0, 0, 0, 4, 1, 9, 0, 0, 5},
+                {0, 0, 0, 0, 8, 0, 0, 7, 9}
+        };
+        exercises.ch22.ex20.Sudoku sudoku = new exercises.ch22.ex20.Sudoku(grid);
+        if (!sudoku.isValid()) {
+            System.out.println("Invalid input");
+            return;
+        }
+        int[][][] solutions = sudoku.search();
+        if (solutions.length > 0) {
+            System.out.printf("%s solutions found:\n", solutions.length);
+            for (int[][] solution : solutions) {
+                exercises.ch22.ex20.Sudoku.printGrid(solution);
+            }
+        } else {
+            System.out.println("No solution");
+        }
     }
 
     /*
-
+        (Game: Sudoku) The complete solution for the Sudoku problem is given in
+        Supplement VI.C. Write a program that lets the user enter the input from the
+        text fields, as shown in Figure 22.21a. Clicking the Solve button displays the
+        result, as shown in Figures 22.21b and c.
      */
     public static void ch22_21() {
-
+        Exercise22_21.run();
     }
 
     /*
