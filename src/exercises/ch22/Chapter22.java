@@ -10,7 +10,10 @@ import exercises.ch22.ex16.Exercise22_16;
 import exercises.ch22.ex17.Exercise22_17;
 import exercises.ch22.ex18.Exercise22_18;
 import exercises.ch22.ex19.Exercise22_19;
+import exercises.ch22.ex20.Sudoku;
 import exercises.ch22.ex21.Exercise22_21;
+import exercises.ch22.ex22.SudokuRecursive;
+import exercises.ch22.ex23.Exercise22_23;
 import javafx.geometry.Point2D;
 
 import java.io.File;
@@ -697,18 +700,7 @@ public class Chapter22 {
         of solutions. Display two solutions if multiple solutions exist.
      */
     public static void ch22_20() {
-        int[][] grid = {
-                {5, 3, 0, 0, 7, 0, 0, 0, 0},
-                {6, 0, 0, 1, 9, 5, 0, 0, 0},
-                {0, 9, 8, 0, 0, 0, 0, 6, 0},
-                {8, 0, 0, 0, 6, 0, 0, 0, 3},
-                {4, 0, 0, 8, 0, 3, 0, 0, 1},
-                {7, 0, 0, 0, 2, 0, 0, 0, 6},
-                {0, 6, 0, 0, 0, 0, 2, 8, 0},
-                {0, 0, 0, 4, 1, 9, 0, 0, 5},
-                {0, 0, 0, 0, 8, 0, 0, 7, 9}
-        };
-        exercises.ch22.ex20.Sudoku sudoku = new exercises.ch22.ex20.Sudoku(grid);
+        Sudoku sudoku = new Sudoku();
         if (!sudoku.isValid()) {
             System.out.println("Invalid input");
             return;
@@ -717,7 +709,7 @@ public class Chapter22 {
         if (solutions.length > 0) {
             System.out.printf("%s solutions found:\n", solutions.length);
             for (int[][] solution : solutions) {
-                exercises.ch22.ex20.Sudoku.printGrid(solution);
+                Sudoku.printGrid(solution);
             }
         } else {
             System.out.println("No solution");
@@ -735,17 +727,53 @@ public class Chapter22 {
     }
 
     /*
+        (Game: recursive Sudoku) Write a recursive solution for the Sudoku problem
 
+        5 3 4 6 7 8 9 1 2
+        6 7 2 1 9 5 3 4 8
+        1 9 8 3 4 2 5 6 7
+        8 5 9 7 6 1 4 2 3
+        4 2 6 8 5 3 7 9 1
+        7 1 3 9 2 4 8 5 6
+        9 6 1 5 3 7 2 8 4
+        2 8 7 4 1 9 6 3 5
+        3 4 5 2 8 6 1 7 9
      */
     public static void ch22_22() {
-
+        int[][] grid = {
+                {5, 3, 0, 0, 7, 0, 0, 0, 0},
+                {6, 0, 0, 1, 9, 5, 0, 0, 0},
+                {0, 9, 8, 0, 0, 0, 0, 6, 0},
+                {8, 0, 0, 0, 6, 0, 0, 0, 3},
+                {4, 0, 0, 8, 0, 3, 0, 0, 1},
+                {7, 0, 0, 0, 2, 0, 0, 0, 6},
+                {0, 6, 0, 0, 0, 0, 2, 8, 0},
+                {0, 0, 0, 4, 1, 9, 0, 0, 5},
+                {0, 0, 0, 0, 8, 0, 0, 7, 9}
+        };
+        SudokuRecursive sudoku = new SudokuRecursive(grid);
+        if (!sudoku.isValid()) {
+            System.out.println("Invalid input");
+            return;
+        }
+        if (sudoku.search()) {
+            System.out.println("The solution is found:");
+            System.out.println(sudoku);
+        } else {
+            System.out.println("No solution");
+        }
     }
 
     /*
-
+        (Game: multiple Eight Queens solution) Write a program to display all possible
+        solutions for the Eight Queens puzzle in a scroll pane, as shown in Figure 22.22.
+        For each solution, put a label to denote the solution number. (Hint: Place all
+        solution panes into an HBox and place this one pane into a ScrollPane. If
+        you run into a StackOverflowError, run the program using java –Xss200m
+        Exercise22_23 from the command window.)
      */
     public static void ch22_23() {
-
+        Exercise22_23.run();
     }
 
     /*
