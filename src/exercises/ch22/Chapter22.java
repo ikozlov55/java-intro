@@ -14,6 +14,7 @@ import exercises.ch22.ex20.Sudoku;
 import exercises.ch22.ex21.Exercise22_21;
 import exercises.ch22.ex22.SudokuRecursive;
 import exercises.ch22.ex23.Exercise22_23;
+import exercises.ch22.ex25.Exercise22_25;
 import javafx.geometry.Point2D;
 
 import java.io.File;
@@ -777,30 +778,132 @@ public class Chapter22 {
     }
 
     /*
-
+        (Find the smallest number) Write a method that uses the divide-and-conquer
+        approach to find the smallest number in a list
      */
     public static void ch22_24() {
+        List<Integer> list = List.of(5, 3, 7, 8, 2, 1, 9);
+        System.out.printf("Smallest value in list %s is %d\n", list, findSmallest(list));
+    }
 
+    private static Integer findSmallest(List<Integer> list) {
+        if (list.size() == 1) {
+            return list.get(0);
+        } else {
+            int mid = list.size() / 2;
+            int a = findSmallest(list.subList(0, mid));
+            int b = findSmallest(list.subList(mid, list.size()));
+            return Math.min(a, b);
+        }
     }
 
     /*
-
+        (Game: Sudoku) Revise Programming Exercise 22.21 to display all solutions
+        for the Sudoku game, as shown in Figure 22.23a. When you click the Solve
+        button, the program stores all solutions in an ArrayList. Each element in the
+        list is a two-dimensional 9-by-9 grid. If the program has multiple solutions, the
+        Next button appears as shown in Figure 22.23b. You can click the Next button
+        to display the next solution and also add a label to show the solution count.
+        When the Clear button is clicked, the cells are cleared and the Next button is
+        hidden as shown in Figure 22.23c.
      */
     public static void ch22_25() {
-
+        Exercise22_25.run();
     }
 
     /*
-
+        (Bin packing with smallest object first) The bin packing problem is to pack the
+        objects of various weights into containers. Assume each container can hold a
+        maximum of 10 pounds. The program uses an algorithm that places an object with
+        the smallest weight into the first bin in which it would fit. Your program should
+        prompt the user to enter the total number of objects and the weight of each object.
+        The program displays the total number of containers needed to pack the objects,
+        and the contents of each container. Here is a sample run of the program:
+            Enter the number of objects: 6
+            Enter the weights of the objects: 7 5 2 3 5 8
+            Container 1 contains objects with weight 2 3 5
+            Container 2 contains objects with weight 5
+            Container 3 contains objects with weight 7
+            Container 4 contains objects with weight 8
+        Does this program produce an optimal solution, that is, finding the minimum
+        number of containers to pack the objects?
      */
     public static void ch22_26() {
+        System.out.print("Enter the number of objects: ");
+        int n = scanner.nextInt();
+        List<Integer> objects = new ArrayList<>();
+        System.out.print("Enter the weights of the objects: ");
+        for (int i = 0; i < n; i++) {
+            objects.add(scanner.nextInt());
+        }
+        objects.sort(Comparator.naturalOrder());
 
+        final int capacity = 10;
+        int binNumber = 1;
+        while (!objects.isEmpty()) {
+            int currentCapacity = 0;
+            StringBuilder binContents = new StringBuilder();
+            while (!objects.isEmpty() && currentCapacity + objects.get(0) <= capacity) {
+                int obj = objects.remove(0);
+                currentCapacity += obj;
+                binContents.append(obj).append(" ");
+            }
+
+            System.out.printf("Container %d contains objects with weight %s\n", binNumber, binContents);
+            binNumber++;
+        }
     }
 
     /*
-
+        (Optimal bin packing) Rewrite the preceding program so that it finds an optimal
+        solution that packs all objects using the smallest number of containers. Here is
+        a sample run of the program:
+            Enter the number of objects: 6
+            Enter the weights of the objects: 7 5 2 3 5 8
+            Container 1 contains objects with weight 7 3
+            Container 2 contains objects with weight 5 5
+            Container 3 contains objects with weight 2 8
+            The optimal number of bins is 3
+        What is the time complexity of your program?
      */
     public static void ch22_27() {
+        System.out.print("Enter the number of objects: ");
+        int n = scanner.nextInt();
+        List<Integer> objects = new ArrayList<>();
+        System.out.print("Enter the weights of the objects: ");
+        for (int i = 0; i < n; i++) {
+            objects.add(scanner.nextInt());
+        }
+        objects.sort(Comparator.reverseOrder());
+        System.out.println(objects);
 
+        final int maxCapacity = 10;
+        List<List<Integer>> bins = new ArrayList<>();
+        while (true) {
+            int i = 0;
+            while (i < bins.size() && !objects.isEmpty()) {
+                int capacity = bins.get(i).stream().reduce(0, Integer::sum);
+                if (capacity + objects.get(0) <= maxCapacity) {
+                    bins.get(i).add(objects.remove(0));
+                    i = 0;
+                } else {
+                    i++;
+                }
+            }
+            if (objects.isEmpty()) break;
+            List<Integer> bin = new ArrayList<>();
+            bin.add(objects.remove(0));
+            bins.add(bin);
+        }
+
+        for (int i = 0; i < bins.size(); i++) {
+            String contents = bins.get(i)
+                    .stream()
+                    .map(Objects::toString)
+                    .collect(Collectors.joining(" "));
+            System.out.printf("Container %d contains objects with weight %s\n", i + 1, contents);
+        }
+
+        System.out.printf("The optimal number of bins is %d\n", bins.size());
     }
 }

@@ -1,5 +1,6 @@
-package exercises.ch22.ex21;
+package exercises.ch22.ex25;
 
+import exercises.ch22.ex21.SudokuPane;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,21 +11,26 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class Exercise22_21 extends Application {
+public class Exercise22_25 extends Application {
+
     private final Label statusLabel = new Label();
-    private final SudokuPane sudoku = new SudokuPane(new int[][]{
-            {5, 3, 0, 0, 7, 0, 0, 0, 0},
-            {6, 0, 0, 1, 9, 5, 0, 0, 0},
-            {0, 9, 8, 0, 0, 0, 6, 0, 0},
-            {8, 0, 0, 0, 6, 0, 0, 0, 3},
-            {4, 0, 0, 8, 0, 0, 0, 0, 1},
-            {7, 0, 0, 0, 2, 0, 0, 0, 6},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 5, 0, 0, 0, 9, 0, 0, 7},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-    });
+    private final int[][] grid = {
+            {1, 0, 4, 0, 0, 0, 0, 0, 8},
+            {0, 2, 0, 3, 0, 0, 6, 0, 0},
+            {6, 0, 3, 0, 0, 0, 0, 0, 1},
+            {0, 0, 5, 0, 0, 0, 0, 0, 0},
+            {2, 0, 0, 0, 0, 0, 3, 0, 0},
+            {0, 0, 0, 9, 0, 1, 0, 0, 0},
+            {3, 0, 0, 0, 5, 0, 0, 0, 9},
+            {0, 0, 0, 2, 0, 0, 0, 0, 0},
+            {0, 4, 0, 0, 0, 0, 0, 7, 0},
+    };
+    private final SudokuPane sudoku = new SudokuPane(grid);
     private final Button solveButton = new Button("Solve");
     private final Button clearButton = new Button("Clear");
+    private final Button nextButton = new Button("Next");
+
+    private int i = 0;
 
     public static void run() {
         Application.launch();
@@ -36,12 +42,20 @@ public class Exercise22_21 extends Application {
         clearButton.setOnAction(x -> {
             sudoku.clear();
             statusLabel.setText("");
+            nextButton.setVisible(false);
+            i = 0;
         });
         solveButton.setOnAction(x -> {
             sudoku.solve();
-            sudoku.showSolution(0);
+            nextButton.setVisible(true);
         });
-        sudoku.setOnSolved(() -> statusLabel.setText("A solution found"));
+        nextButton.setOnAction(x -> {
+            i++;
+            if (i < sudoku.getSolutionsNumber()) {
+                showSolution();
+            }
+        });
+        sudoku.setOnSolved(this::showSolution);
         sudoku.setOnInvalidInput(() -> statusLabel.setText("Invalid input"));
         sudoku.setOnNoSolution(() -> statusLabel.setText("No solutions found"));
         stage.setScene(new Scene(root));
@@ -55,7 +69,8 @@ public class Exercise22_21 extends Application {
         BorderPane.setMargin(statusLabel, new Insets(5));
         BorderPane.setAlignment(statusLabel, Pos.CENTER);
 
-        HBox controls = new HBox(5, solveButton, clearButton);
+        nextButton.setVisible(false);
+        HBox controls = new HBox(5, solveButton, clearButton, nextButton);
         controls.setPadding(new Insets(5));
         controls.setAlignment(Pos.BASELINE_CENTER);
         root.setBottom(controls);
@@ -63,8 +78,10 @@ public class Exercise22_21 extends Application {
         root.setCenter(sudoku);
         return root;
     }
+
+    private void showSolution() {
+        String text = String.format("%d/%d solutions", i + 1, sudoku.getSolutionsNumber());
+        statusLabel.setText(text);
+        sudoku.showSolution(i);
+    }
 }
-
-
-
-

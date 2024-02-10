@@ -2,16 +2,22 @@ package exercises.ch22.ex21;
 
 import javafx.scene.layout.GridPane;
 
-class SudokuPane extends GridPane {
-    private SudokuCell[][] cells = new SudokuCell[9][9];
+public class SudokuPane extends GridPane {
+    private final SudokuCell[][] cells = new SudokuCell[9][9];
+    private int[][][] solutions;
     private Runnable onInvalidInput;
     private Runnable onNoSolution;
     private Runnable onSolved;
 
     public SudokuPane() {
+        this(new int[9][9]);
+    }
+
+    public SudokuPane(int[][] grid) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 SudokuCell cell = new SudokuCell(0);
+                cell.setValue(grid[i][j]);
                 cells[i][j] = cell;
                 int top = i % 3 == 0 ? 3 : 0;
                 int right = j == 8 ? 3 : 0;
@@ -22,6 +28,7 @@ class SudokuPane extends GridPane {
                 add(cell, j, i);
             }
         }
+        solutions = new int[0][][];
     }
 
     public void setOnInvalidInput(Runnable onInvalidInput) {
@@ -36,13 +43,23 @@ class SudokuPane extends GridPane {
         this.onSolved = onSolved;
     }
 
+    public int getSolutionsNumber() {
+        if (solutions == null) {
+            return 0;
+        } else {
+            return solutions.length;
+        }
+    }
+
+
     public void clear() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 cells[i][j].setValue(0);
-                cells[i][j].setStyle(cells[i][j].getStyle() + "-fx-text-fill: black;");
+                cells[i][j].setStyle(cells[i][j].getStyle() + "-fx-text-fill: black; ");
             }
         }
+        solutions = new int[0][][];
     }
 
     public void solve() {
@@ -57,19 +74,22 @@ class SudokuPane extends GridPane {
             onInvalidInput.run();
             return;
         }
-        int[][][] results = engine.search();
-        if (results.length == 0 && onNoSolution != null) {
+        solutions = engine.search();
+        if (solutions.length == 0 && onNoSolution != null) {
             onNoSolution.run();
             return;
         }
         onSolved.run();
-        int[][] result = results[0];
+    }
+
+    public void showSolution(int index) {
+        int[][] solution = solutions[index];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (cells[i][j].getValue() == 0) {
-                    cells[i][j].setValue(result[i][j]);
                     cells[i][j].setStyle(cells[i][j].getStyle() + "-fx-text-fill: gray;");
                 }
+                cells[i][j].setValue(solution[i][j]);
             }
         }
     }
