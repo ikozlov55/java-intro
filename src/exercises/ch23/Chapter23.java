@@ -1,6 +1,8 @@
 package exercises.ch23;
 
 import exercises.ch23.ex07.MinHeap;
+import exercises.ch23.ex10.Exercise23_10;
+import exercises.ch23.ex11.CloneableHeap;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -369,31 +371,94 @@ public class Chapter23 {
     }
 
     /*
-
+        (Generic insertion sort) Write the following two generic methods using insertion
+        sort. The first method sorts the elements using the Comparable interface, and
+        the second uses the Comparator interface.
      */
     public static void ch23_8() {
+        Integer[] intList = new Integer[]{3, 4, 6, 1, 7, 8, 2, 9, 5};
+        Character[] charList = new Character[]{'d', 'b', 'e', 'a', 'c', 'g', 'b', 'f', 'h'};
 
+        insertionSort(intList);
+        insertionSort(charList);
+        System.out.println(Arrays.toString(intList));
+        System.out.println(Arrays.toString(charList));
+
+        insertionSort(intList, Comparator.reverseOrder());
+        insertionSort(charList, Comparator.reverseOrder());
+        System.out.println(Arrays.toString(intList));
+        System.out.println(Arrays.toString(charList));
+    }
+
+    public static <E extends Comparable<E>> void insertionSort(E[] list) {
+        insertionSort(list, Comparator.naturalOrder());
+    }
+
+    public static <E> void insertionSort(E[] list, Comparator<? super E> comparator) {
+        for (int i = 1; i < list.length; i++) {
+            E currentElement = list[i];
+            int k;
+            for (k = i - 1; k >= 0 && comparator.compare(list[k], currentElement) > 0; k--) {
+                list[k + 1] = list[k];
+            }
+            list[k + 1] = currentElement;
+        }
     }
 
     /*
-
+        (Generic heap sort) Write the following two generic methods using heap sort.
+        The first method sorts the elements using the Comparable interface, and the sec-
+        ond uses the Comparator interface. (Hint: Use the Heap class in Programming
+        Exercise 23.5.)
      */
     public static void ch23_9() {
+        Integer[] list = new Integer[]{3, 4, 6, 1, 7, 8, 2, 9, 5, 0};
+        heapSort(list);
+        System.out.println(Arrays.toString(list));
+        heapSort(list, Comparator.reverseOrder());
+        System.out.println(Arrays.toString(list));
+    }
 
+    public static <E extends Comparable<E>> void heapSort(E[] list) {
+        heapSort(list, Comparator.naturalOrder());
+    }
+
+    public static <E> void heapSort(E[] list, Comparator<? super E> comparator) {
+        MinHeap<E> heap = new MinHeap<>(comparator);
+        for (E element : list) {
+            heap.add(element);
+        }
+        for (int i = 0; i < list.length; i++) {
+            list[i] = heap.remove();
+        }
     }
 
     /*
-
+        (Heap visualization) Write a program that displays a heap graphically, as shown
+        in Figure 23.10. The program lets you insert and delete an element from the heap.
      */
     public static void ch23_10() {
-
+        Exercise23_10.run();
     }
 
     /*
-
+        (Heap clone and equals) Implement the clone and equals method in the
+        Heap class.
      */
     public static void ch23_11() {
+        String[] strings = {"red", "green", "purple", "orange", "yellow", "cyan"};
+        CloneableHeap<String> heap1 = new CloneableHeap<>(strings);
+        CloneableHeap<String> heap2 = (CloneableHeap<String>) (heap1.clone());
 
+        System.out.println("heap1: " + heap1.getSize());
+        System.out.println("heap2: " + heap2.getSize());
+        System.out.println("equals? " + heap1.equals(heap2));
+
+        heap1.remove();
+
+        System.out.println("heap1: " + heap1.getSize());
+        System.out.println("heap2: " + heap2.getSize());
+        System.out.println("equals? " + heap1.equals(heap2));
     }
 
     /*
