@@ -3,9 +3,12 @@ package exercises.ch23;
 import exercises.ch23.ex07.MinHeap;
 import exercises.ch23.ex10.Exercise23_10;
 import exercises.ch23.ex11.CloneableHeap;
+import exercises.ch23.sorting.*;
 
 import java.util.*;
 import java.util.stream.Stream;
+
+import static exercises.utils.Utils.testTime;
 
 public class Chapter23 {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
@@ -462,17 +465,69 @@ public class Chapter23 {
     }
 
     /*
-
+        (Radix sort) Write a program that randomly generates 1,000,000 integers and
+        sorts them using radix sort.
      */
     public static void ch23_12() {
-
+        int n = 1_000_000;
+        int bound = 100000;
+        int[] list = new int[n];
+        Random random = new Random();
+        for (int i = 0; i < list.length; i++) {
+            list[i] = random.nextInt(0, bound);
+        }
+        List<ArrayList<Integer>> buckets = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            buckets.add(new ArrayList<>());
+        }
+        int base = 1;
+        while (base <= bound) {
+            for (int x : list) {
+                int radix = (x / base) % 10;
+                buckets.get(radix).add(x);
+            }
+            int i = 0;
+            while (i < n) {
+                for (List<Integer> bucket : buckets) {
+                    for (int integer : bucket) {
+                        list[i] = integer;
+                        i++;
+                    }
+                    bucket.clear();
+                }
+            }
+            base *= 10;
+        }
     }
 
     /*
-
+        (Execution time for sorting) Write a program that obtains the execution time of
+        selection sort, bubble sort, merge sort, quick sort, heap sort, and radix sort for
+        input size 50,000, 100,000, 150,000, 200,000, 250,000, and 300,000. Your pro-
+        gram should create data randomly and print a table like this:
      */
     public static void ch23_13() {
-
+        Random random = new Random();
+        System.out.printf("%-15s| %-15s%-15s%-15s%-15s%-15s%-15s\n",
+                "Array", "Selection", "Bubble", "Merge", "Quick", "Heap", "Radix");
+        System.out.printf("%-15s| %-15s%-15s%-15s%-15s%-15s%-15s\n",
+                "size", "Sort", "Sort", "Sort", "Sort", "Sort", "Sort");
+        System.out.printf("%s┼%s\n", "─".repeat(15), "─".repeat(15 * 6));
+        for (int n = 50_000; n <= 300_000; n += 50_000) {
+            Integer[] list = new Integer[n];
+            for (int i = 0; i < list.length; i++) {
+                list[i] = random.nextInt(0, 1000);
+            }
+            System.out.printf("%,-15d| %-15f%-15f%-15f%-15f%-15f%-15f\n",
+                    n,
+                    testTime(() -> SelectionSort.run(list)),
+                    testTime(() -> BubbleSort.run(list)),
+                    testTime(() -> MergeSort.run(list)),
+                    testTime(() -> QuickSort.run(list)),
+                    testTime(() -> HeapSort.run(list)),
+                    testTime(() -> RadixSort.run(list))
+            );
+        }
     }
 
     /*
