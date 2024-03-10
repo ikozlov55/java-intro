@@ -5,6 +5,10 @@ import exercises.ch23.ex10.Exercise23_10;
 import exercises.ch23.ex11.CloneableHeap;
 import exercises.ch23.sorting.*;
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -531,10 +535,34 @@ public class Chapter23 {
     }
 
     /*
-
+        (Execution time for external sorting) Write a program that obtains the execution
+        time of external sorts for integers of size 5,000,000, 10,000,000, 15,000,000,
+        20,000,000, 25,000,000, and 30,000,000.
      */
     public static void ch23_14() {
-
+        final String inputFile = "src/exercises/ch23/data.dat";
+        final String targetFile = "src/exercises/ch23/sortedData.dat";
+        int[] sizes = new int[]{5_000_000, 10_000_000, 15_000_000, 20_000_000, 25_000_000, 30_000_000};
+        System.out.printf("%-15s| %,-15d%,-15d%,-15d%,-15d%,-15d%,-15d\n",
+                "File size", sizes[0], sizes[1], sizes[2], sizes[3], sizes[4], sizes[5]);
+        System.out.printf("%s┼%s\n", "─".repeat(15), "─".repeat(15 * 6));
+        System.out.printf("%-15s| ", "Time");
+        for (int n : sizes) {
+            try (DataOutputStream output = new DataOutputStream(
+                    new BufferedOutputStream(
+                            new FileOutputStream(inputFile, false)))
+            ) {
+                for (int i = 0; i < n; i++) {
+                    int x = (int) (Math.random() * 1_000_000);
+                    output.writeInt(x);
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+            double time = testTime(() -> ExternalSort.run(inputFile, targetFile));
+            System.out.printf("%-15.2f", time);
+        }
+        System.out.println();
     }
 
     /*
