@@ -3,6 +3,10 @@ package exercises.ch23;
 import exercises.ch23.ex07.MinHeap;
 import exercises.ch23.ex10.Exercise23_10;
 import exercises.ch23.ex11.CloneableHeap;
+import exercises.ch23.ex15.Exercise23_15;
+import exercises.ch23.ex16.Exercise23_16;
+import exercises.ch23.ex17.Exercise23_17;
+import exercises.ch23.ex18.Exercise23_18;
 import exercises.ch23.sorting.*;
 
 import java.io.BufferedOutputStream;
@@ -566,31 +570,58 @@ public class Chapter23 {
     }
 
     /*
-
+        (Selection-sort animation) Write a program that animates the selection-sort algo-
+        rithm. Create an array that consists of 20 distinct numbers from 1 to 20 in a random
+        order. The array elements are displayed in a histogram, as shown in Figure 23.20a.
+        Clicking the Step button causes the program to perform an iteration of the outer
+        loop in the algorithm and repaints the histogram for the new array. Color the last
+        bar in the sorted subarray. When the algorithm is finished, display a message to
+        inform the user. Clicking the Reset button creates a new random array for a new
+        start. (You can easily modify the program to animate the insertion algorithm.)
      */
     public static void ch23_15() {
-
+        Exercise23_15.run();
     }
 
     /*
-
+        (Bubble-sort animation) Write a program that animates the bubble-sort algo-
+        rithm. Create an array that consists of 20 distinct numbers from 1 to 20 in a
+        random order. The array elements are displayed in a histogram, as shown in
+        Figure 23.20b. Clicking the Step button causes the program to perform one com-
+        parison in the algorithm and repaints the histogram for the new array. Color the
+        bar that represents the number being considered in the swap. When the algo-
+        rithm is finished, display a message to inform the user. Clicking the Reset button
+        creates a new random array for a new start.
      */
     public static void ch23_16() {
-
+        Exercise23_16.run();
     }
 
     /*
-
+        (Radix-sort animation) Write a program that animates the radix-sort algorithm. Cre-
+        ate an array that consists of 20 random numbers from 0 to 1,000. The array elements
+        are displayed, as shown in Figure 23.21. Clicking the Step button causes the program
+        to place a number in a bucket. The number that has just been placed is displayed in
+        red. Once all the numbers are placed in the buckets, clicking the Step button col-
+        lects all the numbers from the buckets and moves them back to the array. When the
+        algorithm is finished, clicking the Step button displays a message to inform the user.
+        Clicking the Reset button creates a new random array for a new start.
      */
     public static void ch23_17() {
-
+        Exercise23_17.run();
     }
 
     /*
-
+        (Merge animation) Write a program that animates the merge of two sorted lists.
+        Create two arrays, list1 and list2, each of which consists of 8 random num-
+        bers from 1 to 999. The array elements are displayed, as shown in Figure 23.22a.
+        Clicking the Step button causes the program to move an element from list1 or
+        list2 to temp. Clicking the Reset button creates two new random arrays for
+        a new start. When the algorithm is finished, clicking the Step button displays a
+        message to inform the user.
      */
     public static void ch23_18() {
-
+        Exercise23_18.run();
     }
 
     /*
