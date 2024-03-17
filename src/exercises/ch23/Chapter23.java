@@ -7,6 +7,7 @@ import exercises.ch23.ex15.Exercise23_15;
 import exercises.ch23.ex16.Exercise23_16;
 import exercises.ch23.ex17.Exercise23_17;
 import exercises.ch23.ex18.Exercise23_18;
+import exercises.ch23.ex19.Exercise23_19;
 import exercises.ch23.sorting.*;
 
 import java.io.BufferedOutputStream;
@@ -625,9 +626,15 @@ public class Chapter23 {
     }
 
     /*
-
+        (Quick-sort partition animation) Write a program that animates the partition for
+        a quick sort. The program creates a list that consists of 20 random numbers from
+        1 to 999. The list is displayed, as shown in Figure 23.22b. Clicking the Step but-
+        ton causes the program to move low to the right or high to the left, or swap the
+        elements at low and high. Clicking the Reset button creates a new list of random
+        numbers for a new start. When the algorithm is finished, clicking the Step button
+        displays a message to inform the user.
      */
     public static void ch23_19() {
-
+        Exercise23_19.run();
     }
 }
