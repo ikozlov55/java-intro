@@ -1,10 +1,16 @@
 package exercises.ch24;
 
+import exercises.ch19.ex1.GenericStack;
 import exercises.ch24.ex01.Exercise24_01;
 import exercises.ch24.ex02.Exercise24_02;
 import exercises.ch24.ex03.TwoWayLinkedList;
+import exercises.ch24.ex05.GenericQueue;
+import exercises.ch24.ex06.MyPriorityQueue;
+import exercises.ch24.ex06.PriorityQueueUsingSortedArrayList;
 
 import java.util.ListIterator;
+
+import static exercises.utils.Utils.testTime;
 
 public class Chapter24 {
 
@@ -70,24 +76,83 @@ public class Chapter24 {
     }
 
     /*
-
+        (Use the GenericStack class) Write a program that displays the first 50 prime
+        numbers in descending order. Use a stack to store the prime numbers.
      */
     public static void ch24_4() {
-
+        GenericStack<Integer> stack = new GenericStack<>();
+        int number = 2;
+        while (number <= 50) {
+            boolean isPrime = true;
+            for (int divisor = 2; divisor <= (int) Math.sqrt(number); divisor++) {
+                if (number % divisor == 0) {
+                    isPrime = false;
+                    break;
+                }
+            }
+            if (isPrime) {
+                stack.push(number);
+            }
+            number++;
+        }
+        while (!stack.isEmpty()) {
+            System.out.print(stack.pop() + " ");
+        }
     }
 
     /*
-
+        (Implement GenericQueue using inheritance) In Section 24.5, Stacks and
+        Queues, GenericQueue is implemented using composition. Define a new queue
+        class that extends java.util.LinkedList.
      */
     public static void ch24_5() {
-
+        GenericQueue<Integer> queue = new GenericQueue<>();
+        for (int i = 1; i <= 10; i++) {
+            queue.enqueue(i);
+        }
+        while (!queue.isEmpty()) {
+            System.out.print(queue.dequeue() + " ");
+        }
     }
 
     /*
-
+        (Revise MyPriorityQueue) Listing 24.8, uses a heap to implement the priority
+        queue. Revise the implementation using a sorted array list to store the elements and
+        name the new class PriorityQueueUsingSortedArrayList. The elements
+        in the array list are sorted in increasing order of their priority with the last element
+        having the highest priority. Write a test program that generates 5 million integers
+        and enqueues them to the priority and dequeues from the queue. Use the same
+        numbers for MyPriorityQueue and PriorityQueueUsingSortedArraList
+        and display their execution times.
      */
     public static void ch24_6() {
-
+        final int n = 1_000_000;
+        int[] numbers = new int[n];
+        for (int i = 0; i < n; i++) {
+            numbers[i] = (int) (Math.random() * 100 + 1);
+        }
+        double time1 = testTime(() -> {
+            PriorityQueueUsingSortedArrayList<Integer> queue = new PriorityQueueUsingSortedArrayList<>();
+            for (int value : numbers) {
+                queue.enqueue(value);
+            }
+            while (!queue.isEmpty()) {
+                queue.dequeue();
+            }
+        });
+        double time2 = testTime(() -> {
+            MyPriorityQueue<Integer> queue = new MyPriorityQueue<>();
+            for (int value : numbers) {
+                queue.enqueue(value);
+            }
+            while (!queue.isEmpty()) {
+                queue.dequeue();
+            }
+        });
+        System.out.printf("%-15s| %-40s %-40s\n",
+                "Queue Type", "PriorityQueueUsingSortedArrayList", "MyPriorityQueue");
+        System.out.printf("%s┼%s\n", "─".repeat(15), "─".repeat(80));
+        System.out.printf("%-15s| %-40.2f %-40.2f\n", "Time", time1, time2);
     }
 
     /*
