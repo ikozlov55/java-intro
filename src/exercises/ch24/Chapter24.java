@@ -7,6 +7,7 @@ import exercises.ch24.ex03.TwoWayLinkedList;
 import exercises.ch24.ex05.GenericQueue;
 import exercises.ch24.ex06.MyPriorityQueue;
 import exercises.ch24.ex06.PriorityQueueUsingSortedArrayList;
+import exercises.ch24.ex07.Exercise24_07;
 
 import java.util.ListIterator;
 
@@ -156,10 +157,14 @@ public class Chapter24 {
     }
 
     /*
-
+        (Animation: linked list) Write a program to animate search, insertion, and dele-
+        tion in a linked list, as shown in Figure 24.1b. The Search button searches the
+        specified value in the list. The Delete button deletes the specified value from the
+        list. The Insert button appends the value into the list if the index is not specified;
+        otherwise, it inserts the value into the specified index in the list.
      */
     public static void ch24_7() {
-
+        Exercise24_07.run();
     }
 
     /*
