@@ -8,6 +8,9 @@ import exercises.ch24.ex05.GenericQueue;
 import exercises.ch24.ex06.MyPriorityQueue;
 import exercises.ch24.ex06.PriorityQueueUsingSortedArrayList;
 import exercises.ch24.ex07.Exercise24_07;
+import exercises.ch24.ex08.Exercise24_08;
+import exercises.ch24.ex09.Exercise24_09;
+import exercises.ch24.ex10.Exercise24_10;
 
 import java.util.ListIterator;
 
@@ -168,24 +171,31 @@ public class Chapter24 {
     }
 
     /*
-
+        (Animation: array list) Write a program to animate search, insertion, and deletion
+        in an array list, as shown in Figure 24.1a. The Search button searches the speci-
+        fied value in the list. The Delete button deletes the specified value from the list.
+        The Insert button appends the value into the list if the index is not specified;
+        otherwise, it inserts the value into the specified index in the list.
      */
     public static void ch24_8() {
-
+        Exercise24_08.run();
     }
 
     /*
-
+        (Animation: array list in slow motion) Improve the animation in the preceding
+        programming exercise by showing the insertion and deletion operations in a slow
+        motion.
      */
     public static void ch24_9() {
-
+        Exercise24_09.run();
     }
 
     /*
-
+        (Animation: stack) Write a program to animate push and pop in a stack, as shown
+        in Figure 24.20a.
      */
     public static void ch24_10() {
-
+        Exercise24_10.run();
     }
 
     /*
