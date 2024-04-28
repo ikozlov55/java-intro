@@ -11,6 +11,8 @@ import exercises.ch24.ex07.Exercise24_07;
 import exercises.ch24.ex08.Exercise24_08;
 import exercises.ch24.ex09.Exercise24_09;
 import exercises.ch24.ex10.Exercise24_10;
+import exercises.ch24.ex11.Exercise24_11;
+import exercises.ch24.ex12.Exercise24_12;
 
 import java.util.ListIterator;
 
@@ -199,17 +201,25 @@ public class Chapter24 {
     }
 
     /*
-
+        (Animation: doubly linked list) Write a program to animate search, insertion,
+        and deletion in a doubly linked list, as shown in Figure 24.24. The Search button
+        searches the specified value in the list. The Delete button deletes the specified
+        value from the list. The Insert button appends the value into the list if the index
+        is not specified; otherwise, it inserts the value into the specified index in the list.
+        Also add two buttons named Forward Traversal and Backward Traversal for
+        displaying the elements in a forward and backward order, respectively, using
+        iterators, as shown in Figure 24.24. The elements are displayed in a label.
      */
     public static void ch24_11() {
-
+        Exercise24_11.run();
     }
 
     /*
-
+        (Animation: queue) Write a program to animate the enqueue and dequeue
+        operations on a queue, as shown in Figure 24.20b.
      */
     public static void ch24_12() {
-
+        Exercise24_12.run();
     }
 
     /*
