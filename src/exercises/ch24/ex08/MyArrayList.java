@@ -2,6 +2,7 @@ package exercises.ch24.ex08;
 
 import exercises.ch24.base.MyList;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class MyArrayList<E> implements MyList<E> {
@@ -16,10 +17,15 @@ public class MyArrayList<E> implements MyList<E> {
         array = (E[]) new Object[INITIAL_CAPACITY];
     }
 
+    public MyArrayList(E[] objects) {
+        this();
+        this.addAll(Arrays.asList(objects));
+    }
+
 
     @Override
     public void add(int index, E e) {
-        if (index > size) return;
+        if (index < 0 || index > size) return;
         if (size >= capacity) {
             capacity = capacity == 0 ? INITIAL_CAPACITY : capacity * 2;
             E[] newArray = (E[]) new Object[capacity];

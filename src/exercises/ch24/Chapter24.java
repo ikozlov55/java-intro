@@ -13,6 +13,8 @@ import exercises.ch24.ex09.Exercise24_09;
 import exercises.ch24.ex10.Exercise24_10;
 import exercises.ch24.ex11.Exercise24_11;
 import exercises.ch24.ex12.Exercise24_12;
+import exercises.ch24.ex13.FibonacciIterator;
+import exercises.ch24.ex14.PrimeIterator;
 
 import java.util.ListIterator;
 
@@ -223,30 +225,44 @@ public class Chapter24 {
     }
 
     /*
-
+        (Fibonacci number iterator) Define an iterator class named Fibonacci
+        Iterator for iterating Fibonacci numbers. The constructor takes an argument
+        that specifies the limit of the maximum Fibonacci number. For example, new
+        FibonacciIterator(23302) creates an iterator that iterates Fibonacci num-
+        bers less than or equal to 23302. Write a test program that uses this iterator to
+        display all Fibonacci numbers less than or equal to 100000.
      */
     public static void ch24_13() {
-
+        FibonacciIterator<Integer> iterator = new FibonacciIterator<>(100000);
+        iterator.forEachRemaining(next -> System.out.print(next + " "));
     }
 
     /*
-
+        (Prime number iterator) Define an iterator class named PrimeIterator for
+        iterating prime numbers. The constructor takes an argument that specifies the limit
+        of the maximum prime number. For example, new PrimeIterator(23302)
+        creates an iterator that iterates prime numbers less than or equal to 23302. Write
+        a test program that uses this iterator to display all prime numbers less than or
+        equal to 100000.
      */
     public static void ch24_14() {
-
+        PrimeIterator<Integer> iterator = new PrimeIterator<>(100000);
+        iterator.forEachRemaining(next -> System.out.print(next + " "));
     }
 
     /*
-
+        (Test MyArrayList) Design and write a complete test program to test if the
+        MyArrayList class in Listing 24.2 meets all requirements.
      */
     public static void ch24_15() {
-
+        // run jUnit in ex15/MyArrayListTests
     }
 
     /*
-
+        (Test MyLinkedList) Design and write a complete test program to test if the
+        MyLinkedList class in Listing 24.5 meets all requirements.
      */
     public static void ch24_16() {
-
+        // run jUnit in ex16/MyLinkedListTests
     }
 }

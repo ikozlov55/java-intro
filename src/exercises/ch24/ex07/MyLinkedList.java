@@ -3,6 +3,7 @@ package exercises.ch24.ex07;
 
 import exercises.ch24.base.MyList;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class MyLinkedList<E> implements MyList<E> {
@@ -11,6 +12,11 @@ public class MyLinkedList<E> implements MyList<E> {
 
     public MyLinkedList() {
         size = 0;
+    }
+
+    public MyLinkedList(E[] objects) {
+        this();
+        this.addAll(Arrays.asList(objects));
     }
 
     @Override
@@ -22,7 +28,7 @@ public class MyLinkedList<E> implements MyList<E> {
     public boolean contains(Object o) {
         if (size == 0) return false;
         Node<E> current = head;
-        while (current.next != null) {
+        while (current != null) {
             if (current.element.equals(o)) return true;
             current = current.next;
         }
@@ -42,6 +48,7 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public void add(int index, E e) {
+        if (index < 0) return;
         if (size == 0) {
             head = tail = new Node<>(e);
             size = 1;
@@ -109,7 +116,7 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public E remove(int index) {
-        if (index >= size) return null;
+        if (index < 0 || index >= size) return null;
         if (index == 0) {
             E result = head.element;
             if (size == 1) {
@@ -144,7 +151,7 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public E set(int index, E e) {
-        if (index >= size) return null;
+        if (index < 0 || index >= size) return null;
         Node<E> current = head;
         for (int i = 1; i <= index; i++) {
             current = current.next;
