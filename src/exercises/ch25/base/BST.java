@@ -80,6 +80,7 @@ public class BST<E> implements Tree<E> {
     /** Inorder traversal from the root */
     public void inorder() {
         inorder(root);
+        System.out.println();
     }
 
     /**
@@ -96,6 +97,7 @@ public class BST<E> implements Tree<E> {
     /** Postorder traversal from the root */
     public void postorder() {
         postorder(root);
+        System.out.println();
     }
 
     /**
@@ -112,6 +114,7 @@ public class BST<E> implements Tree<E> {
     /** Preorder traversal from the root */
     public void preorder() {
         preorder(root);
+        System.out.println();
     }
 
     /**

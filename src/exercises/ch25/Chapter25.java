@@ -1,8 +1,10 @@
 package exercises.ch25;
 
-import exercises.ch25.base.BST;
 import exercises.ch25.ex01.BSTWithHeight;
 import exercises.ch25.ex02.BSTInorderViaStack;
+import exercises.ch25.ex03.BSTWithTestPerfect;
+import exercises.ch25.ex04.BSTPreorderViaStack;
+import exercises.ch25.ex05.BSTPostorderViaStack;
 
 import java.util.Scanner;
 
@@ -48,7 +50,7 @@ public class Chapter25 {
         inorder method to display the elements.
      */
     public static void ex2() {
-        int size = 9;
+        int size = 10;
         Scanner scanner = new Scanner(System.in);
         BSTInorderViaStack<Integer> tree = new BSTInorderViaStack<>();
         System.out.printf("Enter %d integers: ", size);
@@ -59,24 +61,75 @@ public class Chapter25 {
     }
 
     /*
-
+        (Test perfect binary tree) A perfect binary tree is a complete binary tree with
+        all levels fully filled. Define a new class named BSTWithTestPerfect that
+        extends BST with the following methods: (Hint: The number of nodes in a
+        perfect binary tree is 2height + 1 - 1).
+        // Returns true if the tree is a perfect binary tree
+            public boolean isPerfectBST()
+            Use https://liveexample.pearsoncmg.com/test/Exercise25_03.txt to test
+            your code.
      */
     public static void ex3() {
+        BSTWithTestPerfect<String> tree = new BSTWithTestPerfect<>();
+        System.out.println("Is an empty tree perfect? " + tree.isPerfectBST());
 
+        tree.insert("Green");
+        System.out.println("Is a one-node tree perfect? " + tree.isPerfectBST());
+
+        tree.insert("Red");
+        System.out.println("Is a two-node tree perfect? " + tree.isPerfectBST());
+
+        tree.insert("Blue");
+        System.out.println("Is this tree perfect? " + tree.isPerfectBST());
+
+        BSTWithTestPerfect<String> tree1 = new BSTWithTestPerfect<>(new String[]
+                {"Tom", "George", "Jean", "Jane", "Kevin", "Peter", "Susan",
+                        "Jen", "Kim", "Michael", "Michelle"});
+        System.out.println("Is tree1 perfect? " + tree1.isPerfectBST());
+
+        BSTWithTestPerfect<Integer> tree2 = new BSTWithTestPerfect<>(new Integer[]{50, 45, 75, 18, 49, 51, 98});
+        System.out.println("Is tree2 perfect? " + tree2.isPerfectBST());
+
+        BSTWithTestPerfect<Integer> tree3 = new BSTWithTestPerfect<>(new Integer[]{60, 55, 45, 57, 100, 67, 107});
+        System.out.println("Is tree3 perfect? " + tree3.isPerfectBST());
+
+        BSTWithTestPerfect<Integer> tree4 = new BSTWithTestPerfect<>(new Integer[]{60, 55, 45, 57, 59, 100, 67, 107, 101});
+        System.out.println("Is tree4 perfect? " + tree4.isPerfectBST());
     }
 
     /*
-
+        (Implement preorder traversal without using recursion) Implement the pre-
+        order method in BST using a stack instead of recursion. Write a test program
+        that prompts the user to enter 10 integers, stores them in a BST, and invokes the
+        preorder method to display the elements.
      */
     public static void ex4() {
-
+        int size = 10;
+        Scanner scanner = new Scanner(System.in);
+        BSTPreorderViaStack<Integer> tree = new BSTPreorderViaStack<>();
+        System.out.printf("Enter %d integers: ", size);
+        for (int i = 0; i < size; i++) {
+            tree.add(scanner.nextInt());
+        }
+        tree.preorder();
     }
 
     /*
-
+        (Implement postorder traversal without using recursion) Implement the
+        postorder method in BST using a stack instead of recursion. Write a test
+        program that prompts the user to enter 10 integers, stores them in a BST, and
+        invokes the postorder method to display the elements.
      */
     public static void ex5() {
-
+        int size = 10;
+        Scanner scanner = new Scanner(System.in);
+        BSTPostorderViaStack<Integer> tree = new BSTPostorderViaStack<>();
+        System.out.printf("Enter %d integers: ", size);
+        for (int i = 0; i < size; i++) {
+            tree.add(scanner.nextInt());
+        }
+        tree.postorder();
     }
 
     /*
