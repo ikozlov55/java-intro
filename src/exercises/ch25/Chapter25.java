@@ -5,7 +5,11 @@ import exercises.ch25.ex02.BSTInorderViaStack;
 import exercises.ch25.ex03.BSTWithTestPerfect;
 import exercises.ch25.ex04.BSTPreorderViaStack;
 import exercises.ch25.ex05.BSTPostorderViaStack;
+import exercises.ch25.ex06.BSTWithNumberOfLeaves;
+import exercises.ch25.ex07.BSTWithNumberOfNonLeaves;
+import exercises.ch25.ex08.BSTWithListIterator;
 
+import java.util.ListIterator;
 import java.util.Scanner;
 
 public class Chapter25 {
@@ -133,24 +137,61 @@ public class Chapter25 {
     }
 
     /*
-
+        (Find the leaves) Define a new class named BSTWithNumberOfLeaves that
+        extends BST with the following methods:
+        //Return the number of leaf nodes
+            public int getNumberOfLeaves()
+            Use https://liveexample.pearsoncmg.com/test/Exercise25_06.txt to test
+            your code.
      */
     public static void ex6() {
-
+        BSTWithNumberOfLeaves<String> tree = new BSTWithNumberOfLeaves<>();
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter six strings: ");
+        for (int i = 0; i < 6; i++) {
+            String s = input.next();
+            tree.insert(s.trim());
+        }
+        System.out.println("The number of leaves in the tree is " + tree.getNumberOfLeaves());
     }
 
-    /*
 
+    /*
+        (Find the nonleaves) Define a new class named BSTWithNumberOfNonLeaves
+        that extends BST with the following methods:
+        // Return the number of nonleaf nodes
+            public int getNumberofNonLeaves()
+            Use https://liveexample.pearsoncmg.com/test/Exercise25_07.txt to test
+            your code.
      */
     public static void ex7() {
-
+        BSTWithNumberOfNonLeaves<String> tree = new BSTWithNumberOfNonLeaves<>();
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter six strings: ");
+        for (int i = 0; i < 6; i++) {
+            String s = input.next();
+            tree.insert(s.trim());
+        }
+        System.out.println("The number of non-leaves in the tree is " + tree.getNumberOfNonLeaves());
     }
 
     /*
-
+        (Implement bidirectional iterator) The java.util.Iterator interface defines
+        a forward iterator. The Java API also provides the java.util.ListIterator
+        interface that defines a bidirectional iterator. Study ListIterator and define
+        a bidirectional iterator for the BST class.
      */
     public static void ex8() {
-
+        Integer[] arr = new Integer[]{60, 55, 45, 57, 59, 100, 67, 107, 101};
+        BSTWithListIterator<Integer> tree = new BSTWithListIterator<>(arr);
+        ListIterator<Integer> iterator = tree.iterator();
+        while (iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
+        }
+        System.out.println();
+        while (iterator.hasPrevious()) {
+            System.out.print(iterator.previous() + " ");
+        }
     }
 
     /*
