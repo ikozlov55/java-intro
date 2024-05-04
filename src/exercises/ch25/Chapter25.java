@@ -1,5 +1,6 @@
 package exercises.ch25;
 
+import exercises.ch25.base.BST;
 import exercises.ch25.ex01.BSTWithHeight;
 import exercises.ch25.ex02.BSTInorderViaStack;
 import exercises.ch25.ex03.BSTWithTestPerfect;
@@ -9,6 +10,7 @@ import exercises.ch25.ex06.BSTWithNumberOfLeaves;
 import exercises.ch25.ex07.BSTWithNumberOfNonLeaves;
 import exercises.ch25.ex08.BSTWithListIterator;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Scanner;
 
@@ -182,8 +184,8 @@ public class Chapter25 {
         a bidirectional iterator for the BST class.
      */
     public static void ex8() {
-        Integer[] arr = new Integer[]{60, 55, 45, 57, 59, 100, 67, 107, 101};
-        BSTWithListIterator<Integer> tree = new BSTWithListIterator<>(arr);
+        Integer[] array = new Integer[]{60, 55, 45, 57, 59, 100, 67, 107, 101};
+        BSTWithListIterator<Integer> tree = new BSTWithListIterator<>(array);
         ListIterator<Integer> iterator = tree.iterator();
         while (iterator.hasNext()) {
             System.out.print(iterator.next() + " ");
@@ -195,17 +197,38 @@ public class Chapter25 {
     }
 
     /*
-
+        (Tree clone and equals) Implement the clone and equals methods in the
+        BST class. Two BST trees are equal if they contain the same elements. The clone
+        method returns an identical copy of a BST
      */
     public static void ex9() {
-
+        Integer[] array = new Integer[]{60, 55, 45, 57, 59, 100, 67, 107, 101};
+        BST<Integer> tree1 = new BST<>(array);
+        BST<Integer> tree2 = (BST<Integer>) tree1.clone();
+        tree1.preorder();
+        tree2.preorder();
+        System.out.println("tree1.equals(tree2): " + tree1.equals(tree2));
+        tree2.add(999);
+        tree1.preorder();
+        tree2.preorder();
+        System.out.println("tree1.equals(tree2): " + tree1.equals(tree2));
+        BST<Integer> tree3 = new BST<>(new Integer[]{60, 55, 45, 57, 59, 100, 67, 107, 102});
+        System.out.println("tree1.equals(tree3): " + tree1.equals(tree3));
     }
 
     /*
-
+        (Preorder iterator) Add the following method in the BST class that returns an
+        iterator for traversing the elements in a BST in preorder.
+        // Return an iterator for traversing the elements in preorder
+            java.util.Iterator<E> preorderIterator()
      */
     public static void ex10() {
-
+        Integer[] array = new Integer[]{60, 55, 45, 57, 59, 100, 67, 107, 101};
+        BST<Integer> tree = new BST<>(array);
+        Iterator<Integer> iterator = tree.preorderIterator();
+        while (iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
+        }
     }
 
     /*

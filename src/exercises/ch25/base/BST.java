@@ -1,10 +1,8 @@
 package exercises.ch25.base;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
+import java.util.*;
 
-public class BST<E> implements Tree<E> {
+public class BST<E> implements Tree<E>, Cloneable {
     protected TreeNode<E> root;
     protected int size = 0;
     protected Comparator<E> c;
@@ -22,6 +20,48 @@ public class BST<E> implements Tree<E> {
         for (E object : objects) {
             add(object);
         }
+    }
+
+    @Override
+    public Object clone() {
+        BST<E> copy = new BST<>(c);
+        Deque<TreeNode<E>> stack = new ArrayDeque<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode<E> current = stack.pop();
+            TreeNode<E> left = current.getLeft();
+            TreeNode<E> right = current.getRight();
+            copy.insert(current.getElement());
+            if (right != null) {
+                stack.push(right);
+            }
+            if (left != null) {
+                stack.push(left);
+            }
+        }
+        return copy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BST<E> other = (BST<E>) o;
+        if (!Objects.equals(c, other.c) || size != other.size) return false;
+        Iterator<E> iterator1 = iterator();
+        Iterator<E> iterator2 = other.iterator();
+        while (iterator1.hasNext() && iterator2.hasNext()) {
+            if (!iterator1.next().equals(iterator2.next())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(root, size, c);
     }
 
     @Override
@@ -144,8 +184,7 @@ public class BST<E> implements Tree<E> {
      * Returns a path from the root leading to the specified element
      */
     public ArrayList<TreeNode<E>> path(E e) {
-        java.util.ArrayList<TreeNode<E>> list =
-                new java.util.ArrayList<>();
+        ArrayList<TreeNode<E>> list = new ArrayList<>();
         TreeNode<E> current = root; // Start from the root
 
         while (current != null) {
@@ -227,6 +266,14 @@ public class BST<E> implements Tree<E> {
         return new InorderIterator();
     }
 
+    /**
+     * Return an iterator for traversing the elements in preorder
+     */
+    public Iterator<E> preorderIterator() {
+        return new PreorderIterator();
+    }
+
+
     @Override
     /** Remove all elements from the tree */
     public void clear() {
@@ -264,10 +311,7 @@ public class BST<E> implements Tree<E> {
         @Override
         /** More elements for traversing? */
         public boolean hasNext() {
-            if (current < list.size())
-                return true;
-
-            return false;
+            return current < list.size();
         }
 
         @Override
@@ -287,6 +331,40 @@ public class BST<E> implements Tree<E> {
         }
     }
 
+    private class PreorderIterator implements Iterator<E> {
+        private final ArrayList<E> list = new ArrayList<>();
+        private int current = 0;
+
+        public PreorderIterator() {
+            Deque<TreeNode<E>> stack = new ArrayDeque<>();
+            stack.push(root);
+            while (!stack.isEmpty()) {
+                TreeNode<E> current = stack.pop();
+                TreeNode<E> left = current.getLeft();
+                TreeNode<E> right = current.getRight();
+
+                list.add(current.getElement());
+                if (right != null) {
+                    stack.push(right);
+                }
+                if (left != null) {
+                    stack.push(left);
+                }
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current < list.size();
+        }
+
+        @Override
+        public E next() {
+            E result = list.get(current);
+            current++;
+            return result;
+        }
+    }
 }
 
 
