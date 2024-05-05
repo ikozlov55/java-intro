@@ -536,8 +536,8 @@ public class Chapter20 {
             strings[i] = scanner.next();
         }
         selectionSort(strings, (string1, string2) -> {
-            String s1 = (String) string1;
-            String s2 = (String) string2;
+            String s1 = string1;
+            String s2 = string2;
             return s1.charAt(s1.length() - 1) - s2.charAt(s2.length() - 1);
         });
         Arrays.asList(strings).forEach(System.out::println);

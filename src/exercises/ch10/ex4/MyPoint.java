@@ -2,8 +2,8 @@ package exercises.ch10.ex4;
 
 
 public class MyPoint {
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
 
     public MyPoint() {
         this.x = 0;

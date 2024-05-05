@@ -54,8 +54,8 @@ public class Exercise15_29 extends Application {
 class CarMoveEventHandler implements EventHandler<ActionEvent> {
     private final Car car;
     private double x;
-    private double y;
-    private double length;
+    private final double y;
+    private final double length;
     private double increment = 1;
 
     public CarMoveEventHandler(Car car, double x, double y, double length) {

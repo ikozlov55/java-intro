@@ -38,7 +38,7 @@ public class Exercise15_33 extends Application {
 class BeanMachine extends Pane {
 
     private final int numberOfSlots;
-    private int[] slots;
+    private final int[] slots;
 
     public BeanMachine(int numberOfSlots) {
         this.numberOfSlots = numberOfSlots;

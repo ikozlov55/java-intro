@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class MinHeap<E> {
-    private ArrayList<E> list = new ArrayList<>();
-    private Comparator<? super E> c;
+    private final ArrayList<E> list = new ArrayList<>();
+    private final Comparator<? super E> c;
 
     /**
      * Create a default heap

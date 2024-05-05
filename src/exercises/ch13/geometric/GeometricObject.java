@@ -3,7 +3,7 @@ package exercises.ch13.geometric;
 public abstract class GeometricObject implements Comparable<GeometricObject> {
     private String color = "white";
     private boolean filled;
-    private java.util.Date dateCreated;
+    private final java.util.Date dateCreated;
 
     /**
      * Construct a default geometric object

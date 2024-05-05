@@ -778,7 +778,6 @@ public class Chapter18 {
             try (PrintWriter writer = new PrintWriter(file)) {
                 fileContent.forEach(writer::println);
             } catch (FileNotFoundException ex) {
-                return;
             }
         } else {
             File[] listFiles = file.listFiles();

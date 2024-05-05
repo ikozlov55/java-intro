@@ -2,12 +2,12 @@ package exercises.ch9.ex11;
 
 
 public class LinearEquation {
-    private double a;
-    private double b;
-    private double c;
-    private double d;
-    private double e;
-    private double f;
+    private final double a;
+    private final double b;
+    private final double c;
+    private final double d;
+    private final double e;
+    private final double f;
 
     public LinearEquation(double a, double b, double c, double d, double e, double f) {
         this.a = a;

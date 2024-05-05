@@ -20,8 +20,8 @@ public class SyntaxHighlighter {
             "strictfp", "super", "switch", "synchronized", "this",
             "throw", "throws", "transient", "try", "void", "volatile",
             "while", "true", "false", "null");
-    private File input;
-    private File output;
+    private final File input;
+    private final File output;
 
     public SyntaxHighlighter(String inputPath, String outputPath) {
         this.input = new File(inputPath);

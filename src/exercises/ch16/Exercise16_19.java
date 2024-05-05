@@ -58,7 +58,7 @@ public class Exercise16_19 extends Application {
 }
 
 class FanController extends BorderPane {
-    private Timeline animation;
+    private final Timeline animation;
     private final Fan fan = new Fan();
 
     public FanController() {

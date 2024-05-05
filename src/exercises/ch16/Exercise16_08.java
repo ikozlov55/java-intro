@@ -87,11 +87,11 @@ public class Exercise16_08 extends Application {
 
 
 class CircleInfoPane extends GridPane implements Observable {
-    private String name;
-    private TextField xField = new TextField();
-    private TextField yField = new TextField();
-    private TextField radiusField = new TextField();
-    private Circle circle;
+    private final String name;
+    private final TextField xField = new TextField();
+    private final TextField yField = new TextField();
+    private final TextField radiusField = new TextField();
+    private final Circle circle;
 
     public CircleInfoPane(String name, Circle circle) {
         this.name = name;

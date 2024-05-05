@@ -61,7 +61,7 @@ public class Exercise20_09 extends Application {
 }
 
 class MultipleBallPane extends Pane {
-    private Timeline animation;
+    private final Timeline animation;
 
     public MultipleBallPane() {
         animation = new Timeline(new KeyFrame(Duration.millis(50), e -> moveBall()));

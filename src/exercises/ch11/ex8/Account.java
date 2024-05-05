@@ -28,9 +28,9 @@ public class Account {
     private String name;
     private double balance = 0;
     private double annualInterestRate = 0;
-    private Date dateCreated = new Date();
+    private final Date dateCreated = new Date();
 
-    private ArrayList<Transaction> transactions = new ArrayList<>();
+    private final ArrayList<Transaction> transactions = new ArrayList<>();
 
     public Account(int id, double balance) {
         this.id = id;

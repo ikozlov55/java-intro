@@ -1,7 +1,7 @@
 package exercises.ch11.ex2;
 
 public class Staff extends Employee {
-    private String title;
+    private final String title;
 
     public Staff(String name, String address, String phoneNumber, String email, String office,
                  double salary, String title) {

@@ -1,10 +1,10 @@
 package exercises.ch11.ex2;
 
 public class Person {
-    private String name;
-    private String address;
-    private String phoneNumber;
-    private String email;
+    private final String name;
+    private final String address;
+    private final String phoneNumber;
+    private final String email;
 
     public Person(String name, String address, String phoneNumber, String email) {
         this.name = name;

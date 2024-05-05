@@ -8,7 +8,7 @@ public class Loan implements Serializable {
     private double annualInterestRate;
     private int numberOfYears;
     private double loanAmount;
-    private Date loanDate;
+    private final Date loanDate;
 
     /**
      * Default constructor

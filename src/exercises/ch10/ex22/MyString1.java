@@ -3,7 +3,7 @@ package exercises.ch10.ex22;
 import java.util.Arrays;
 
 public class MyString1 {
-    private char[] chars;
+    private final char[] chars;
 
     public MyString1(char[] chars) {
         this.chars = chars;

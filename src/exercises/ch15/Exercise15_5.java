@@ -12,10 +12,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Exercise15_5 extends Application {
-    private TextField tfInvestmentAmount = new TextField();
-    private TextField tfNumberOfYears = new TextField();
-    private TextField tfAnnualInterestRate = new TextField();
-    private TextField tfFutureValue = new TextField();
+    private final TextField tfInvestmentAmount = new TextField();
+    private final TextField tfNumberOfYears = new TextField();
+    private final TextField tfAnnualInterestRate = new TextField();
+    private final TextField tfFutureValue = new TextField();
 
     public static void run() {
         Application.launch();

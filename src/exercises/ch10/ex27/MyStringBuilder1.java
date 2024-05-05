@@ -17,7 +17,7 @@ import java.util.Arrays;
     public String toString();
  */
 public class MyStringBuilder1 {
-    private char[] buffer;
+    private final char[] buffer;
 
     public MyStringBuilder1(String s) {
         buffer = s.toCharArray();

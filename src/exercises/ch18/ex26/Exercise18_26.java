@@ -22,7 +22,7 @@ public class Exercise18_26 extends Application {
     private final Label label = new Label("");
     private final Button findBTN = new Button("Find Path");
     private final Button clearBTN = new Button("Clear Path");
-    private MazePane maze = new MazePane();
+    private final MazePane maze = new MazePane();
 
     public static void run() {
         Application.launch();

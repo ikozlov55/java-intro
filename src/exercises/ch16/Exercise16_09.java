@@ -83,12 +83,12 @@ public class Exercise16_09 extends Application {
 
 
 class RectangleInfoPane extends GridPane implements Observable {
-    private String name;
-    private TextField xField = new TextField();
-    private TextField yField = new TextField();
-    private TextField widthField = new TextField();
-    private TextField heightField = new TextField();
-    private Rectangle rectangle;
+    private final String name;
+    private final TextField xField = new TextField();
+    private final TextField yField = new TextField();
+    private final TextField widthField = new TextField();
+    private final TextField heightField = new TextField();
+    private final Rectangle rectangle;
 
     public RectangleInfoPane(String name, Rectangle rectangle) {
         this.name = name;

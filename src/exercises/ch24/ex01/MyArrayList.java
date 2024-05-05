@@ -137,7 +137,7 @@ class MyArrayList<E> implements MyList<E> {
             if (i < size - 1) result.append(", ");
         }
 
-        return result.toString() + "]";
+        return result + "]";
     }
 
     /**

@@ -36,7 +36,7 @@ import java.util.Scanner;
 public class TicTacToeGame {
     private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
     private static final int N = 3;
-    private int[][] board = new int[N][N];
+    private final int[][] board = new int[N][N];
     private int currentPlayer = 1;
 
     @Override

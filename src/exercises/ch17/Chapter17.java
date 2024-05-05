@@ -244,7 +244,7 @@ public class Chapter17 {
                 String filePath = String.format("src/exercises/ch17/data/%s.%d", fileName, i);
                 byte[] chunk = new byte[i == n ? input.available() : chunkSize];
                 input.read(chunk);
-                try (FileOutputStream output = new FileOutputStream(filePath);) {
+                try (FileOutputStream output = new FileOutputStream(filePath)) {
                     output.write(chunk);
                 }
             }
@@ -386,7 +386,7 @@ public class Chapter17 {
      */
     public static void ch17_17() {
         File file = new File("src/exercises/ch17/data/Exercise17_17.dat");
-        try (BitOutputStream stream = new BitOutputStream(file);) {
+        try (BitOutputStream stream = new BitOutputStream(file)) {
             for (char c : "010000100100001001101".toCharArray()) {
                 stream.writeBit(c);
             }
@@ -450,10 +450,8 @@ public class Chapter17 {
                 int b = input.read();
                 String binaryString = getBinaryString(b);
                 System.out.println(binaryString);
-                StringBuilder builder = new StringBuilder();
-                builder.append(getHexDigit(binaryString.substring(0, 4)));
-                builder.append(getHexDigit(binaryString.substring(4, 8)));
-                String hexString = builder.toString();
+                String hexString = String.valueOf(getHexDigit(binaryString.substring(0, 4))) +
+                        getHexDigit(binaryString.substring(4, 8));
                 System.out.println(hexString);
             }
         } catch (IOException e) {

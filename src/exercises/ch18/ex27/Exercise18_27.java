@@ -18,7 +18,7 @@ import javafx.util.StringConverter;
 public class Exercise18_27 extends Application {
     private final TextField tfOrder = new TextField();
     private final KochSnowflakePane fractal = new KochSnowflakePane();
-    private SimpleIntegerProperty order = new SimpleIntegerProperty();
+    private final SimpleIntegerProperty order = new SimpleIntegerProperty();
 
     public static void run() {
         Application.launch();

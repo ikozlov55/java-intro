@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.util.Locale;
 
 public class Exercise15_8 extends Application {
-    private Text label = new Text();
+    private final Text label = new Text();
 
     public static void run() {
         Application.launch();

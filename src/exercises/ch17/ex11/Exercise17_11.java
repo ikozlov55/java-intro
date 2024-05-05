@@ -68,7 +68,7 @@ public class Exercise17_11 extends Application {
                     String filePath = String.format("src/exercises/ch17/data/%s.%d", file.getName(), i);
                     byte[] chunk = new byte[i == n ? input.available() : chunkSize];
                     input.read(chunk);
-                    try (FileOutputStream output = new FileOutputStream(filePath);) {
+                    try (FileOutputStream output = new FileOutputStream(filePath)) {
                         output.write(chunk);
                     }
                 }

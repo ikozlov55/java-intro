@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class CloneableHeap<E> implements Cloneable {
     private ArrayList<E> list = new ArrayList<>();
-    private Comparator<? super E> c;
+    private final Comparator<? super E> c;
 
     /**
      * Create a default heap using a natural order for comparison

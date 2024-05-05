@@ -45,7 +45,7 @@ class PendulumSwingPane extends Pane {
         Circle circle = new Circle(15);
         circle.setFill(Color.ORANGE);
 
-        PathTransition animation = new PathTransition(new Duration(1 * 1000), arc, circle);
+        PathTransition animation = new PathTransition(new Duration(1000), arc, circle);
         animation.setAutoReverse(true);
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();

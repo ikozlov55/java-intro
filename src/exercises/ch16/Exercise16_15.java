@@ -20,13 +20,13 @@ import java.util.Arrays;
 
 public class Exercise16_15 extends Application {
 
-    private ComboBox<String> contentDisplayCB = new ComboBox<>(
+    private final ComboBox<String> contentDisplayCB = new ComboBox<>(
             FXCollections.observableArrayList(
                     Arrays.stream(ContentDisplay.values()).map(ContentDisplay::toString).toList()
             )
     );
-    private TextField textGapTF = new TextField();
-    private Label label = new Label("Grapes", new ImageView(new Image("resources/image/grapes.gif")));
+    private final TextField textGapTF = new TextField();
+    private final Label label = new Label("Grapes", new ImageView(new Image("resources/image/grapes.gif")));
 
     public static void run() {
         Application.launch();

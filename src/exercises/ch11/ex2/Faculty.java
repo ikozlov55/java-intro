@@ -1,8 +1,8 @@
 package exercises.ch11.ex2;
 
 public class Faculty extends Employee {
-    private int officeHours;
-    private String rank;
+    private final int officeHours;
+    private final String rank;
 
     public Faculty(String name, String address, String phoneNumber, String email, String office,
                    double salary, int officeHours, String rank) {

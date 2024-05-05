@@ -554,11 +554,7 @@ public class Chapter6 {
         }
 
         long numberOfDigits = password.chars().filter(Character::isDigit).count();
-        if (numberOfDigits < 2) {
-            return false;
-        }
-
-        return true;
+        return numberOfDigits >= 2;
     }
 
     /*

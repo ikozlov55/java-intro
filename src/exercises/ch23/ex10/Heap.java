@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Heap<E> {
-    private ArrayList<E> list = new ArrayList<>();
-    private Comparator<? super E> c;
+    private final ArrayList<E> list = new ArrayList<>();
+    private final Comparator<? super E> c;
 
     public Heap() {
         this.c = (Comparator<? super E>) Comparator.naturalOrder();

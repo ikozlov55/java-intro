@@ -60,9 +60,9 @@ public class Exercise16_03 extends Application {
 }
 
 class TrafficLight extends Pane {
-    private Circle yellowLight = new Circle(20, Color.WHITE);
-    private Circle redLight = new Circle(20, Color.WHITE);
-    private Circle greenLight = new Circle(20, Color.WHITE);
+    private final Circle yellowLight = new Circle(20, Color.WHITE);
+    private final Circle redLight = new Circle(20, Color.WHITE);
+    private final Circle greenLight = new Circle(20, Color.WHITE);
 
     private void draw() {
         getChildren().clear();

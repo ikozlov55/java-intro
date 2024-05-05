@@ -9,6 +9,7 @@ import exercises.ch25.ex05.BSTPostorderViaStack;
 import exercises.ch25.ex06.BSTWithNumberOfLeaves;
 import exercises.ch25.ex07.BSTWithNumberOfNonLeaves;
 import exercises.ch25.ex08.BSTWithListIterator;
+import exercises.ch25.ex11.Exercise25_11;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -232,17 +233,19 @@ public class Chapter25 {
     }
 
     /*
-
+        (Display tree) Write a new view class that displays the tree horizontally with the
+        root on the left as shown in Figure 25.21.
      */
     public static void ex11() {
-
+        Exercise25_11.run();
     }
 
     /*
-
+        (Test BST) Design and write a complete test program to test if the BST class in
+        Listing 25.4 meets all requirements.
      */
     public static void ex12() {
-
+        // run jUnit in ex12/TestBST
     }
 
     /*

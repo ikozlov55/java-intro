@@ -21,10 +21,10 @@ import java.util.Arrays;
 
 public class Exercise22_16 extends Application {
 
-    private double[] numbers = new double[20];
+    private final double[] numbers = new double[20];
     private final Label statusLabel = new Label();
     private final TextField keyField = new TextField();
-    private HistogramPane histogram = new HistogramPane(numbers);
+    private final HistogramPane histogram = new HistogramPane(numbers);
     private final Button stepButton = new Button("Step");
     private final Button resetButton = new Button("Reset");
 

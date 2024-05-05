@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class PrimeNumbersWriter {
-    private File dataFile;
+    private final File dataFile;
     long n = 10_000_000_000L;
     final int batchSize = 10_000;
 

@@ -2,9 +2,9 @@ package exercises.ch10.ex11;
 
 
 public class Circle2D {
-    private double x;
-    private double y;
-    private double radius;
+    private final double x;
+    private final double y;
+    private final double radius;
 
     public Circle2D() {
         x = 0;

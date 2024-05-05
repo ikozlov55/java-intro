@@ -12,12 +12,12 @@ public class MyStack<Type> extends ArrayList<Type> {
         if (isEmpty()) {
             return null;
         } else {
-            return (Type) get(size() - 1);
+            return get(size() - 1);
         }
     }
 
     public Type pop() {
-        return (Type) remove(size() - 1);
+        return remove(size() - 1);
     }
 
     public void push(Type s) {

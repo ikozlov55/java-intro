@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class Exercise15_1 extends Application {
-    private ArrayList<String> deck = new ArrayList<>(IntStream.rangeClosed(1, 52).mapToObj(x -> x + ".png").toList());
+    private final ArrayList<String> deck = new ArrayList<>(IntStream.rangeClosed(1, 52).mapToObj(x -> x + ".png").toList());
 
     public static void run() {
         Application.launch();

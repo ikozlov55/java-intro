@@ -13,9 +13,9 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class Exercise15_16 extends Application {
-    private Circle c1 = new Circle(40, 40, 15);
-    private Circle c2 = new Circle(120, 150, 15);
-    private Label label = new Label();
+    private final Circle c1 = new Circle(40, 40, 15);
+    private final Circle c2 = new Circle(120, 150, 15);
+    private final Label label = new Label();
 
     public static void run() {
         Application.launch();

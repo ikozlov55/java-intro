@@ -12,9 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class Exercise15_4 extends Application {
-    private TextField tfNumber1 = new TextField();
-    private TextField tfNumber2 = new TextField();
-    private TextField tfResult = new TextField();
+    private final TextField tfNumber1 = new TextField();
+    private final TextField tfNumber2 = new TextField();
+    private final TextField tfResult = new TextField();
 
     public static void run() {
         Application.launch();

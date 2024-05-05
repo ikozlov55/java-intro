@@ -61,7 +61,7 @@ public class StackPane extends Pane {
     }
 
     private class StackItemPane extends Pane {
-        private int value;
+        private final int value;
 
         private StackItemPane(int value) {
             this.value = value;

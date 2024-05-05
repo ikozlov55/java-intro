@@ -20,7 +20,7 @@ public class Exercise18_36 extends Application {
     private final TextField tfOrder = new TextField();
     private final SierpinskiTrianglePane pane = new SierpinskiTrianglePane();
 
-    private SimpleIntegerProperty order = new SimpleIntegerProperty();
+    private final SimpleIntegerProperty order = new SimpleIntegerProperty();
 
     public static void run() {
         Application.launch();

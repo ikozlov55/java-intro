@@ -14,7 +14,7 @@ import java.util.Arrays;
     public static MyString2 valueOf(boolean b);
  */
 public class MyString2 {
-    private char[] chars;
+    private final char[] chars;
 
     public MyString2(String s) {
         chars = s.toCharArray();

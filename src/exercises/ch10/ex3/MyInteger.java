@@ -2,7 +2,7 @@ package exercises.ch10.ex3;
 
 
 public class MyInteger {
-    private int value;
+    private final int value;
 
     public static boolean isEven(int value) {
         return new MyInteger(value).isEven();

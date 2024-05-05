@@ -4,11 +4,11 @@ import java.util.Date;
 
 
 public class Transaction {
-    private Date date;
-    private char type;
-    private double amount;
-    private double balance;
-    private String description;
+    private final Date date;
+    private final char type;
+    private final double amount;
+    private final double balance;
+    private final String description;
 
     public Transaction(char type, double amount, double balance, String description) {
         this.date = new Date();

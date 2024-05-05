@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class Exercise14_2 extends Application {
     private static final int N = 3;
-    private int[][] board = new int[N][N];
+    private final int[][] board = new int[N][N];
 
     private void initBoard() {
         for (int i = 0; i < N; i++) {

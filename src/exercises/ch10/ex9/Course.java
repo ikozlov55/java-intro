@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Course {
 
     private int capacity = 100;
-    private String courseName;
+    private final String courseName;
     private String[] students = new String[capacity];
     private int numberOfStudents;
 

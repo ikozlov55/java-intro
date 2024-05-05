@@ -1039,7 +1039,7 @@ public class Chapter10 {
             System.out.println("Usage: java Calculator operand1 operator operand2");
             return;
         }
-        String[] args = input[0].replaceAll("\s", "").split("");
+        String[] args = input[0].replaceAll(" ", "").split("");
 
         // The result of the operation
         int result = 0;

@@ -9,7 +9,7 @@ public class ConnectFourGame {
     private static final int N = 4;
     private static final int ROWS = 6;
     private static final int COLUMNS = 7;
-    private int[][] board = new int[ROWS][COLUMNS];
+    private final int[][] board = new int[ROWS][COLUMNS];
 
     private int currentPlayer = 1;
 

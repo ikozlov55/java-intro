@@ -3,7 +3,7 @@ package exercises.ch24.ex06;
 import exercises.ch23.ex10.Heap;
 
 public class MyPriorityQueue<E> {
-    private Heap<E> heap;
+    private final Heap<E> heap;
 
     public MyPriorityQueue() {
         heap = new Heap<E>();

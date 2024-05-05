@@ -2,7 +2,7 @@ package exercises.ch10.ex28;
 
 
 public class MyStringBuilder2 {
-    private char[] buffer;
+    private final char[] buffer;
 
     public MyStringBuilder2() {
         buffer = new char[0];
@@ -22,9 +22,7 @@ public class MyStringBuilder2 {
 
     public MyStringBuilder2 insert(int offset, MyStringBuilder2 s) {
         char[] newBuffer = new char[length() + s.length()];
-        for (int i = 0; i < offset; i++) {
-            newBuffer[i] = buffer[i];
-        }
+        if (offset >= 0) System.arraycopy(buffer, 0, newBuffer, 0, offset);
         for (int i = offset, j = 0; j < s.length(); i++, j++) {
             newBuffer[i] = s.buffer[j];
         }

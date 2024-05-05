@@ -93,7 +93,6 @@ public class Chapter12 {
                 return;
             }
         }
-        ;
         System.out.printf("%s %s %s = %d\n", args[0], operator, args[2], result);
     }
 
@@ -539,7 +538,7 @@ public class Chapter12 {
         String newString = args[2];
         ArrayList<String> fileContent = new ArrayList<>();
         try {
-            try (Scanner input = new Scanner(sourceFile);) {
+            try (Scanner input = new Scanner(sourceFile)) {
                 while (input.hasNext()) {
                     String s1 = input.nextLine();
                     String s2 = s1.replaceAll(oldString, newString);
@@ -755,7 +754,7 @@ public class Chapter12 {
         for (File file : dir.listFiles(File::isFile)) {
             ArrayList<String> fileContent = new ArrayList<>();
             try {
-                try (Scanner input = new Scanner(file);) {
+                try (Scanner input = new Scanner(file)) {
                     while (input.hasNext()) {
                         String s1 = input.nextLine();
                         String s2 = s1.replaceAll(oldString, newString);

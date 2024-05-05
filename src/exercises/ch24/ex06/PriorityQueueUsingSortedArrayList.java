@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class PriorityQueueUsingSortedArrayList<E extends Comparable<E>> {
-    private ArrayList<E> list;
-    private Comparator<E> comparator;
+    private final ArrayList<E> list;
+    private final Comparator<E> comparator;
 
     public PriorityQueueUsingSortedArrayList() {
         list = new ArrayList<>();

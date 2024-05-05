@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class PrimeIterator<E extends Integer> implements Iterator<E> {
-    private int limit;
+    private final int limit;
     private int currentNumber;
     private int squareRoot;
     private final List<Integer> primes;

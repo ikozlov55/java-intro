@@ -1,10 +1,10 @@
 package exercises.ch10.ex2;
 
 public class BMI {
-    private String name;
-    private int age;
-    private double weight; // in pounds
-    private double height; // in inches
+    private final String name;
+    private final int age;
+    private final double weight; // in pounds
+    private final double height; // in inches
     public static final double KILOGRAMS_PER_POUND = 0.45359237;
     public static final double METERS_PER_INCH = 0.0254;
 

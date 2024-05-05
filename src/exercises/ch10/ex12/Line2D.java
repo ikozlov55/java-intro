@@ -3,8 +3,8 @@ package exercises.ch10.ex12;
 import exercises.ch10.ex4.MyPoint;
 
 public class Line2D {
-    private MyPoint p1;
-    private MyPoint p2;
+    private final MyPoint p1;
+    private final MyPoint p2;
 
 
     public Line2D(MyPoint p1, MyPoint p2) {

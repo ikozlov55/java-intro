@@ -667,6 +667,7 @@ public class Chapter8 {
         for (int i = 0, j = 0; i < N && j < N; i++, j++) {
             if (matrix[i][j] != majorDiagonalValue) {
                 isSameOnMajorDiagonal = false;
+                break;
             }
         }
         boolean isSameOnSubDiagonal = true;
@@ -674,6 +675,7 @@ public class Chapter8 {
         for (int i = 0, j = N - 1; i < N && j >= 0; i++, j--) {
             if (matrix[i][j] != subDiagonalValue) {
                 isSameOnSubDiagonal = false;
+                break;
             }
         }
 

@@ -3,8 +3,8 @@ package exercises.ch22.ex07;
 import javafx.geometry.Point2D;
 
 public class Pair {
-    private Point2D p1;
-    private Point2D p2;
+    private final Point2D p1;
+    private final Point2D p2;
 
     public Pair(Point2D p1, Point2D p2) {
         this.p1 = p1;
