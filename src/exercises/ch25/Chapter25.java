@@ -10,6 +10,7 @@ import exercises.ch25.ex06.BSTWithNumberOfLeaves;
 import exercises.ch25.ex07.BSTWithNumberOfNonLeaves;
 import exercises.ch25.ex08.BSTWithListIterator;
 import exercises.ch25.ex11.Exercise25_11;
+import exercises.ch25.ex13.Exercise25_13;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -249,10 +250,18 @@ public class Chapter25 {
     }
 
     /*
-
+        (Add new buttons in BSTAnimation) Modify Listing 25.8, BSTAnimation.java,
+        to add three new buttons—Show Inorder, Show Preorder, and Show Postorder—
+        to display the result in a label, as shown in Figure 25.22. You need also to modify
+        Listing 25.4, BST.java to implement the inorderList(), preorderList(),
+        and postorderList() methods so each of these methods returns a List of
+        the node elements in inorder, preorder, and postorder, as follows:
+        public java.util.List<E> inorderList();
+        public java.util.List<E> preorderList();
+        public java.util.List<E> postorderList();
      */
     public static void ex13() {
-
+        Exercise25_13.run();
     }
 
     /*

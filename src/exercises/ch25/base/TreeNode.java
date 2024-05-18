@@ -9,7 +9,6 @@ public class TreeNode<E> {
         element = e;
     }
 
-
     public TreeNode<E> getLeft() {
         return left;
     }
@@ -20,6 +19,18 @@ public class TreeNode<E> {
 
     public E getElement() {
         return element;
+    }
+
+    public void setElement(E element) {
+        this.element = element;
+    }
+
+    public void setLeft(TreeNode<E> left) {
+        this.left = left;
+    }
+
+    public void setRight(TreeNode<E> right) {
+        this.right = right;
     }
 
     public boolean isLeaf() {

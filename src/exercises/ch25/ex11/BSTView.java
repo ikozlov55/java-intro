@@ -10,7 +10,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
 public class BSTView<E> extends Pane {
-    private final Label label = new Label("XXX");
+    private final Label label = new Label("");
     BST<E> tree;
     private final double radius = 16;
 
