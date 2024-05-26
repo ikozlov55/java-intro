@@ -11,6 +11,8 @@ import exercises.ch25.ex07.BSTWithNumberOfNonLeaves;
 import exercises.ch25.ex08.BSTWithListIterator;
 import exercises.ch25.ex11.Exercise25_11;
 import exercises.ch25.ex13.Exercise25_13;
+import exercises.ch25.ex14.BSTWithBFT;
+import exercises.ch25.ex15.BSTex15;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -265,17 +267,66 @@ public class Chapter25 {
     }
 
     /*
-
+        (Breadth-first traversal) Define a new class named BSTWithBFT that extends
+        BST with the following method:
+        // Display the nodes in a breadth-first traversal
+        public void breadthFirstTraversal()
      */
     public static void ex14() {
+        BSTWithBFT<String> tree = new BSTWithBFT<>();
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter six strings: ");
+        for (int i = 0; i < 6; i++) {
+            String s = input.next();
+            tree.insert(s.trim());
+        }
+        tree.breadthFirstTraversal();
 
+        BSTWithBFT<String> tree1 = new BSTWithBFT<>(new String[]
+                {"Tom", "George", "Jean", "Jane", "Kevin", "Peter", "Susan",
+                        "Jen", "Kim", "Michael", "Michelle"});
+        System.out.println();
+        tree1.breadthFirstTraversal();
+
+        BSTWithBFT<Integer> tree2 = new BSTWithBFT<>(new Integer[]{50, 45, 35, 48, 59, 51, 58});
+        System.out.println();
+        tree2.breadthFirstTraversal();
     }
 
     /*
-
+        (Parent reference for BST) Redefine TreeNode by adding a reference to a node’s
+        parent, as shown below:
+        Reimplement the insert and delete methods in the BST class to update the
+        parent for each node in the tree. Add the following new method in BST:
+            // Return the node for the specified element.
+            // Return null if the element is not in the tree.
+            private TreeNode<E> getNode(E element)
+            // Return true if the node for the element is a leaf
+            private boolean isLeaf(E element)
+            // Return the path of elements from the specified element
+            // to the root in an array list.
+            public ArrayList<E> getPath(E e)
+        Write a test program that prompts the user to enter 10 integers, adds them to
+        the tree, deletes the first integer from the tree, and displays the paths for all leaf
+        nodes. Here is a sample run:
+            Enter 10 integers: 45 54 67 56 50 45 23 59 23 67
+            [50, 54, 23]
+            [59, 56, 67, 54, 23]
      */
     public static void ex15() {
-
+        Scanner scanner = new Scanner(System.in);
+        Integer[] input = new Integer[10];
+        System.out.print("Enter 10 integers: ");
+        for (int i = 0; i < input.length; i++) {
+            input[i] = scanner.nextInt();
+        }
+        BSTex15<Integer> tree = new BSTex15<>(input);
+        tree.delete(input[0]);
+        for (int value : input) {
+            if (tree.isLeaf(value)) {
+                System.out.println(tree.getPath(value));
+            }
+        }
     }
 
     /*
