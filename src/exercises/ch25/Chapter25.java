@@ -14,6 +14,7 @@ import exercises.ch25.ex13.Exercise25_13;
 import exercises.ch25.ex14.BSTWithBFT;
 import exercises.ch25.ex15.BSTex15;
 import exercises.ch25.ex16.Exercise25_16;
+import exercises.ch25.ex17.Exercise25_17;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -340,10 +341,15 @@ public class Chapter25 {
     }
 
     /*
-
+        (Data compression: Huffman coding animation) Write a program that enables
+        the user to enter text and displays the Huffman coding tree based on the text, as
+        shown in Figure 25.23a. Display the weight of the subtree inside the subtree’s
+        root circle. Display each leaf node’s character. Display the encoded bits for
+        the text in a label. When the user clicks the Decode Text button, a bit string is
+        decoded into text displayed in the label, as shown in Figure 25.23b.
      */
     public static void ex17() {
-
+        Exercise25_17.run();
     }
 
     /*

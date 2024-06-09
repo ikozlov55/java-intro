@@ -16,6 +16,10 @@ public class Tree implements Comparable<Tree> {
         root = new Node(weight, element);
     }
 
+    public Node getRoot() {
+        return root;
+    }
+
     @Override
     public int compareTo(Tree t) {
         if (root.weight < t.root.weight) // Purposely reverse the order
@@ -70,6 +74,30 @@ public class Tree implements Comparable<Tree> {
         public Node(int weight, char element) {
             this.weight = weight;
             this.element = element;
+        }
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public Node getRight() {
+            return right;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public char getElement() {
+            return element;
+        }
+
+        public int getWeight() {
+            return weight;
         }
 
         @Override
