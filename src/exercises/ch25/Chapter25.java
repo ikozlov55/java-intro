@@ -13,6 +13,7 @@ import exercises.ch25.ex11.Exercise25_11;
 import exercises.ch25.ex13.Exercise25_13;
 import exercises.ch25.ex14.BSTWithBFT;
 import exercises.ch25.ex15.BSTex15;
+import exercises.ch25.ex16.Exercise25_16;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -330,10 +331,12 @@ public class Chapter25 {
     }
 
     /*
-
+        (Data compression: Huffman coding) Write a program that prompts the user to
+        enter a file name, then displays the frequency table of the characters in the file
+        and the Huffman code for each character.
      */
     public static void ex16() {
-
+        Exercise25_16.run();
     }
 
     /*
