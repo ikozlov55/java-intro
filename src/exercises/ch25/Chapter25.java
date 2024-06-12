@@ -15,6 +15,8 @@ import exercises.ch25.ex14.BSTWithBFT;
 import exercises.ch25.ex15.BSTex15;
 import exercises.ch25.ex16.Exercise25_16;
 import exercises.ch25.ex17.Exercise25_17;
+import exercises.ch25.ex18.Exercise25_18;
+import exercises.ch25.ex19.Exercise25_19;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -353,16 +355,24 @@ public class Chapter25 {
     }
 
     /*
-
+        (Compress a file) Write a program that compresses a source file into a target
+        file using the Huffman coding method. First, use ObjectOutputStream to
+        output the Huffman codes into the target file, then use BitOutputStream in
+        Programming Exercise 17.17 to output the encoded binary contents to the target
+        file. Pass the files from the command line using the following command:
+        java Exercise25_18 sourcefile targetfile
      */
-    public static void ex18() {
-
+    public static void ex18(String[] args) {
+        Exercise25_18.run(args);
     }
 
     /*
-
+        (Decompress a file) The preceding exercise compresses a file. The compressed
+        file contains the Huffman codes and the compressed contents. Write a program
+        that decompresses a source file into a target file using the following command:
+        java Exercise25_19 sourcefile targetfile
      */
-    public static void ex19() {
-
+    public static void ex19(String[] args) {
+        Exercise25_19.run(args);
     }
 }
