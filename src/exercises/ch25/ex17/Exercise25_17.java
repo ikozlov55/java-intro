@@ -44,8 +44,6 @@ public class Exercise25_17 extends Application {
         stage.setScene(new Scene(root, 600, 500));
         stage.setTitle(getClass().getSimpleName());
         stage.show();
-
-        //treeView.displayTree("Mississippi");
     }
 
     private BorderPane makeRoot() {
