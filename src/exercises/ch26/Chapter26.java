@@ -7,10 +7,7 @@ import exercises.ch26.ex01.Exercise26_1;
 import exercises.ch26.ex03.Exercise26_3;
 import exercises.utils.Utils;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -111,10 +108,43 @@ public class Chapter26 {
     }
 
     /*
-
+        (The kth smallest element) You can find the kth smallest element in a BST in
+        O(n) time from an inorder iterator. For an AVL tree, you can find it in O(log n)
+        time. To achieve this, add a new data field named size in AVLTreeNode to
+        store the number of nodes in the subtree rooted at this node. Note the size of a
+        node v is one more than the sum of the sizes of its two children. Figure 26.12
+        shows an AVL tree and the size value for each node in the tree.
+        In the AVLTree class, add the following method to return the kth smallest element
+        in the tree:
+            public E find(int k)
+        The method returns null if k < 1 or k > the size of the tree. This
+        method can be implemented using the recursive method find(k, root), which
+        returns the kth smallest element in the tree with the specified root. Let A and B
+        be the left and right children of the root, respectively. Assuming the tree is not
+        empty and k … root.size, find(k, root) can be recursively defined as follows:
+            find(k, root) = E
+                root.element, if A is null and k is 1;
+                B.element, if A is null and k is 2;
+                find(k, A), if k <= A.size;
+                root.element, if k = A.size + 1;
+                find(k - A.size - 1, B), if k > A.size + 1;
+        Modify the insert and delete methods in AVLTree to set the correct value
+        for the size property in each node. The insert and delete methods will still
+        be in O(log n) time. The find(k) method can be implemented in O(log n) time.
+        Therefore, you can find the kth smallest element in an AVL tree in O(log n) time.
+        Test your program using the code at https://liveexample.pearsoncmg.com/test/Exercise26_05.txt.
      */
     public static void ex5() {
+        exercises.ch26.ex05.AVLTree<Double> tree = new exercises.ch26.ex05.AVLTree<>();
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter 15 numbers: ");
+        for (int i = 0; i < 15; i++) {
+            tree.insert(input.nextDouble());
+        }
 
+        System.out.print("Enter k: ");
+        int k = input.nextInt();
+        System.out.println("The " + k + "th smallest number is " + tree.find(k));
     }
 
     /*
