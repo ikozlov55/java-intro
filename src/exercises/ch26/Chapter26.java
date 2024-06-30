@@ -1,10 +1,17 @@
 package exercises.ch26;
 
 import exercises.ch25.base.BST;
+import exercises.ch25.base.TreeNode;
 import exercises.ch26.base.AVLTree;
 import exercises.ch26.ex01.Exercise26_1;
 import exercises.ch26.ex03.Exercise26_3;
 import exercises.utils.Utils;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Chapter26 {
@@ -68,10 +75,39 @@ public class Chapter26 {
     }
 
     /*
-
+        (Parent reference for BST) Suppose the TreeNode class defined in BST con-
+        tains a reference to the node’s parent, as shown in Programming Exercise
+        25.15. Implement the AVLTree class to support this change. Write a test
+        program that adds numbers 1, 2, . . . , 100 to the tree and displays the paths
+        for all leaf nodes.
      */
     public static void ex4() {
+        exercises.ch26.ex04.AVLTree<Integer> tree = new exercises.ch26.ex04.AVLTree<>();
+        for (int i = 1; i <= 100; i++) {
+            tree.insert(i);
+        }
+        List<TreeNode<Integer>> leafs = new ArrayList<>();
+        Deque<TreeNode<Integer>> stack = new ArrayDeque<>();
+        stack.push(tree.getRoot());
+        while (!stack.isEmpty()) {
+            TreeNode<Integer> current = stack.pop();
+            if (current.getLeft() != null) {
+                stack.push(current.getLeft());
+            }
+            if (current.getRight() != null) {
+                stack.push(current.getRight());
+            }
+            if (current.isLeaf()) {
+                leafs.add(current);
+            }
+        }
 
+        for (TreeNode<Integer> node : leafs) {
+            String s = tree.path(node.getElement()).stream()
+                    .map(n -> Integer.toString(n.getElement()))
+                    .collect(Collectors.joining(" - "));
+            System.out.println(s);
+        }
     }
 
     /*
