@@ -1,11 +1,17 @@
 package exercises.ch26;
 
+
+import exercises.ch22.ex07.ClosestPair;
+import exercises.ch22.ex07.Pair;
 import exercises.ch25.base.BST;
 import exercises.ch25.base.TreeNode;
 import exercises.ch26.base.AVLTree;
 import exercises.ch26.ex01.Exercise26_1;
 import exercises.ch26.ex03.Exercise26_3;
+import exercises.ch26.ex06.ClosestPairAVL;
+import exercises.ch26.ex07.MyBST;
 import exercises.utils.Utils;
+import javafx.geometry.Point2D;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -148,16 +154,50 @@ public class Chapter26 {
     }
 
     /*
-
+        (Closest pair of points) Section 22.8 introduced an algorithm for finding a clos-
+        est pair of points in O(nlogn) time using a divide-and-conquer approach. The
+        algorithm was implemented using recursion with a lot of overhead. Using an
+        AVL tree, you can solve the same problem in O(nlogn) time. Implement the
+        algorithm using an AVLTree.
      */
     public static void ex6() {
+        Point2D[] points = {
+                new Point2D(0, 0),
+                new Point2D(2, 7),
+                new Point2D(1, 5),
+                new Point2D(3, 2),
+                new Point2D(2, 5),
+                new Point2D(2, 0),
+                new Point2D(5, 5),
+                new Point2D(3, 8),
+        };
 
+        Pair closestPair = ClosestPair.getClosestPair(points);
+        System.out.printf("Closest pair found using Divide-and-Conquer algorithm is: %s\n", closestPair);
+        Pair closestPairBruteForce = ClosestPair.getClosestPairBruteForce(points);
+        System.out.printf("Closest pair found using brute force algorithm is: %s\n", closestPairBruteForce);
+        Pair closestPairAVL = ClosestPairAVL.getClosestPair(points);
+        System.out.printf("Closest pair found using AVL tree is: %s\n", closestPairAVL);
     }
 
     /*
-
+        (Test AVL tree) Define a new class named MyBST that extends the BST class with
+        the following method:
+        // Returns true if the tree is an AVL tree
+        public boolean isAVLTree()
+        Use https://liveexample.pearsoncmg.com/test/Exercise26_07.txt to test your code.
      */
     public static void ex7() {
-
+        MyBST<Integer> tree = new MyBST<>();
+        System.out.print("How many integers to be inserted into the tree? ");
+        Scanner input = new Scanner(System.in);
+        int number = input.nextInt();
+        System.out.print("Enter " + number + " integers: ");
+        int count = 0;
+        while (count++ < number) {
+            int e = input.nextInt();
+            tree.insert(e);
+        }
+        System.out.println("Is this tree an AVL tree? " + tree.isAVLTree());
     }
 }
