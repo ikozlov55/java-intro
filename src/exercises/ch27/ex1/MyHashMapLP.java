@@ -5,7 +5,7 @@ import exercises.ch27.base.MyMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MyHashMap<K, V> implements MyMap<K, V> {
+public class MyHashMapLP<K, V> implements MyMap<K, V> {
     private static final int DEFAULT_INITIAL_CAPACITY = 4;
     private static final int MAXIMUM_CAPACITY = 1 << 30;
     private static final float DEFAULT_MAX_LOAD_FACTOR = 0.5f;
@@ -15,15 +15,15 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
     private int size = 0;
     Entry<K, V>[] table;
 
-    public MyHashMap() {
+    public MyHashMapLP() {
         this(DEFAULT_INITIAL_CAPACITY, DEFAULT_MAX_LOAD_FACTOR);
     }
 
-    public MyHashMap(int initialCapacity) {
+    public MyHashMapLP(int initialCapacity) {
         this(initialCapacity, DEFAULT_MAX_LOAD_FACTOR);
     }
 
-    public MyHashMap(int initialCapacity, float loadFactorThreshold) {
+    public MyHashMapLP(int initialCapacity, float loadFactorThreshold) {
         this.capacity = initialCapacity;
         this.loadFactorThreshold = loadFactorThreshold;
         table = new Entry[capacity];
