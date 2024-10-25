@@ -76,6 +76,10 @@ public interface MyMap<K, V> {
             return value;
         }
 
+        public void setValue(V value) {
+            this.value = value;
+        }
+
         @Override
         public String toString() {
             return "[" + key + ", " + value + "]";

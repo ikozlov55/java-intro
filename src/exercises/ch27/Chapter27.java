@@ -3,7 +3,10 @@ package exercises.ch27;
 import exercises.ch27.ex1.MyHashMapLP;
 import exercises.ch27.ex2.MyHashMapQP;
 import exercises.ch27.ex3.MyHashMapDH;
+import exercises.ch27.ex4.MyHashMapDK;
+import exercises.ch27.ex5.MyHashSetHM;
 
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
@@ -94,17 +97,53 @@ public class Chapter27 {
     }
 
     /*
-
+        (Modify MyHashMap with duplicate keys) Modify MyHashMap to allow dupli-
+        cate keys for entries. You need to modify the implementation for the put(key,
+        value) method. Also add a new method named getAll(key) that returns a set
+        of values that match the key in the map.
      */
     public static void ex4() {
-
+        MyHashMapDK<Integer, Integer> map = new MyHashMapDK<>();
+        int[] range = IntStream.rangeClosed(1, 10).toArray();
+        for (int i : range) {
+            map.put(i, i);
+        }
+        map.put(2, 4);
+        map.put(3, 9);
+        System.out.println(map);
+        for (int i = 0; i < 12; i++) {
+            System.out.printf("map[%d] = %d, contains %d = %b, getAll = %s\n",
+                    i, map.get(i), i, map.containsKey(i), map.getAll(i));
+        }
+        for (int i : range) {
+            map.remove(i);
+        }
+        System.out.println(map);
     }
 
     /*
-
+        (Implement MyHashSet using MyHashMap) Implement MyHashSet using MyHash-
+        Map. Note you can create entries with (key, key), rather than (key, value).
      */
     public static void ex5() {
+        Collection<String> set = new MyHashSetHM<>();
+        set.add("Smith");
+        set.add("Anderson");
+        set.add("Lewis");
+        set.add("Cook");
+        set.add("Smith");
 
+        System.out.println("Elements in set: " + set);
+        System.out.println("Number of elements in set: " + set.size());
+        System.out.println("Is Smith in set? " + set.contains("Smith"));
+
+        set.remove("Smith");
+        System.out.print("Names in set in uppercase are ");
+        for (String s : set)
+            System.out.print(s.toUpperCase() + " ");
+
+        set.clear();
+        System.out.println("\nElements in set: " + set);
     }
 
     /*
