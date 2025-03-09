@@ -13,7 +13,7 @@ public class MyHashMapLP<K, V> implements MyMap<K, V> {
     private int capacity;
     private float loadFactorThreshold;
     private int size = 0;
-    Entry<K, V>[] table;
+    MyMap.Entry<K, V>[] table;
 
     public MyHashMapLP() {
         this(DEFAULT_INITIAL_CAPACITY, DEFAULT_MAX_LOAD_FACTOR);

@@ -5,6 +5,7 @@ import exercises.ch27.ex2.MyHashMapQP;
 import exercises.ch27.ex3.MyHashMapDH;
 import exercises.ch27.ex4.MyHashMapDK;
 import exercises.ch27.ex5.MyHashSetHM;
+import exercises.ch27.ex6.Exercise27_06;
 
 import java.util.Collection;
 import java.util.Scanner;
@@ -147,10 +148,12 @@ public class Chapter27 {
     }
 
     /*
-
+        (Animate linear probing) Write a program that animates linear probing, as shown
+        in Figure 27.3. You can change the initial size of the hash table in the program.
+        Assume the load-factor threshold is 0.75.
      */
     public static void ex6() {
-
+        Exercise27_06.run();
     }
 
     /*

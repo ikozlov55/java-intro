@@ -1,6 +1,7 @@
 package exercises.utils;
 
 import javafx.scene.Group;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.shape.Line;
 
 public class UtilsFx {
@@ -29,5 +30,19 @@ public class UtilsFx {
                 endY - 10 * Math.cos(lineAngle - addAngle)
         );
         return new Group(line, head1, head2);
+    }
+
+    public static TextFormatter<String> intFormatter() {
+        return new TextFormatter<>(c -> {
+            if (c.isDeleted()) {
+                c.setText("");
+            }
+            try {
+                Integer.parseInt(c.getText());
+            } catch (NumberFormatException e) {
+                c.setText("");
+            }
+            return c;
+        });
     }
 }
